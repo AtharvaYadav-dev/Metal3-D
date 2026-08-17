@@ -1,0 +1,1725 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1380</width>
+    <height>850</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1100</width>
+    <height>720</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Specialise Products Private Limited - Metal 3D Printer</string>
+  </property>
+  <property name="styleSheet">
+   <string>
+/* ===================================================================
+   INDUSTRIAL PRECISION DESIGN SYSTEM - STYLESHEET FOR LPBF CONTROL
+   =================================================================== */
+
+* {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #e3e1eb;
+    font-size: 11px;
+    outline: none;
+}
+
+QMainWindow, QDialog {
+    background-color: #12131a;
+}
+
+QWidget {
+    background-color: #12131a;
+    color: #e3e1eb;
+}
+
+/* FRAMES &amp; CONTAINERS - Modern Industrial Glassmorphic / Sharp High-Contrast */
+QFrame {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+}
+
+QFrame#sidebarFrame {
+    background-color: #1a1b22;
+    border-right: 1px solid #444653;
+}
+
+QFrame#topNavFrame {
+    background-color: #1a1b22;
+    border-bottom: 1px solid #444653;
+}
+
+QFrame#cardFrame, QFrame[card=&quot;true&quot;] {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+}
+
+/* GROUP BOX CARDS */
+QGroupBox {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    margin-top: 18px;
+    padding: 12px 8px 8px 8px;
+    font-weight: 600;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 8px;
+    padding: 2px 8px;
+    background-color: #282a31;
+    color: #b8c4ff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+
+/* BUTTONS */
+QPushButton {
+    background-color: #282a31;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    color: #e3e1eb;
+    padding: 6px 14px;
+    min-height: 24px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+QPushButton:hover {
+    background-color: #33343c;
+    border-color: #8e909f;
+    color: #ffffff;
+}
+
+QPushButton:pressed {
+    background-color: #1a1b22;
+    border-color: #1e40af;
+}
+
+QPushButton:checked {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: 1px solid #b8c4ff;
+    font-weight: bold;
+}
+
+/* ACCENT BUTTON STYLES */
+/* Primary Action Button (Secondary Orange) */
+QPushButton#btn_start_print, QPushButton#btn_act_simulate, QPushButton#btn_import_build, QPushButton[accent=&quot;primary&quot;], QPushButton[accent=&quot;orange&quot;] {
+    background-color: #ec6a06;
+    color: #ffffff;
+    border: 1px solid #ffb690;
+    font-weight: 700;
+}
+
+QPushButton#btn_start_print:hover, QPushButton#btn_act_simulate:hover, QPushButton#btn_import_build:hover, QPushButton[accent=&quot;primary&quot;]:hover, QPushButton[accent=&quot;orange&quot;]:hover {
+    background-color: #ff7715;
+    border-color: #ffffff;
+}
+
+/* Critical Emergency Stop Button (Crimson) */
+QPushButton#btn_emergency_stop, QPushButton[accent=&quot;critical&quot;], QPushButton[accent=&quot;red&quot;] {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ffb4ab;
+    font-weight: 700;
+}
+
+QPushButton#btn_emergency_stop:hover, QPushButton[accent=&quot;critical&quot;]:hover, QPushButton[accent=&quot;red&quot;]:hover {
+    background-color: #dc2626;
+    border-color: #ffffff;
+}
+
+/* Secondary Action Button (Primary Container Blue) */
+QPushButton[accent=&quot;secondary&quot;], QPushButton[accent=&quot;blue&quot;] {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: 1px solid #b8c4ff;
+    font-weight: 600;
+}
+
+QPushButton[accent=&quot;secondary&quot;]:hover, QPushButton[accent=&quot;blue&quot;]:hover {
+    background-color: #2563eb;
+    border-color: #ffffff;
+}
+
+/* INPUT CONTROLS */
+QLineEdit, QTextEdit, QSpinBox, QDoubleSpinBox, QComboBox {
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    color: #b8c4ff;
+    padding: 5px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+QLineEdit:focus, QTextEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus {
+    border: 1px solid #1e40af;
+    background-color: #12131a;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 24px;
+    background: #1a1b22;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1a1b22;
+    border: 1px solid #444653;
+    color: #e3e1eb;
+    selection-background-color: #1e40af;
+}
+
+/* PROGRESS BAR */
+QProgressBar {
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    text-align: center;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QProgressBar::chunk {
+    background-color: #1e40af;
+    border-radius: 0px;
+}
+
+/* SLIDERS */
+QSlider::groove:horizontal {
+    border: 1px solid #444653;
+    height: 8px;
+    background: #0d0e14;
+    border-radius: 0px;
+}
+
+QSlider::handle:horizontal {
+    background: #1e40af;
+    border: 1px solid #b8c4ff;
+    width: 16px;
+    margin: -5px 0;
+    border-radius: 0px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: #ec6a06;
+    border-color: #ffb690;
+}
+
+/* DATA READOUT LCD / LABELS */
+QLabel#uposlcddisplay, QLabel#vposlcddisplay, QLabel#zposlcddisplay, QLabel.data-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: #b8c4ff;
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    padding: 6px 12px;
+    border-radius: 0px;
+}
+
+/* STATUS BADGES */
+QLabel.status-emerald {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+QLabel.status-amber {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid #f59e0b;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+QLabel.status-crimson {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* TAB WIDGETS */
+QTabWidget::pane {
+    border: 1px solid #444653;
+    background-color: #1e1f26;
+    border-radius: 0px;
+}
+
+QTabBar::tab {
+    background-color: #1a1b22;
+    color: #c4c5d5;
+    padding: 8px 16px;
+    border: 1px solid #444653;
+    border-bottom: none;
+    border-radius: 0px;
+    margin-right: 2px;
+    font-weight: 600;
+}
+
+QTabBar::tab:selected {
+    background-color: #1e1f26;
+    color: #b8c4ff;
+    border-top: 2px solid #1e40af;
+}
+
+QTabBar::tab:hover {
+    color: #ffffff;
+    background-color: #282a31;
+}
+
+/* SCROLLBARS */
+QScrollBar:vertical, QScrollBar:horizontal {
+    border: none;
+    background: #0d0e14;
+    width: 8px;
+    height: 8px;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #33343c;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+    background: #8e909f;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    border: none;
+    background: none;
+}
+
+   </string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="mainLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="topNavFrame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>96</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>96</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: #1a1b22; border-bottom: 1px solid #444653;</string>
+      </property>
+      <layout class="QHBoxLayout" name="headerLayout">
+       <property name="spacing">
+        <number>12</number>
+       </property>
+       <property name="leftMargin">
+        <number>16</number>
+       </property>
+       <property name="topMargin">
+        <number>8</number>
+       </property>
+       <property name="rightMargin">
+        <number>16</number>
+       </property>
+       <property name="bottomMargin">
+        <number>8</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="logoLabel">
+         <property name="minimumSize">
+          <size>
+           <width>110</width>
+           <height>110</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>110</width>
+           <height>110</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #ffffff; border-radius: 6px; padding: 4px;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="brandBox" native="true">
+         <layout class="QVBoxLayout" name="brandLayout">
+          <property name="spacing">
+           <number>2</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="titleLabel">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #b8c4ff; letter-spacing: 0.5px;</string>
+            </property>
+            <property name="text">
+             <string>SPECIALISE PRODUCTS PRIVATE LIMITED</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="subtitleLabel">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #8e909f;</string>
+            </property>
+            <property name="text">
+             <string>Metal 3D Printer</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblStatusBadge">
+         <property name="font">
+          <font>
+           <family>Inter</family>
+           <pointsize>-1</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(16,185,129,0.15); color: #10b981; border: 1px solid #10b981; padding: 4px 10px; border-radius: 0px;</string>
+         </property>
+         <property name="text">
+          <string>READY / SIMULATION MODE</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="headerSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QFrame" name="telemetryFrame">
+         <property name="styleSheet">
+          <string notr="true">border: none; background: transparent;</string>
+         </property>
+         <layout class="QHBoxLayout" name="telemetryLayout">
+          <property name="spacing">
+           <number>16</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblChamberP">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #c4c5d5;</string>
+            </property>
+            <property name="text">
+             <string>Chamber P: 1013 mbar</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblO2">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #f59e0b;</string>
+            </property>
+            <property name="text">
+             <string>O2: 0.04%</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="lblBedTemp">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #c4c5d5;</string>
+            </property>
+            <property name="text">
+             <string>Bed Temp: 65°C</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnEmergencyStop">
+         <property name="font">
+          <font>
+           <family>Inter</family>
+           <pointsize>-1</pointsize>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #ef4444; color: white; border: 1px solid #ffb4ab; padding: 8px 16px; font-weight: bold; border-radius: 0px;</string>
+         </property>
+         <property name="text">
+          <string>EMERGENCY STOP</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="bodyContainer" native="true">
+      <layout class="QHBoxLayout" name="bodyLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="sidebarFrame">
+         <property name="minimumSize">
+          <size>
+           <width>220</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>220</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #1a1b22; border-right: 1px solid #444653;</string>
+         </property>
+         <layout class="QVBoxLayout" name="sidebarLayout">
+          <property name="spacing">
+           <number>8</number>
+          </property>
+          <property name="leftMargin">
+           <number>12</number>
+          </property>
+          <property name="topMargin">
+           <number>16</number>
+          </property>
+          <property name="rightMargin">
+           <number>12</number>
+          </property>
+          <property name="bottomMargin">
+           <number>16</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="lblNavHeader">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">color: #8e909f; letter-spacing: 1px; margin-bottom: 8px;</string>
+            </property>
+            <property name="text">
+             <string>NAVIGATION</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnDashboard">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <fontweight>DemiBold</fontweight>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">text-align: left; padding: 10px 14px;</string>
+            </property>
+            <property name="text">
+             <string>  Dashboard</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnMachineControl">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <fontweight>DemiBold</fontweight>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">text-align: left; padding: 10px 14px;</string>
+            </property>
+            <property name="text">
+             <string>  Motion Control</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnBuildSetup">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <fontweight>DemiBold</fontweight>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">text-align: left; padding: 10px 14px;</string>
+            </property>
+            <property name="text">
+             <string>  Files &amp; Slicing</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnSettings">
+            <property name="font">
+             <font>
+              <family>Inter</family>
+              <pointsize>-1</pointsize>
+              <fontweight>DemiBold</fontweight>
+             </font>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">text-align: left; padding: 10px 14px;</string>
+            </property>
+            <property name="text">
+             <string>  System Settings</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="sidebarSpacer">
+            <property name="orientation">
+             <enum>Qt::Orientation::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QStackedWidget" name="stackedWidget">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="page_dashboard">
+          <layout class="QVBoxLayout" name="dashboardLayout" stretch="5,1">
+           <property name="spacing">
+            <number>16</number>
+           </property>
+           <property name="leftMargin">
+            <number>16</number>
+           </property>
+           <property name="topMargin">
+            <number>16</number>
+           </property>
+           <property name="rightMargin">
+            <number>16</number>
+           </property>
+           <property name="bottomMargin">
+            <number>16</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="columnsWidget" native="true">
+             <layout class="QHBoxLayout" name="columnsLayout" stretch="3,6,3">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QGroupBox" name="gb_active_job">
+                <property name="title">
+                 <string>ACTIVE JOB &amp; CALCULATIONS</string>
+                </property>
+                <layout class="QVBoxLayout" name="activeJobLayout">
+                 <property name="spacing">
+                  <number>8</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="fileRow">
+                   <item>
+                    <widget class="QLabel" name="lbl_active_file">
+                     <property name="font">
+                      <font>
+                       <family>Inter</family>
+                       <pointsize>-1</pointsize>
+                       <bold>true</bold>
+                      </font>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px;</string>
+                     </property>
+                     <property name="text">
+                      <string>demo_cube.stl</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_import_build">
+                     <property name="styleSheet">
+                      <string notr="true">background-color: #ec6a06; color: white; border: 1px solid #ffb690; font-weight: bold; border-radius: 0px;</string>
+                     </property>
+                     <property name="text">
+                      <string>IMPORT FILE</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QGridLayout" name="calcGrid">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="lbl_calc_dims">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Part Dims: 50.0 x 50.0 x 25.0 mm</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QLabel" name="lbl_calc_layers">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Total Layers: 500 Layers</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="lbl_calc_dose">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Powder Dose (+U): 0.075 mm</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QLabel" name="lbl_calc_vol">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Powder Vol: 234.38 cm³</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="lbl_calc_vectors">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Vectors: 12,500 Commands</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QLabel" name="lbl_calc_time">
+                     <property name="styleSheet">
+                      <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold;</string>
+                     </property>
+                     <property name="text">
+                      <string>Est. Time: 01:14:30</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QProgressBar" name="progressBar">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>24</height>
+                    </size>
+                   </property>
+                   <property name="value">
+                    <number>0</number>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="btn_act_simulate">
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>38</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                     <pointsize>-1</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">background-color: #ec6a06; color: white; border: 1px solid #ffb690; font-weight: bold; border-radius: 0px;</string>
+                   </property>
+                   <property name="text">
+                    <string>  START BUILD SIMULATION</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="gb_build_preview_dash">
+                <property name="title">
+                 <string>3D PART SLICER &amp; PREVIEW</string>
+                </property>
+                <layout class="QVBoxLayout" name="previewLayout">
+                 <property name="spacing">
+                  <number>8</number>
+                 </property>
+                 <item>
+                  <layout class="QHBoxLayout" name="camBar">
+                   <item>
+                    <widget class="QPushButton" name="btn_view_iso">
+                     <property name="text">
+                      <string>Iso</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_view_top">
+                     <property name="text">
+                      <string>Top</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_view_front">
+                     <property name="text">
+                      <string>Front</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_rotate">
+                     <property name="text">
+                      <string>Rot</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_pan">
+                     <property name="text">
+                      <string>Pan</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_zoom">
+                     <property name="text">
+                      <string>Zoom</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_3d_preview_placeholder">
+                   <property name="styleSheet">
+                    <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #8e909f; font-family: 'JetBrains Mono';</string>
+                   </property>
+                   <property name="text">
+                    <string>3D OPENGL PART VIEWPORT</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="sliderRow">
+                   <item>
+                    <widget class="QLabel" name="lblSlice">
+                     <property name="text">
+                      <string>Layer Cut:</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QSlider" name="slider_layer">
+                     <property name="orientation">
+                      <enum>Qt::Orientation::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QCheckBox" name="chk_section_view">
+                     <property name="text">
+                      <string>Section Cut</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="processControlRow">
+                   <property name="spacing">
+                    <number>12</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="btn_start_process">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>42</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #10b981, stop:1 #059669); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #047857; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #10b981; } QPushButton:pressed { background: #047857; }</string>
+                     </property>
+                     <property name="text">
+                      <string>START PROCESS</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_pause_process">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>42</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f59e0b, stop:1 #d97706); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #b45309; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #f59e0b; } QPushButton:pressed { background: #b45309; }</string>
+                     </property>
+                     <property name="text">
+                      <string>PAUSE PROCESS</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="btn_stop_process">
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>42</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ef4444, stop:1 #dc2626); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #b91c1c; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #ef4444; } QPushButton:pressed { background: #b91c1c; }</string>
+                     </property>
+                     <property name="text">
+                      <string>STOP PROCESS</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <widget class="QGroupBox" name="gb_telemetry">
+                <property name="title">
+                 <string>HARDWARE TELEMETRY</string>
+                </property>
+                <layout class="QVBoxLayout" name="telemetryColLayout">
+                 <property name="spacing">
+                  <number>10</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="lbl_laser_gauge">
+                   <property name="styleSheet">
+                    <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #b8c4ff; font-family: 'JetBrains Mono';</string>
+                   </property>
+                   <property name="text">
+                    <string>LASER POWER GAUGE</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_oxy_gauge">
+                   <property name="styleSheet">
+                    <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #10b981; font-family: 'JetBrains Mono';</string>
+                   </property>
+                   <property name="text">
+                    <string>O2 LEVEL GAUGE</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lblAxisHeader">
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                     <pointsize>-1</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>AXIS POSITIONS (mm):</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_dash_u">
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                     <pointsize>-1</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Powder Bay (U): +0.000 mm</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_dash_v">
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                     <pointsize>-1</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Build Plate (V): +0.000 mm</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="lbl_dash_z">
+                   <property name="font">
+                    <font>
+                     <family>Inter</family>
+                     <pointsize>-1</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px;</string>
+                   </property>
+                   <property name="text">
+                    <string>Recoater Blade (Z): +0.000 mm</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_console_log">
+             <property name="title">
+              <string>SYSTEM TERMINAL &amp; EXPOSURE LOG</string>
+             </property>
+             <layout class="QVBoxLayout" name="logLayout">
+              <item>
+               <widget class="QTextEdit" name="textEdit">
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>140</height>
+                 </size>
+                </property>
+                <property name="readOnly">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="logBtnRow">
+                <item>
+                 <widget class="QCheckBox" name="checkBox">
+                  <property name="text">
+                   <string>Auto-Scroll</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <spacer name="logSpacer">
+                  <property name="orientation">
+                   <enum>Qt::Orientation::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="text">
+                   <string>Clear Console Log</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_machine_control">
+          <layout class="QVBoxLayout" name="motionLayout">
+           <property name="spacing">
+            <number>16</number>
+           </property>
+           <property name="leftMargin">
+            <number>16</number>
+           </property>
+           <property name="topMargin">
+            <number>16</number>
+           </property>
+           <property name="rightMargin">
+            <number>16</number>
+           </property>
+           <property name="bottomMargin">
+            <number>16</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="lblMotionTitle">
+             <property name="font">
+              <font>
+               <family>Inter</family>
+               <pointsize>-1</pointsize>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: #b8c4ff;</string>
+             </property>
+             <property name="text">
+              <string>MOTION CONTROL &amp; MANUAL AXIS JOGGING</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="cardsLayout">
+             <property name="spacing">
+              <number>16</number>
+             </property>
+             <item>
+              <widget class="QGroupBox" name="gb_powder_bay">
+               <property name="title">
+                <string>POWDER BAY (FEEDER - U AXIS)</string>
+               </property>
+               <layout class="QVBoxLayout" name="uLayout">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="uposlcddisplay">
+                  <property name="font">
+                   <font>
+                    <family>JetBrains Mono</family>
+                    <pointsize>-1</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 10px;</string>
+                  </property>
+                  <property name="text">
+                   <string>+0.000 mm</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="upluspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>+U (Supply Powder UP)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="uminuspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>-U (Supply Powder DOWN)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnhomeU">
+                  <property name="text">
+                   <string>Home Powder Bay (U)</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="gb_build_plate">
+               <property name="title">
+                <string>BUILD PLATE (PLATFORM - V AXIS)</string>
+               </property>
+               <layout class="QVBoxLayout" name="vLayout">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="vposlcddisplay">
+                  <property name="font">
+                   <font>
+                    <family>JetBrains Mono</family>
+                    <pointsize>-1</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 10px;</string>
+                  </property>
+                  <property name="text">
+                   <string>+0.000 mm</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="vpluspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>+V (Platform UP)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="vminuspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>-V (Platform DOWN)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnhomeV">
+                  <property name="text">
+                   <string>Home Build Plate (V)</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QGroupBox" name="gb_recoater">
+               <property name="title">
+                <string>RECOATER BLADE (DOSING - Z AXIS)</string>
+               </property>
+               <layout class="QVBoxLayout" name="zLayout">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="zposlcddisplay">
+                  <property name="font">
+                   <font>
+                    <family>JetBrains Mono</family>
+                    <pointsize>-1</pointsize>
+                    <bold>true</bold>
+                   </font>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 10px;</string>
+                  </property>
+                  <property name="text">
+                   <string>+0.000 mm</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignmentFlag::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="zpluspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>+Z (Recoater RIGHT)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="zminuspushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>38</height>
+                   </size>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Inter</family>
+                    <pointsize>-1</pointsize>
+                    <fontweight>DemiBold</fontweight>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>-Z (Recoater LEFT)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="btnrecoaterSweep">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #1e40af; color: white; border: 1px solid #b8c4ff; font-weight: bold; border-radius: 0px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Home  Recoater  (Z)</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_travel_step">
+             <property name="title">
+              <string>JOG STEP TRAVEL DISTANCE (mm)</string>
+             </property>
+             <layout class="QHBoxLayout" name="stepLayout">
+              <property name="spacing">
+               <number>10</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_1">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0.01 mm</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_2">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>0.1 mm</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_3">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>1.0 mm</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_4">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>5.0 mm</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_5">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>10.0 mm</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="travelpushButton_6">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>50.0 mm</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="gb_master_controls">
+             <property name="title">
+              <string>SYSTEM MASTER CONTROLS</string>
+             </property>
+             <layout class="QHBoxLayout" name="masterLayout">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="allhomepushButton">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>  HOME ALL AXES (U, V, Z)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="galvohomepushButton">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>  GALVO SCANNER HOME</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_master_estop">
+                <property name="font">
+                 <font>
+                  <family>Inter</family>
+                  <pointsize>-1</pointsize>
+                  <fontweight>DemiBold</fontweight>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">background-color: #ef4444; color: white; border: 1px solid #ffb4ab; border-radius: 0px;</string>
+                </property>
+                <property name="text">
+                 <string>🚨  EMERGENCY STOP</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_build_setup">
+          <layout class="QVBoxLayout" name="filesLayout">
+           <item>
+            <widget class="QLabel" name="graphicsView_layer">
+             <property name="styleSheet">
+              <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #b8c4ff; font-family: 'JetBrains Mono';</string>
+             </property>
+             <property name="text">
+              <string>2D GALVO VECTOR PATH PREVIEW PLACEHOLDER</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_settings">
+          <layout class="QVBoxLayout" name="settingsLayout">
+           <item>
+            <widget class="QLabel" name="lblSettings">
+             <property name="styleSheet">
+              <string notr="true">color: #b8c4ff; font-family: 'Inter'; font-size: 14px; font-weight: bold;</string>
+             </property>
+             <property name="text">
+              <string>SYSTEM CONFIGURATION &amp; CALIBRATION SETTINGS</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
