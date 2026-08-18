@@ -388,15 +388,26 @@ def main():
 
     # Hardware Setup
     try:
-        if GalvoController and StepperController:
+        if GalvoController:
             galvo_controller = GalvoController()
-            galvo_controller.connect()
-            stepper_controller = StepperController(galvo_controller.connection)
+            try:
+                galvo_controller.connect()
+            except Exception as err:
+                print("[Hardware Warning] Galvo connect notice:", err)
         else:
             galvo_controller = None
-            stepper_controller = None
-    except Exception:
+    except Exception as err:
         galvo_controller = None
+        print("[Hardware Notice] Operating in simulation mode:", err)
+
+    try:
+        if StepperController:
+            conn = getattr(galvo_controller, 'connection', None) if galvo_controller else None
+            stepper_controller = StepperController(conn)
+        else:
+            stepper_controller = None
+    except Exception as err:
+        print("[Stepper Warning] Stepper init notice:", err)
         stepper_controller = None
 
     # Wire Console Logger
@@ -581,31 +592,49 @@ def main():
         lbl_z = get_widget('lbl_dash_z')
         if lbl_z and isinstance(lbl_z, QLabel): lbl_z.setText(f"Recoater Blade (Z): {z_val:+.3f} mm")
 
-    # Wire Motion Jog Buttons
+    # Wire Motion Jog Buttons with explicit position updates and LCD refreshes
+    def on_jog_u(step_sign):
+        step_mm = travel_state[0] * step_sign
+        if stepper_controller:
+            stepper_controller.move_relative("U", step_mm)
+        update_axis_lcds()
+
+    def on_jog_v(step_sign):
+        step_mm = travel_state[0] * step_sign
+        if stepper_controller:
+            stepper_controller.move_relative("V", step_mm)
+        update_axis_lcds()
+
+    def on_jog_z(step_sign):
+        step_mm = travel_state[0] * step_sign
+        if stepper_controller:
+            stepper_controller.move_z_relative(step_mm)
+        update_axis_lcds()
+
     uplus = get_widget('upluspushButton')
     if uplus:
-        uplus.clicked.connect(lambda checked=False: (stepper_controller.move_relative("U", travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        uplus.clicked.connect(lambda checked=False: on_jog_u(1.0))
 
     uminus = get_widget('uminuspushButton')
     if uminus:
-        uminus.clicked.connect(lambda checked=False: (stepper_controller.move_relative("U", -travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        uminus.clicked.connect(lambda checked=False: on_jog_u(-1.0))
 
     vplus = get_widget('vpluspushButton')
     if vplus:
-        vplus.clicked.connect(lambda checked=False: (stepper_controller.move_relative("V", travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        vplus.clicked.connect(lambda checked=False: on_jog_v(1.0))
 
     vminus = get_widget('vminuspushButton')
     if vminus:
         vminus.setText("-V (Platform DOWN)")
-        vminus.clicked.connect(lambda checked=False: (stepper_controller.move_relative("V", -travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        vminus.clicked.connect(lambda checked=False: on_jog_v(-1.0))
 
     zplus = get_widget('zpluspushButton')
     if zplus:
-        zplus.clicked.connect(lambda checked=False: (stepper_controller.move_z_relative(travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        zplus.clicked.connect(lambda checked=False: on_jog_z(1.0))
 
     zminus = get_widget('zminuspushButton')
     if zminus:
-        zminus.clicked.connect(lambda checked=False: (stepper_controller.move_z_relative(-travel_state[0]) if stepper_controller else None, update_axis_lcds()))
+        zminus.clicked.connect(lambda checked=False: on_jog_z(-1.0))
 
     recoater_sweep = get_widget('btnrecoaterSweep')
     if recoater_sweep:

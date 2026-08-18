@@ -52,9 +52,17 @@ class StepperController:
 
     def move_relative(self, axis, distance_mm, speed=10000, ignore_limits=True):
         """Generic relative move for hardware testing of axes like U, V."""
-        if not self.connection or not getattr(self.connection, 'is_initialized', False):
-            print("Cannot move axis, system not initialized.")
+        if abs(distance_mm) < 0.0001:
             return False
+            
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            ax = str(axis).upper()
+            if ax == 'U':
+                self.u_position += distance_mm
+            elif ax == 'V':
+                self.v_position += distance_mm
+            print(f"[SIMULATION MOVE] Axis {ax} moved by {distance_mm:+.3f} mm -> U: {self.u_position:.3f}, V: {self.v_position:.3f}")
+            return True
             
         if abs(distance_mm) < 0.001:
             return False
@@ -82,6 +90,17 @@ class StepperController:
     def move_z_relative(self, distance_mm, speed=10000, ignore_limits=False):
         """Moves the Z axis relative to the current position in mm.
         (Pulses are inverted so that positive distance moves UPWARD physically)"""
+        if not ignore_limits:
+            new_pos = self.z_position + distance_mm
+            if new_pos > 120.0:
+                distance_mm = 120.0 - self.z_position
+            elif new_pos < 0.0:
+                distance_mm = 0.0 - self.z_position
+
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            self.z_position += distance_mm
+            print(f"[SIMULATION MOVE] Z-Axis moved by {distance_mm:+.3f} mm -> New Z: {self.z_position:.3f} mm")
+            return True
         
         if not ignore_limits:
             new_pos = self.z_position + distance_mm
@@ -149,8 +168,9 @@ class StepperController:
         """
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
-            print("Cannot home axis, system not initialized.")
-            return False
+            print("[SIMULATION HOMING] Axis reset to 0.000 mm.")
+            self.z_position = 0.0
+            return True
             
         print("Starting Z-Axis Homing Sequence...")
         step_mm = 0.5  # Move 0.5mm at a time
@@ -191,8 +211,9 @@ class StepperController:
         """
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
-            print("Cannot home axis, system not initialized.")
-            return False
+            print("[SIMULATION HOMING] Axis reset to 0.000 mm.")
+            self.z_position = 0.0
+            return True
             
         print("Starting U-Axis Homing Sequence...")
         step_mm = 0.5
@@ -226,8 +247,9 @@ class StepperController:
         """
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
-            print("Cannot home axis, system not initialized.")
-            return False
+            print("[SIMULATION HOMING] Axis reset to 0.000 mm.")
+            self.z_position = 0.0
+            return True
             
         print("Starting V-Axis Homing Sequence...")
         step_mm = 0.5
