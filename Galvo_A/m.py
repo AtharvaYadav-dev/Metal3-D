@@ -403,7 +403,7 @@ def main():
     try:
         if StepperController:
             conn = getattr(galvo_controller, 'connection', None) if galvo_controller else None
-            stepper_controller = StepperController(conn)
+            stepper_controller = StepperController(conn, u_steps_per_mm=64.0, v_steps_per_mm=64.0, z_steps_per_mm=54.87)
         else:
             stepper_controller = None
     except Exception as err:
