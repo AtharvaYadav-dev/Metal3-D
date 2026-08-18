@@ -1,12 +1,25 @@
 from core.connection import BaseConnection
 
 class StepperController:
-    def __init__(self, connection: BaseConnection, steps_per_mm=1600.0): # 1600 pulses/rev assuming 1mm pitch for testing
+    def __init__(self, connection: BaseConnection, steps_per_mm=1600.0, z_steps_per_mm=296.296, u_steps_per_mm=320.0, v_steps_per_mm=320.0):
         self.connection = connection
         self.z_position = 0.0
         self.u_position = 0.0
         self.v_position = 0.0
         self.steps_per_mm = steps_per_mm
+        self.z_steps_per_mm = z_steps_per_mm
+        self.u_steps_per_mm = u_steps_per_mm
+        self.v_steps_per_mm = v_steps_per_mm
+
+    def get_axis_steps_per_mm(self, axis='Z'):
+        ax = str(axis).upper()
+        if ax == 'Z':
+            return self.z_steps_per_mm
+        elif ax == 'U':
+            return self.u_steps_per_mm
+        elif ax == 'V':
+            return self.v_steps_per_mm
+        return self.steps_per_mm
         self.next_ready_time = 0.0
         self.trigger_state = 0  # 0 = Triggered (Active-Low / Sinking NPN.NO)
 
@@ -16,7 +29,7 @@ class StepperController:
             return self.z_position
         
         pulses = self.connection.get_axis_position('Z')
-        return -pulses / self.steps_per_mm
+        return -pulses / self.z_steps_per_mm
 
     def move_axis(self, axis, position_mm, speed=10000):
         """
@@ -31,7 +44,7 @@ class StepperController:
             distance = position_mm - self.z_position
             return self.move_z_relative(distance, speed)
             
-        pulses = int(position_mm * self.steps_per_mm)
+        pulses = int(position_mm * self.get_axis_steps_per_mm(axis))
         print(f"Moving Axis {axis} to {position_mm} mm ({pulses} pulses) at speed {speed}")
         self.connection.axis_move(axis, pulses, speed)
         
@@ -52,7 +65,7 @@ class StepperController:
             print(f"{axis} Axis is busy moving. Waiting {wait_time:.2f}s...")
             time.sleep(wait_time)
             
-        pulses = int(distance_mm * self.steps_per_mm)
+        pulses = int(distance_mm * self.get_axis_steps_per_mm(axis))
         print(f"Moving Axis {axis} relative by {distance_mm:.3f} mm ({pulses} pulses) at speed {speed}")
         self.connection.axis_move(axis, pulses, speed, is_relative=True)
         
@@ -88,7 +101,7 @@ class StepperController:
             print(f"Z Axis is busy moving. Waiting {wait_time:.2f}s for previous move to finish...")
             time.sleep(wait_time)
 
-        pulses = int(-distance_mm * self.steps_per_mm)
+        pulses = int(-distance_mm * self.z_steps_per_mm)
         print(f"Moving Axis Z relative by {distance_mm:.3f} mm ({pulses} pulses) at speed {speed}")
         self.connection.axis_move('Z', pulses, speed, is_relative=True)
         
@@ -119,7 +132,7 @@ class StepperController:
             print(f"Z Axis is busy moving. Waiting {wait_time:.2f}s for previous move to finish...")
             time.sleep(wait_time)
             
-        pulses = int(-distance_mm * self.steps_per_mm)
+        pulses = int(-distance_mm * self.z_steps_per_mm)
         print(f"Moving Axis Z absolute to {position_mm:.3f} mm (distance: {distance_mm:.3f} mm, {pulses} pulses) at speed {speed}")
         self.connection.axis_move('Z', pulses, speed, is_relative=True)
         
