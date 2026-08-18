@@ -16,6 +16,7 @@ class CircularGauge(QWidget):
         self.value = val
         self.update()
         
+        
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
