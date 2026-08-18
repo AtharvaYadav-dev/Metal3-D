@@ -467,11 +467,18 @@ def main():
             btn = getattr(window, btn_name)
             btn.clicked.connect(lambda checked=False, v=val: set_travel(v))
 
-    # Helper to resolve widgets across QUiLoader hierarchy
+    # Robust helper to resolve widgets across QUiLoader hierarchy (case-insensitive & multi-alias)
     def get_widget(name):
         if hasattr(window, name):
             return getattr(window, name)
-        return window.findChild(QWidget, name)
+        w = window.findChild(QWidget, name)
+        if w:
+            return w
+        name_lower = str(name).lower()
+        for child in window.findChildren(QWidget):
+            if child.objectName().lower() == name_lower:
+                return child
+        return None
 
     # 2. Swap 3D OpenGL View Widget immediately
     gl_view = None
@@ -569,72 +576,86 @@ def main():
         chk_section.clicked.connect(lambda: on_slider_layer_changed(slider_layer.value() if slider_layer else 0))
 
 
-    # Update LCD Readouts
+    # Update LCD Readouts for all widget variations
     def update_axis_lcds():
         u_val = stepper_controller.u_position if stepper_controller else 0.0
         v_val = stepper_controller.v_position if stepper_controller else 0.0
         z_val = stepper_controller.z_position if stepper_controller else 0.0
 
-        for attr, val in [('uposlcddisplay', u_val), ('vposlcddisplay', v_val), ('zposlcddisplay', z_val)]:
-            widget = get_widget(attr)
-            if widget:
-                if isinstance(widget, QLabel):
-                    widget.setText(f"{val:+.3f} mm")
-                elif hasattr(widget, 'display'):
-                    widget.display(f"{val:.2f}")
+        u_widgets = ['uposlcddisplay', 'uposLCDNumber', 'lbl_dash_u', 'lbl_u_pos']
+        v_widgets = ['vposlcddisplay', 'vposLCDNumber', 'lbl_dash_v', 'lbl_v_pos']
+        z_widgets = ['zposlcddisplay', 'zposLCDNumber', 'lbl_dash_z', 'lbl_z_pos']
 
-        lbl_u = get_widget('lbl_dash_u')
-        if lbl_u and isinstance(lbl_u, QLabel): lbl_u.setText(f"Powder Bay (U): {u_val:+.3f} mm")
-        
-        lbl_v = get_widget('lbl_dash_v')
-        if lbl_v and isinstance(lbl_v, QLabel): lbl_v.setText(f"Build Plate (V): {v_val:+.3f} mm")
-        
-        lbl_z = get_widget('lbl_dash_z')
-        if lbl_z and isinstance(lbl_z, QLabel): lbl_z.setText(f"Recoater Blade (Z): {z_val:+.3f} mm")
+        for names, val, prefix in [(u_widgets, u_val, "Powder Bay (U)"), (v_widgets, v_val, "Build Plate (V)"), (z_widgets, z_val, "Recoater Blade (Z)")]:
+            for name in names:
+                widget = get_widget(name)
+                if widget:
+                    if isinstance(widget, QLabel):
+                        if 'dash' in name:
+                            widget.setText(f"{prefix}: {val:+.3f} mm")
+                        else:
+                            widget.setText(f"{val:+.3f} mm")
+                    elif hasattr(widget, 'display'):
+                        widget.display(f"{val:.2f}")
 
-    # Wire Motion Jog Buttons with explicit position updates and LCD refreshes
+    # Wire Motion Jog Buttons with multi-alias widget discovery and immediate LCD updates
     def on_jog_u(step_sign):
         step_mm = travel_state[0] * step_sign
+        print(f"[MOTION] U-Axis Jog {step_mm:+.3f} mm")
         if stepper_controller:
             stepper_controller.move_relative("U", step_mm)
         update_axis_lcds()
 
     def on_jog_v(step_sign):
         step_mm = travel_state[0] * step_sign
+        print(f"[MOTION] V-Axis Jog {step_mm:+.3f} mm")
         if stepper_controller:
             stepper_controller.move_relative("V", step_mm)
         update_axis_lcds()
 
     def on_jog_z(step_sign):
         step_mm = travel_state[0] * step_sign
+        print(f"[MOTION] Z-Axis Jog {step_mm:+.3f} mm")
         if stepper_controller:
             stepper_controller.move_z_relative(step_mm)
         update_axis_lcds()
 
-    uplus = get_widget('upluspushButton')
-    if uplus:
-        uplus.clicked.connect(lambda checked=False: on_jog_u(1.0))
+    # Bind U+ Aliases
+    for name in ['upluspushButton', 'uplusPushButton', 'uplus_btn', 'uplusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.clicked.connect(lambda checked=False: on_jog_u(1.0))
 
-    uminus = get_widget('uminuspushButton')
-    if uminus:
-        uminus.clicked.connect(lambda checked=False: on_jog_u(-1.0))
+    # Bind U- Aliases
+    for name in ['uminuspushButton', 'uminusPushButton', 'uminus_btn', 'uminusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.clicked.connect(lambda checked=False: on_jog_u(-1.0))
 
-    vplus = get_widget('vpluspushButton')
-    if vplus:
-        vplus.clicked.connect(lambda checked=False: on_jog_v(1.0))
+    # Bind V+ Aliases
+    for name in ['vpluspushButton', 'vplusPushButton', 'vplus_btn', 'vplusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.clicked.connect(lambda checked=False: on_jog_v(1.0))
 
-    vminus = get_widget('vminuspushButton')
-    if vminus:
-        vminus.setText("-V (Platform DOWN)")
-        vminus.clicked.connect(lambda checked=False: on_jog_v(-1.0))
+    # Bind V- Aliases
+    for name in ['vminuspushButton', 'vminusPushButton', 'vminus_btn', 'vminusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.setText("-V (Platform DOWN)")
+            btn.clicked.connect(lambda checked=False: on_jog_v(-1.0))
 
-    zplus = get_widget('zpluspushButton')
-    if zplus:
-        zplus.clicked.connect(lambda checked=False: on_jog_z(1.0))
+    # Bind Z+ Aliases
+    for name in ['zpluspushButton', 'zplusPushButton', 'zplus_btn', 'zplusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.clicked.connect(lambda checked=False: on_jog_z(1.0))
 
-    zminus = get_widget('zminuspushButton')
-    if zminus:
-        zminus.clicked.connect(lambda checked=False: on_jog_z(-1.0))
+    # Bind Z- Aliases
+    for name in ['zminuspushButton', 'zminusPushButton', 'zminus_btn', 'zminusgalvo']:
+        btn = get_widget(name)
+        if btn:
+            btn.clicked.connect(lambda checked=False: on_jog_z(-1.0))
 
     recoater_sweep = get_widget('btnrecoaterSweep')
     if recoater_sweep:
