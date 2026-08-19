@@ -87,13 +87,29 @@ class StepperController:
             
         return True
 
-    def move_z_relative(self, distance_mm, speed=10000, ignore_limits=True):
+    def move_z_relative(self, distance_mm, speed=10000, ignore_limits=False):
         """Moves the Z axis relative to the current position in mm.
         (Pulses are inverted so that positive distance moves UPWARD physically)"""
+        if not ignore_limits:
+            new_pos = self.z_position + distance_mm
+            if new_pos > 120.0:
+                distance_mm = 120.0 - self.z_position
+            elif new_pos < 0.0:
+                distance_mm = 0.0 - self.z_position
+
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             self.z_position += distance_mm
             print(f"[SIMULATION MOVE] Z-Axis moved by {distance_mm:+.3f} mm -> New Z: {self.z_position:.3f} mm")
             return True
+        
+        if not ignore_limits:
+            new_pos = self.z_position + distance_mm
+            if new_pos > 120.0:
+                print(f"Warning: Reached Z-Axis Max limit (120.0 mm). Truncating move.")
+                distance_mm = 120.0 - self.z_position
+            elif new_pos < 0.0:
+                print(f"Warning: Reached Z-Axis Min limit (0.0 mm). Truncating move.")
+                distance_mm = 0.0 - self.z_position
                 
         if abs(distance_mm) < 0.001:
             return False
@@ -115,8 +131,16 @@ class StepperController:
         self.z_position += distance_mm
         return True
 
-    def move_z_absolute(self, position_mm, speed=10000, ignore_limits=True):
+    def move_z_absolute(self, position_mm, speed=10000, ignore_limits=False):
         """Moves the Z axis to an absolute position in mm (like Marlin G90; G1 Z)."""
+        if not ignore_limits:
+            if position_mm > 120.0:
+                print(f"Warning: Requested position {position_mm} exceeds Max limit (120.0 mm). Clamping.")
+                position_mm = 120.0
+            elif position_mm < 0.0:
+                print(f"Warning: Requested position {position_mm} below Min limit (0.0 mm). Clamping.")
+                position_mm = 0.0
+                
         distance_mm = position_mm - self.z_position
         if abs(distance_mm) < 0.001:
             return False

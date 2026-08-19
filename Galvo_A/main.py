@@ -1816,13 +1816,23 @@ class MainWindow(QMainWindow):
             self.galvo_f_travel = val
         elif action == "fplusgalvo":
             travel = getattr(self, "galvo_f_travel", 10.0)
-            self.stepper_controller.move_z_relative(travel, ignore_limits=True)
+            if self.stepper_controller.z_position + travel > 120.0:
+                travel = 120.0 - self.stepper_controller.z_position
+                if travel <= 0.0:
+                    self.showAutoCloseMessage("Limit Reached", "Z-Axis max limit (120 mm) reached.")
+                    return
+            self.stepper_controller.move_z_relative(travel)
             self.ah.pos("Z", self.stepper_controller.z_position)
             self.jogPosDisplay()
             self.focusPosDisplay()
         elif action == "fminusgalvo":
             travel = getattr(self, "galvo_f_travel", 10.0)
-            self.stepper_controller.move_z_relative(-travel, ignore_limits=True)
+            if self.stepper_controller.z_position - travel < 0.0:
+                travel = self.stepper_controller.z_position
+                if travel <= 0.0:
+                    self.showAutoCloseMessage("Limit Reached", "Z-Axis min limit (0 mm) reached.")
+                    return
+            self.stepper_controller.move_z_relative(-travel)
             self.ah.pos("Z", self.stepper_controller.z_position)
             self.jogPosDisplay()
             self.focusPosDisplay()
