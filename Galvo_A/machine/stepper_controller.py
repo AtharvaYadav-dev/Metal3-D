@@ -188,6 +188,196 @@ class StepperController:
         pulses = int(-distance_mm * self.z_steps_per_mm)
         print(f"Moving Axis Z absolute to {position_mm:.3f} mm (distance: {distance_mm:.3f} mm, {pulses} pulses) at speed {speed}")
         self.connection.axis_move('Z', pulses, speed, is_relative=True)
+from core.connection import BaseConnection
+
+class StepperController:
+    AXIS_LIMITS = {
+        'Z': (0.0, 890.0),
+        'U': (0.0, 250.0),
+        'V': (0.0, 250.0)
+    }
+
+    def __init__(self, connection: BaseConnection, steps_per_mm=1600.0, z_steps_per_mm=1280.0, u_steps_per_mm=320.0, v_steps_per_mm=320.0):
+        self.connection = connection
+        self.z_position = 0.0
+        self.u_position = 0.0
+        self.v_position = 0.0
+        self.steps_per_mm = steps_per_mm
+        self.z_steps_per_mm = z_steps_per_mm
+        self.u_steps_per_mm = u_steps_per_mm
+        self.v_steps_per_mm = v_steps_per_mm
+        self.next_ready_time = 0.0
+        self.z_trigger_state = 0  # Z active-low microswitch
+        self.u_trigger_state = 1  # U active-high inductive sensor (LED ON -> 1)
+        self.v_trigger_state = 1  # V active-high inductive sensor (LED ON -> 1)
+
+    def get_axis_steps_per_mm(self, axis='Z'):
+        ax = str(axis).upper()
+        if ax == 'Z':
+            return self.z_steps_per_mm
+        elif ax == 'U':
+            return self.u_steps_per_mm
+        elif ax == 'V':
+            return self.v_steps_per_mm
+        return self.steps_per_mm
+
+    def is_sensor_triggered(self, axis):
+        """Returns True if the limit/home sensor is active/triggered for the given axis."""
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            return False
+        try:
+            status = self.connection.get_home_status(axis)
+            ax = str(axis).upper()
+            if ax == 'Z':
+                return status == self.z_trigger_state
+            elif ax == 'U':
+                return status == self.u_trigger_state
+            elif ax == 'V':
+                return status == self.v_trigger_state
+            return status == 1
+        except Exception:
+            return False
+
+    def get_physical_z(self):
+        """Reads the exact pulse counter from the hardware and converts it to mm."""
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            return self.z_position
+        
+        pulses = self.connection.get_axis_position('Z')
+        return -pulses / self.z_steps_per_mm
+
+    def move_axis(self, axis, position_mm, speed=10000):
+        """
+        Moves a stepper motor axis (e.g., Z-axis for focus, or XY table).
+        Position is given in millimeters.
+        """
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            print("Cannot move axis, system not initialized.")
+            return False
+            
+        if axis.upper() == 'Z':
+            distance = position_mm - self.z_position
+            return self.move_z_relative(distance, speed)
+            
+        pulses = int(position_mm * self.get_axis_steps_per_mm(axis))
+        print(f"Moving Axis {axis} to {position_mm} mm ({pulses} pulses) at speed {speed}")
+        self.connection.axis_move(axis, pulses, speed)
+        
+        return True
+
+    def move_relative(self, axis, distance_mm, speed=10000, ignore_limits=False, is_homing=False):
+        """Generic relative move with soft limits (0 to 250mm) and negative block at 0."""
+        if abs(distance_mm) < 0.0001:
+            return False
+
+        ax = str(axis).upper()
+        curr_pos = self.u_position if ax == 'U' else (self.v_position if ax == 'V' else self.z_position)
+        min_lim, max_lim = self.AXIS_LIMITS.get(ax, (0.0, 250.0))
+
+        if not ignore_limits:
+            if curr_pos <= min_lim and distance_mm < 0:
+                print(f"[LIMIT BLOCKED] {ax}-Axis is at {curr_pos:.3f} mm. Blocked negative movement.")
+                return False
+
+            new_pos = curr_pos + distance_mm
+            clamped_pos = max(min_lim, min(max_lim, new_pos))
+            distance_mm = clamped_pos - curr_pos
+
+            if abs(distance_mm) < 0.0001:
+                print(f"[LIMIT BLOCKED] {ax}-Axis reached boundary limit ({clamped_pos:.3f} mm).")
+                return False
+
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            if ax == 'U':
+                self.u_position += distance_mm
+            elif ax == 'V':
+                self.v_position += distance_mm
+            print(f"[SIMULATION MOVE] Axis {ax} moved by {distance_mm:+.3f} mm -> U: {self.u_position:.3f}, V: {self.v_position:.3f}")
+            return True
+
+        import time
+        if time.time() < self.next_ready_time:
+            wait_time = self.next_ready_time - time.time()
+            if not is_homing:
+                print(f"{axis} Axis is busy moving. Waiting {wait_time:.2f}s...")
+            time.sleep(wait_time)
+            
+        pulses = int(distance_mm * self.get_axis_steps_per_mm(axis))
+        print(f"Moving Axis {axis} relative by {distance_mm:.3f} mm ({pulses} pulses) at speed {speed}")
+        self.connection.axis_move(axis, pulses, speed, is_relative=True)
+        
+        # During homing, use exact physical pulse duration without extra delay for smooth continuous motion
+        travel_time = (abs(pulses) / float(speed)) if is_homing else ((abs(pulses) / float(speed)) + 0.2)
+        self.next_ready_time = time.time() + travel_time
+        
+        if ax == 'U':
+            self.u_position += distance_mm
+        elif ax == 'V':
+            self.v_position += distance_mm
+            
+        return True
+
+    def move_z_relative(self, distance_mm, speed=10000, ignore_limits=False, is_homing=False):
+        """Moves Z axis with soft limits (0 to 890mm) and negative block at 0."""
+        if abs(distance_mm) < 0.0001:
+            return False
+
+        curr_pos = self.z_position
+        min_lim, max_lim = 0.0, 890.0
+
+        if not ignore_limits:
+            if curr_pos <= min_lim and distance_mm < 0:
+                print(f"[LIMIT BLOCKED] Z-Axis is at {curr_pos:.3f} mm. Blocked negative movement.")
+                return False
+
+            new_pos = curr_pos + distance_mm
+            clamped_pos = max(min_lim, min(max_lim, new_pos))
+            distance_mm = clamped_pos - curr_pos
+
+            if abs(distance_mm) < 0.0001:
+                print(f"[LIMIT BLOCKED] Z-Axis reached boundary limit ({clamped_pos:.3f} mm).")
+                return False
+
+        if not self.connection or not getattr(self.connection, 'is_initialized', False):
+            self.z_position += distance_mm
+            print(f"[SIMULATION MOVE] Z-Axis moved by {distance_mm:+.3f} mm -> New Z: {self.z_position:.3f} mm")
+            return True
+            
+        import time
+        if time.time() < self.next_ready_time:
+            wait_time = self.next_ready_time - time.time()
+            if not is_homing:
+                print(f"Z Axis is busy moving. Waiting {wait_time:.2f}s for previous move to finish...")
+            time.sleep(wait_time)
+
+        pulses = int(-distance_mm * self.z_steps_per_mm)
+        print(f"Moving Axis Z relative by {distance_mm:.3f} mm ({pulses} pulses) at speed {speed}")
+        self.connection.axis_move('Z', pulses, speed, is_relative=True)
+        
+        travel_time = (abs(pulses) / float(speed)) if is_homing else ((abs(pulses) / float(speed)) + 0.2)
+        self.next_ready_time = time.time() + travel_time
+        
+        self.z_position += distance_mm
+        return True
+
+    def move_z_absolute(self, position_mm, speed=10000, ignore_limits=False):
+        """Moves Z axis to absolute position clamped between 0 and 890mm."""
+        if not ignore_limits:
+            position_mm = max(0.0, min(890.0, position_mm))
+
+        distance_mm = position_mm - self.z_position
+        if abs(distance_mm) < 0.001:
+            return False
+            
+        import time
+        if time.time() < self.next_ready_time:
+            wait_time = self.next_ready_time - time.time()
+            print(f"Z Axis is busy moving. Waiting {wait_time:.2f}s for previous move to finish...")
+            time.sleep(wait_time)
+            
+        pulses = int(-distance_mm * self.z_steps_per_mm)
+        print(f"Moving Axis Z absolute to {position_mm:.3f} mm (distance: {distance_mm:.3f} mm, {pulses} pulses) at speed {speed}")
+        self.connection.axis_move('Z', pulses, speed, is_relative=True)
         
         travel_time = (abs(pulses) / float(speed)) + 0.2
         self.next_ready_time = time.time() + travel_time
@@ -205,9 +395,13 @@ class StepperController:
             
         print("Starting Z-Axis Smooth Homing Sequence...")
         if self.is_sensor_triggered('Z'):
-            print("Z Limit Switch already triggered at start. Backing off smoothly...")
-            self.move_z_relative(2.0, speed=4000, ignore_limits=True, is_homing=True)
-            time.sleep(0.3)
+            print("Z Limit Switch triggered at start. Backing off until released...")
+            for _ in range(15):
+                self.move_z_relative(2.0, speed=4000, ignore_limits=True, is_homing=True)
+                time.sleep(0.1)
+                if not self.is_sensor_triggered('Z'):
+                    print("Z Limit Switch released.")
+                    break
 
         speed = int(4.0 * self.z_steps_per_mm)
         max_dist_mm = 900.0
@@ -251,9 +445,13 @@ class StepperController:
             
         print("Starting U-Axis Smooth Homing Sequence...")
         if self.is_sensor_triggered('U'):
-            print("U Inductive Sensor Light ON! Backing off smoothly...")
-            self.move_relative('U', 2.0, speed=2000, ignore_limits=True, is_homing=True)
-            time.sleep(0.3)
+            print("U Inductive Sensor Light ON at start! Backing off until released...")
+            for _ in range(15):
+                self.move_relative('U', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+                time.sleep(0.1)
+                if not self.is_sensor_triggered('U'):
+                    print("U Inductive Sensor released.")
+                    break
 
         speed = int(4.0 * self.u_steps_per_mm)
         max_dist_mm = 260.0
@@ -297,9 +495,13 @@ class StepperController:
             
         print("Starting V-Axis Smooth Homing Sequence...")
         if self.is_sensor_triggered('V'):
-            print("V Inductive Sensor Light ON! Backing off smoothly...")
-            self.move_relative('V', 2.0, speed=2000, ignore_limits=True, is_homing=True)
-            time.sleep(0.3)
+            print("V Inductive Sensor Light ON at start! Backing off until released...")
+            for _ in range(15):
+                self.move_relative('V', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+                time.sleep(0.1)
+                if not self.is_sensor_triggered('V'):
+                    print("V Inductive Sensor released.")
+                    break
 
         speed = int(4.0 * self.v_steps_per_mm)
         max_dist_mm = 260.0
