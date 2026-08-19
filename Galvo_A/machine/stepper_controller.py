@@ -394,15 +394,7 @@ class StepperController:
             return True
             
         print("Starting Z-Axis Smooth Homing Sequence...")
-        if self.is_sensor_triggered('Z'):
-            print("Z Limit Switch triggered at start. Backing off until released...")
-            for _ in range(15):
-                self.move_z_relative(2.0, speed=4000, ignore_limits=True, is_homing=True)
-                time.sleep(0.1)
-                if not self.is_sensor_triggered('Z'):
-                    print("Z Limit Switch released.")
-                    break
-
+        initial_status = self.connection.get_home_status('Z')
         speed = int(4.0 * self.z_steps_per_mm)
         max_dist_mm = 900.0
         
@@ -415,8 +407,9 @@ class StepperController:
         max_duration = (max_dist_mm / 4.0) + 2.0
 
         while (time.time() - start_time) < max_duration:
-            if self.is_sensor_triggered('Z'):
-                print("Z Limit Switch Triggered! Stopping smooth motion.")
+            curr_status = self.connection.get_home_status('Z')
+            if curr_status != initial_status or curr_status != 0:
+                print(f"Z Limit Switch State Changed ({initial_status} -> {curr_status})! Stopping smooth motion.")
                 if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('Z', 0, speed, is_relative=True)
                 time.sleep(0.1)
@@ -444,15 +437,7 @@ class StepperController:
             return True
             
         print("Starting U-Axis Smooth Homing Sequence...")
-        if self.is_sensor_triggered('U'):
-            print("U Inductive Sensor Light ON at start! Backing off until released...")
-            for _ in range(15):
-                self.move_relative('U', 2.0, speed=2000, ignore_limits=True, is_homing=True)
-                time.sleep(0.1)
-                if not self.is_sensor_triggered('U'):
-                    print("U Inductive Sensor released.")
-                    break
-
+        initial_status = self.connection.get_home_status('U')
         speed = int(4.0 * self.u_steps_per_mm)
         max_dist_mm = 260.0
         
@@ -465,8 +450,9 @@ class StepperController:
         max_duration = (max_dist_mm / 4.0) + 2.0
 
         while (time.time() - start_time) < max_duration:
-            if self.is_sensor_triggered('U'):
-                print("U Inductive Sensor Light ON! Limit Switch Triggered. Stopping motion.")
+            curr_status = self.connection.get_home_status('U')
+            if curr_status != initial_status or curr_status != 0:
+                print(f"U Inductive Sensor State Changed ({initial_status} -> {curr_status})! Limit Switch Triggered. Stopping motion.")
                 if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('U', 0, speed, is_relative=True)
                 time.sleep(0.1)
@@ -494,15 +480,7 @@ class StepperController:
             return True
             
         print("Starting V-Axis Smooth Homing Sequence...")
-        if self.is_sensor_triggered('V'):
-            print("V Inductive Sensor Light ON at start! Backing off until released...")
-            for _ in range(15):
-                self.move_relative('V', 2.0, speed=2000, ignore_limits=True, is_homing=True)
-                time.sleep(0.1)
-                if not self.is_sensor_triggered('V'):
-                    print("V Inductive Sensor released.")
-                    break
-
+        initial_status = self.connection.get_home_status('V')
         speed = int(4.0 * self.v_steps_per_mm)
         max_dist_mm = 260.0
         
@@ -515,9 +493,10 @@ class StepperController:
         max_duration = (max_dist_mm / 4.0) + 2.0
 
         while (time.time() - start_time) < max_duration:
-            if self.is_sensor_triggered('V'):
-                print("V Inductive Sensor Light ON! Limit Switch Triggered. Stopping motion.")
-                if hasattr(self.connection, 'axis_stop'):
+            curr_status = self.connection.get_home_status('V')
+            if curr_status != initial_status or curr_status != 0:
+                print(f"V Inductive Sensor State Changed ({initial_status} -> {curr_status})! Limit Switch Triggered. Stopping motion.")
+                if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('V', 0, speed, is_relative=True)
                 time.sleep(0.1)
                 self.move_relative('V', 2.0, speed=speed, ignore_limits=True, is_homing=True)
