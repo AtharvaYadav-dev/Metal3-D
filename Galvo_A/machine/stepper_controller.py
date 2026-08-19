@@ -394,6 +394,11 @@ class StepperController:
             return True
             
         print("Starting Z-Axis Safe Homing Sequence...")
+        if self.is_sensor_triggered('Z'):
+            print("Z Limit Switch already triggered at start. Backing off 2mm...")
+            self.move_z_relative(2.0, speed=4000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
+
         initial_status = self.connection.get_home_status('Z')
         speed = int(4.0 * self.z_steps_per_mm)
         step_mm = 0.5
@@ -402,8 +407,8 @@ class StepperController:
 
         for _ in range(steps):
             curr_status = self.connection.get_home_status('Z')
-            if curr_status != initial_status or (initial_status == 0 and curr_status != 0) or (initial_status == 1 and curr_status == 0):
-                print(f"Z Limit Switch Triggered! Status changed ({initial_status} -> {curr_status}). Stopping motion.")
+            if self.is_sensor_triggered('Z') or curr_status != initial_status:
+                print(f"Z Limit Switch Triggered! Light ON (Status: {curr_status}). Stopping motion.")
                 self.move_z_relative(2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.z_position = 0.0
@@ -429,6 +434,11 @@ class StepperController:
             return True
             
         print("Starting U-Axis Safe Homing Sequence...")
+        if self.is_sensor_triggered('U'):
+            print("U Inductive Sensor Light ON at start! Backing off 2mm...")
+            self.move_relative('U', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
+
         initial_status = self.connection.get_home_status('U')
         speed = int(4.0 * self.u_steps_per_mm)
         step_mm = 0.5
@@ -437,7 +447,7 @@ class StepperController:
 
         for _ in range(steps):
             curr_status = self.connection.get_home_status('U')
-            if curr_status != initial_status or (initial_status == 0 and curr_status != 0) or (initial_status == 1 and curr_status == 0):
+            if self.is_sensor_triggered('U') or curr_status != initial_status:
                 print(f"U Inductive Sensor Light ON! Status changed ({initial_status} -> {curr_status}). Stopping motion.")
                 self.move_relative('U', 2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
@@ -464,6 +474,11 @@ class StepperController:
             return True
             
         print("Starting V-Axis Safe Homing Sequence...")
+        if self.is_sensor_triggered('V'):
+            print("V Inductive Sensor Light ON at start! Backing off 2mm...")
+            self.move_relative('V', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
+
         initial_status = self.connection.get_home_status('V')
         speed = int(4.0 * self.v_steps_per_mm)
         step_mm = 0.5
@@ -472,7 +487,7 @@ class StepperController:
 
         for _ in range(steps):
             curr_status = self.connection.get_home_status('V')
-            if curr_status != initial_status or (initial_status == 0 and curr_status != 0) or (initial_status == 1 and curr_status == 0):
+            if self.v_position <= 0 and (self.is_sensor_triggered('V') or curr_status != initial_status):
                 print(f"V Inductive Sensor Light ON! Status changed ({initial_status} -> {curr_status}). Stopping motion.")
                 self.move_relative('V', 2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
