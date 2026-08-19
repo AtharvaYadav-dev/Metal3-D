@@ -436,6 +436,15 @@ def main():
             if btn_clear:
                 btn_clear.clicked.connect(text_edit.clear)
 
+                # Inject SENSOR DEBUGGER Button into UI console header
+                parent_layout = btn_clear.parentWidget().layout() if btn_clear.parentWidget() else None
+                if parent_layout:
+                    btn_sensor_debug = QPushButton("🔍 SENSOR DEBUGGER")
+                    btn_sensor_debug.setToolTip("Click to query live state of Z, U, V, X, Y inductive proximity sensors")
+                    btn_sensor_debug.setStyleSheet("background-color: #1e3a8a; color: #93c5fd; font-weight: bold; border: 1px solid #3b82f6; padding: 4px 10px;")
+                    btn_sensor_debug.clicked.connect(lambda checked=False: check_sensors_action())
+                    parent_layout.addWidget(btn_sensor_debug)
+
     # Wire Navigation Buttons
     nav_map = {
         'btnDashboard': 0,
@@ -698,6 +707,44 @@ def main():
     connect_unique_buttons(['btnhomeZ', 'zhomepushButton', 'zhomepushButton_g', 'btnrecoaterHome', 'btnrecoaterSweep'], lambda checked=False: home_z_action())
     connect_unique_buttons(['allhomepushButton', 'homePushButton'], lambda checked=False: home_all_steppers_action())
     connect_unique_buttons(['galvohomepushButton', 'galvozhomePushButton', 'galvoallhomePushButton'], lambda checked=False: home_galvo_action())
+
+    # Sensor Status Debugger Action Handler
+    def check_sensors_action():
+        print("\n" + "="*52)
+        print("🔍 INDUCTIVE PROXIMITY HOMING SENSOR DEBUGGER REPORT")
+        print("="*52)
+        conn = getattr(galvo_controller, 'connection', None) if galvo_controller else None
+        if not conn:
+            print("[Sensor Debugger] Hardware connection offline (Simulation Mode).")
+            print("  Z-Axis (Z_org Recoater Blade) : [SIMULATED OPEN]")
+            print("  U-Axis (U_org Powder Bay)     : [SIMULATED OPEN]")
+            print("  V-Axis (V_org Build Plate)    : [SIMULATED OPEN]")
+            print("  X-Axis (X_org Galvo Scanner X): [SIMULATED OPEN]")
+            print("  Y-Axis (Y_org Galvo Scanner Y): [SIMULATED OPEN]")
+        else:
+            trigger_val = getattr(stepper_controller, 'trigger_state', 0) if stepper_controller else 0
+            axes = [
+                ('Z', 'Z-Axis (Recoater Blade Z_org)'),
+                ('U', 'U-Axis (Powder Bay U_org)   '),
+                ('V', 'V-Axis (Build Plate V_org)  '),
+                ('X', 'X-Axis (Galvo Scanner X_org)'),
+                ('Y', 'Y-Axis (Galvo Scanner Y_org)')
+            ]
+            for ax_code, ax_name in axes:
+                try:
+                    val = conn.get_home_status(ax_code)
+                    is_triggered = (val == trigger_val)
+                    status_text = "🚨 TRIGGERED (CLOSED / SENSING)" if is_triggered else "🟢 CLEAR (OPEN / OFF)"
+                    print(f"  {ax_name} : {status_text}  [Raw Value: {val}]")
+                except Exception as err:
+                    print(f"  {ax_name} : Error reading sensor -> {err}")
+        print("="*52 + "\n")
+
+    # Wire Inductive Sensor Debugger Buttons across UI
+    connect_unique_buttons([
+        'btn_check_sensors', 'btnCheckSensors', 'btn_sensor_debug',
+        'btnSensorDebug', 'btn_debug_sensors', 'sensor_debug_btn', 'inspectionPushButton'
+    ], lambda checked=False: check_sensors_action())
 
     # Populate initial axis readouts on startup
     update_axis_lcds()
