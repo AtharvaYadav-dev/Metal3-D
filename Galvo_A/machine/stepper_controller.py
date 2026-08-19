@@ -408,7 +408,7 @@ class StepperController:
 
         while (time.time() - start_time) < max_duration:
             curr_status = self.connection.get_home_status('Z')
-            if curr_status != initial_status or curr_status != 0:
+            if curr_status != initial_status:
                 print(f"Z Limit Switch State Changed ({initial_status} -> {curr_status})! Stopping smooth motion.")
                 if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('Z', 0, speed, is_relative=True)
@@ -441,8 +441,8 @@ class StepperController:
         speed = int(4.0 * self.u_steps_per_mm)
         max_dist_mm = 260.0
         
-        # Issue ONE single continuous move towards home switch (-260mm relative)
-        pulses = int(-max_dist_mm * self.u_steps_per_mm)
+        # Issue ONE single continuous move towards home switch (+260mm relative towards home)
+        pulses = int(max_dist_mm * self.u_steps_per_mm)
         if self.connection and hasattr(self.connection, 'axis_move'):
             self.connection.axis_move('U', pulses, speed, is_relative=True)
 
@@ -451,12 +451,12 @@ class StepperController:
 
         while (time.time() - start_time) < max_duration:
             curr_status = self.connection.get_home_status('U')
-            if curr_status != initial_status or curr_status != 0:
+            if curr_status != initial_status:
                 print(f"U Inductive Sensor State Changed ({initial_status} -> {curr_status})! Limit Switch Triggered. Stopping motion.")
                 if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('U', 0, speed, is_relative=True)
                 time.sleep(0.1)
-                self.move_relative('U', 2.0, speed=speed, ignore_limits=True, is_homing=True)
+                self.move_relative('U', -2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.u_position = 0.0
                 if hasattr(self.connection, 'set_axis_position'):
@@ -484,8 +484,8 @@ class StepperController:
         speed = int(4.0 * self.v_steps_per_mm)
         max_dist_mm = 260.0
         
-        # Issue ONE single continuous move towards home switch (-260mm relative)
-        pulses = int(-max_dist_mm * self.v_steps_per_mm)
+        # Issue ONE single continuous move towards home switch (+260mm relative towards home)
+        pulses = int(max_dist_mm * self.v_steps_per_mm)
         if self.connection and hasattr(self.connection, 'axis_move'):
             self.connection.axis_move('V', pulses, speed, is_relative=True)
 
@@ -494,12 +494,12 @@ class StepperController:
 
         while (time.time() - start_time) < max_duration:
             curr_status = self.connection.get_home_status('V')
-            if curr_status != initial_status or curr_status != 0:
+            if curr_status != initial_status:
                 print(f"V Inductive Sensor State Changed ({initial_status} -> {curr_status})! Limit Switch Triggered. Stopping motion.")
                 if hasattr(self.connection, 'axis_move'):
                     self.connection.axis_move('V', 0, speed, is_relative=True)
                 time.sleep(0.1)
-                self.move_relative('V', 2.0, speed=speed, ignore_limits=True, is_homing=True)
+                self.move_relative('V', -2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.v_position = 0.0
                 if hasattr(self.connection, 'set_axis_position'):
