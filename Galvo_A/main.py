@@ -1816,13 +1816,13 @@ class MainWindow(QMainWindow):
             self.galvo_f_travel = val
         elif action == "fplusgalvo":
             travel = getattr(self, "galvo_f_travel", 10.0)
-            self.stepper_controller.move_z_relative(travel, ignore_limits=False)
+            self.stepper_controller.move_z_relative(travel, ignore_limits=True)
             self.ah.pos("Z", self.stepper_controller.z_position)
             self.jogPosDisplay()
             self.focusPosDisplay()
         elif action == "fminusgalvo":
             travel = getattr(self, "galvo_f_travel", 10.0)
-            self.stepper_controller.move_z_relative(-travel, ignore_limits=False)
+            self.stepper_controller.move_z_relative(-travel, ignore_limits=True)
             self.ah.pos("Z", self.stepper_controller.z_position)
             self.jogPosDisplay()
             self.focusPosDisplay()
