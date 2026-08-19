@@ -126,7 +126,7 @@ class Print3DThread(QThread):
             min_z = self.mesh.bounds[0][2]
             max_z = self.mesh.bounds[1][2]
             height = max_z - min_z
-            self.total_layers = max(1, int(math.ceil(height / self.alayer_thickness)))
+            self.total_layers = max(1, int(math.ceil(height / self.layer_thickness)))
         else:
             self.total_layers = max(1, total_layers)
 
@@ -182,7 +182,7 @@ class Print3DThread(QThread):
             v_move = -self.layer_thickness
             self.progress_signal.emit(
                 layer, self.total_layers,
-                f"[BUILD PLATE V] Lowering Build Platform: DOWN {Ebs(v_move):.3f} mm",
+                f"[BUILD PLATE V] Lowering Build Platform: DOWN {abs(v_move):.3f} mm",
                 telemetry
             )
             if self.stepper:
@@ -235,7 +235,7 @@ class Print3DThread(QThread):
                         continue
                     pt = poly[0]
                     gx, gy = self.config.apply_transform(pt[0], pt[1])
-                    layer_planner.add_jump(ox, gy, speed=2000000)
+                    layer_planner.add_jump(gx, gy, speed=2000000)
                     for pt in poly[1:]:
                         gx, gy = self.config.apply_transform(pt[0], pt[1])
                         layer_planner.add_mark(gx, gy, speed=1000000)
@@ -403,7 +403,7 @@ def main():
     try:
         if StepperController:
             conn = getattr(galvo_controller, 'connection', None) if galvo_controller else None
-            stepper_controller = StepperController(conn, u_steps_per_mm=1600.0, v_steps_per_mm=1600.0, z_steps_per_mm=1280.0)
+            stepper_controller = StepperController(conn, u_steps_per_mm=1600.0, v_steps_per_mm=320.0, z_steps_per_mm=1280.0)
         else:
             stepper_controller = None
     except Exception as err:
