@@ -8,8 +8,8 @@ Loads 'metal_dashboard.ui' dynamically via QUiLoader.
 All layout definitions and CSS styling come directly from metal_dashboard.ui!
 
 Axes Configuration:
-- Powder Bay (U-Axis): Feeder / Dosing Bed (+U moves supply powder UP)
-- Build Plate (V-Axis): Build Platform (-V moves build plate DOWN for layer)
+- Build Plate (U-Axis): Build Platform (-U moves build plate DOWN for layer)
+- Powder Bay (V-Axis): Feeder / Dosing Bed (+V moves supply powder UP)
 - Recoater Blade (Z-Axis): Powder Layering Sweeper (Sweeps +Z/-Z across build bed)
 """
 
@@ -169,20 +169,20 @@ class Print3DThread(QThread):
                 telemetry
             )
 
-            u_move = self.layer_thickness * 1.5
+            u_move = -self.layer_thickness
             self.progress_signal.emit(
                 layer, self.total_layers,
-                f"[POWDER BAY U] Supplying Powder: UP +{u_move:.3f} mm",
+                f"[BUILD PLATE U] Lowering Build Platform: DOWN {abs(u_move):.3f} mm",
                 telemetry
             )
             if self.stepper:
                 self.stepper.move_relative("U", u_move)
             time.sleep(0.3)
 
-            v_move = -self.layer_thickness
+            v_move = self.layer_thickness * 1.5
             self.progress_signal.emit(
                 layer, self.total_layers,
-                f"[BUILD PLATE V] Lowering Build Platform: DOWN {abs(v_move):.3f} mm",
+                f"[POWDER BAY V] Supplying Powder: UP +{v_move:.3f} mm",
                 telemetry
             )
             if self.stepper:
@@ -598,7 +598,7 @@ def main():
         v_widgets = ['vposlcddisplay', 'vposLCDNumber', 'lbl_dash_v', 'lbl_v_pos']
         z_widgets = ['zposlcddisplay', 'zposLCDNumber', 'lbl_dash_z', 'lbl_z_pos']
 
-        for names, val, prefix in [(u_widgets, u_val, "Powder Bay (U)"), (v_widgets, v_val, "Build Plate (V)"), (z_widgets, z_val, "Recoater Blade (Z)")]:
+        for names, val, prefix in [(u_widgets, u_val, "Build Plate (U)"), (v_widgets, v_val, "Powder Bay (V)"), (z_widgets, z_val, "Recoater Blade (Z)")]:
             for name in names:
                 widget = get_widget(name)
                 if widget:
@@ -648,9 +648,9 @@ def main():
 
     # Bind U+, U-, V+, V-, Z+, Z- Aliases cleanly without duplicates
     connect_unique_buttons(['upluspushButton', 'uplusPushButton', 'uplus_btn', 'uplusgalvo'], lambda checked=False: on_jog_u(1.0))
-    connect_unique_buttons(['uminuspushButton', 'uminusPushButton', 'uminus_btn', 'uminusgalvo'], lambda checked=False: on_jog_u(-1.0))
-    connect_unique_buttons(['vpluspushButton', 'vplusPushButton', 'vplus_btn', 'vplusgalvo'], lambda checked=False: on_jog_v(1.0))
-    connect_unique_buttons(['vminuspushButton', 'vminusPushButton', 'vminus_btn', 'vminusgalvo'], lambda checked=False: on_jog_v(-1.0), text_override="-V (Platform DOWN)")
+    connect_unique_buttons(['uminuspushButton', 'uminusPushButton', 'uminus_btn', 'uminusgalvo'], lambda checked=False: on_jog_u(-1.0), text_override="-U (Platform DOWN)")
+    connect_unique_buttons(['vpluspushButton', 'vplusPushButton', 'vplus_btn', 'vplusgalvo'], lambda checked=False: on_jog_v(1.0), text_override="+V (Supply Powder UP)")
+    connect_unique_buttons(['vminuspushButton', 'vminusPushButton', 'vminus_btn', 'vminusgalvo'], lambda checked=False: on_jog_v(-1.0))
     connect_unique_buttons(['zpluspushButton', 'zplusPushButton', 'zplus_btn', 'zplusgalvo'], lambda checked=False: on_jog_z(1.0))
     connect_unique_buttons(['zminuspushButton', 'zminusPushButton', 'zminus_btn', 'zminusgalvo'], lambda checked=False: on_jog_z(-1.0))
 
@@ -660,7 +660,7 @@ def main():
 
     # Homing Action Callbacks
     def home_u_action():
-        print("\n[Homing] Initiating Powder Bay (U-Axis) Homing...")
+        print("\n[Homing] Initiating Build Plate (U-Axis) Homing...")
         if stepper_controller:
             stepper_controller.home_u(app_instance=QApplication.instance())
         else:
@@ -668,7 +668,7 @@ def main():
         update_axis_lcds()
 
     def home_v_action():
-        print("\n[Homing] Initiating Build Plate (V-Axis) Homing...")
+        print("\n[Homing] Initiating Powder Bay (V-Axis) Homing...")
         if stepper_controller:
             stepper_controller.home_v(app_instance=QApplication.instance())
         else:
@@ -717,16 +717,16 @@ def main():
         if not conn:
             print("[Sensor Debugger] Hardware connection offline (Simulation Mode).")
             print("  Z-Axis (Z_org Recoater Blade) : [SIMULATED OPEN]")
-            print("  U-Axis (U_org Powder Bay)     : [SIMULATED OPEN]")
-            print("  V-Axis (V_org Build Plate)    : [SIMULATED OPEN]")
+            print("  U-Axis (U_org Build Plate)    : [SIMULATED OPEN]")
+            print("  V-Axis (V_org Powder Bay)     : [SIMULATED OPEN]")
             print("  X-Axis (X_org Galvo Scanner X): [SIMULATED OPEN]")
             print("  Y-Axis (Y_org Galvo Scanner Y): [SIMULATED OPEN]")
         else:
             trigger_val = getattr(stepper_controller, 'trigger_state', 0) if stepper_controller else 0
             axes = [
                 ('Z', 'Z-Axis (Recoater Blade Z_org)'),
-                ('U', 'U-Axis (Powder Bay U_org)   '),
-                ('V', 'V-Axis (Build Plate V_org)  '),
+                ('U', 'U-Axis (Build Plate U_org)  '),
+                ('V', 'V-Axis (Powder Bay V_org)   '),
                 ('X', 'X-Axis (Galvo Scanner X_org)'),
                 ('Y', 'Y-Axis (Galvo Scanner Y_org)')
             ]
