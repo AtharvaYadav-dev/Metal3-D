@@ -196,22 +196,36 @@ class StepperController:
         return True
         
     def home_z(self, app_instance=None):
-        """Safe & Smooth Homing Sequence for Z-Axis (890 mm max travel)."""
+        """Safe & Smooth Continuous Homing Sequence for Z-Axis (890 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] Z-Axis reset to 0.000 mm.")
             self.z_position = 0.0
             return True
             
-        print("Starting Z-Axis Safe Homing Sequence...")
-        speed = int(4.0 * self.z_steps_per_mm)
-        step_mm = 1.0
-        max_dist_mm = 900.0
-        steps = int(max_dist_mm / step_mm)
+        print("Starting Z-Axis Smooth Homing Sequence...")
+        if self.is_sensor_triggered('Z'):
+            print("Z Limit Switch already triggered at start. Backing off smoothly...")
+            self.move_z_relative(2.0, speed=4000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
 
-        for _ in range(steps):
+        speed = int(4.0 * self.z_steps_per_mm)
+        max_dist_mm = 900.0
+        
+        # Issue ONE single continuous move towards home switch
+        pulses = int(max_dist_mm * self.z_steps_per_mm)
+        if self.connection and hasattr(self.connection, 'axis_move'):
+            self.connection.axis_move('Z', pulses, speed, is_relative=True)
+
+        start_time = time.time()
+        max_duration = (max_dist_mm / 4.0) + 2.0
+
+        while (time.time() - start_time) < max_duration:
             if self.is_sensor_triggered('Z'):
-                print("Z Limit Switch Triggered! Backing off smoothly...")
+                print("Z Limit Switch Triggered! Stopping smooth motion.")
+                if hasattr(self.connection, 'axis_move'):
+                    self.connection.axis_move('Z', 0, speed, is_relative=True)
+                time.sleep(0.1)
                 self.move_z_relative(2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.z_position = 0.0
@@ -219,7 +233,7 @@ class StepperController:
                     self.connection.set_axis_position('Z', 0)
                 return True
 
-            self.move_z_relative(-step_mm, speed=speed, ignore_limits=True, is_homing=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
 
@@ -228,22 +242,36 @@ class StepperController:
         return False
 
     def home_u(self, app_instance=None):
-        """Safe & Smooth Homing Sequence for U-Axis (Powder Bay, 250 mm max travel)."""
+        """Safe & Smooth Continuous Homing Sequence for U-Axis (Powder Bay, 250 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] U-Axis reset to 0.000 mm.")
             self.u_position = 0.0
             return True
             
-        print("Starting U-Axis Safe Homing Sequence...")
-        speed = int(4.0 * self.u_steps_per_mm)
-        step_mm = 1.0
-        max_dist_mm = 260.0
-        steps = int(max_dist_mm / step_mm)
+        print("Starting U-Axis Smooth Homing Sequence...")
+        if self.is_sensor_triggered('U'):
+            print("U Inductive Sensor Light ON! Backing off smoothly...")
+            self.move_relative('U', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
 
-        for _ in range(steps):
+        speed = int(4.0 * self.u_steps_per_mm)
+        max_dist_mm = 260.0
+        
+        # Issue ONE single continuous move towards home switch (-260mm relative)
+        pulses = int(-max_dist_mm * self.u_steps_per_mm)
+        if self.connection and hasattr(self.connection, 'axis_move'):
+            self.connection.axis_move('U', pulses, speed, is_relative=True)
+
+        start_time = time.time()
+        max_duration = (max_dist_mm / 4.0) + 2.0
+
+        while (time.time() - start_time) < max_duration:
             if self.is_sensor_triggered('U'):
-                print("U Inductive Sensor Light ON! Limit Switch Triggered. Backing off smoothly...")
+                print("U Inductive Sensor Light ON! Limit Switch Triggered. Stopping motion.")
+                if hasattr(self.connection, 'axis_move'):
+                    self.connection.axis_move('U', 0, speed, is_relative=True)
+                time.sleep(0.1)
                 self.move_relative('U', 2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.u_position = 0.0
@@ -251,7 +279,7 @@ class StepperController:
                     self.connection.set_axis_position('U', 0)
                 return True
 
-            self.move_relative('U', -step_mm, speed=speed, ignore_limits=True, is_homing=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
 
@@ -260,22 +288,36 @@ class StepperController:
         return False
 
     def home_v(self, app_instance=None):
-        """Safe & Smooth Homing Sequence for V-Axis (Build Plate, 250 mm max travel)."""
+        """Safe & Smooth Continuous Homing Sequence for V-Axis (Build Plate, 250 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] V-Axis reset to 0.000 mm.")
             self.v_position = 0.0
             return True
             
-        print("Starting V-Axis Safe Homing Sequence...")
-        speed = int(4.0 * self.v_steps_per_mm)
-        step_mm = 1.0
-        max_dist_mm = 260.0
-        steps = int(max_dist_mm / step_mm)
+        print("Starting V-Axis Smooth Homing Sequence...")
+        if self.is_sensor_triggered('V'):
+            print("V Inductive Sensor Light ON! Backing off smoothly...")
+            self.move_relative('V', 2.0, speed=2000, ignore_limits=True, is_homing=True)
+            time.sleep(0.3)
 
-        for _ in range(steps):
+        speed = int(4.0 * self.v_steps_per_mm)
+        max_dist_mm = 260.0
+        
+        # Issue ONE single continuous move towards home switch (-260mm relative)
+        pulses = int(-max_dist_mm * self.v_steps_per_mm)
+        if self.connection and hasattr(self.connection, 'axis_move'):
+            self.connection.axis_move('V', pulses, speed, is_relative=True)
+
+        start_time = time.time()
+        max_duration = (max_dist_mm / 4.0) + 2.0
+
+        while (time.time() - start_time) < max_duration:
             if self.is_sensor_triggered('V'):
-                print("V Inductive Sensor Light ON! Limit Switch Triggered. Backing off smoothly...")
+                print("V Inductive Sensor Light ON! Limit Switch Triggered. Stopping motion.")
+                if hasattr(self.connection, 'axis_stop'):
+                    self.connection.axis_move('V', 0, speed, is_relative=True)
+                time.sleep(0.1)
                 self.move_relative('V', 2.0, speed=speed, ignore_limits=True, is_homing=True)
                 time.sleep(0.3)
                 self.v_position = 0.0
@@ -283,7 +325,7 @@ class StepperController:
                     self.connection.set_axis_position('V', 0)
                 return True
 
-            self.move_relative('V', -step_mm, speed=speed, ignore_limits=True, is_homing=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
 
