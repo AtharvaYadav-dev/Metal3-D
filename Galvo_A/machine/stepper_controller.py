@@ -174,133 +174,106 @@ class StepperController:
         return True
         
     def home_z(self, app_instance=None):
-        """Smooth Continuous Homing Sequence for Z-Axis (890 mm max travel)."""
+        """Safe & Smooth Homing Sequence for Z-Axis (890 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] Z-Axis reset to 0.000 mm.")
             self.z_position = 0.0
             return True
             
-        print("Starting Z-Axis Smooth Homing Sequence...")
-        if self.connection.get_home_status('Z') == self.trigger_state:
-            print("Z Limit Switch triggered at start. Backing off smoothly...")
-            self.move_z_relative(2.0, speed=5000, ignore_limits=True)
-            time.sleep(0.3)
-
+        print("Starting Z-Axis Safe Homing Sequence...")
+        # Gentle homing speed: 3.0 mm/sec (3.0 * 1280 = 3840 pulses/sec)
+        speed = int(3.0 * self.z_steps_per_mm)
+        step_mm = 1.0
         max_dist_mm = 900.0
-        speed = 10000
-        pulses = int(max_dist_mm * self.z_steps_per_mm)
-        self.connection.axis_move('Z', pulses, speed, is_relative=True)
+        steps = int(max_dist_mm / step_mm)
 
-        start_time = time.time()
-        timeout = (pulses / speed) + 2.0
-
-        while (time.time() - start_time) < timeout:
+        for _ in range(steps):
             status = self.connection.get_home_status('Z')
             if status == self.trigger_state:
-                print("Z Limit Switch Triggered! Stopping smooth motion.")
-                if hasattr(self.connection, 'axis_stop'):
-                    self.connection.axis_stop('Z')
-                time.sleep(0.1)
-                self.move_z_relative(1.0, speed=5000, ignore_limits=True)
-                time.sleep(0.2)
+                print("Z Limit Switch Triggered! Backing off smoothly...")
+                self.move_z_relative(2.0, speed=speed, ignore_limits=True)
+                time.sleep(0.3)
                 self.z_position = 0.0
                 if hasattr(self.connection, 'set_axis_position'):
                     self.connection.set_axis_position('Z', 0)
                 return True
-                
-            time.sleep(0.02)
+
+            self.move_z_relative(-step_mm, speed=speed, ignore_limits=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
-                
+
         print("Z Homing reached travel limit.")
         self.z_position = 0.0
         return False
 
     def home_u(self, app_instance=None):
-        """Smooth Continuous Homing Sequence for U-Axis (250 mm max travel)."""
+        """Safe & Smooth Homing Sequence for U-Axis (Powder Bay, 250 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] U-Axis reset to 0.000 mm.")
             self.u_position = 0.0
             return True
             
-        print("Starting U-Axis Smooth Homing Sequence...")
-        if self.connection.get_home_status('U') == self.trigger_state:
-            print("U Limit Switch triggered at start. Backing off smoothly...")
-            self.move_relative('U', 2.0, speed=5000, ignore_limits=True)
-            time.sleep(0.3)
-
+        print("Starting U-Axis Safe Homing Sequence...")
+        # Gentle homing speed: 3.0 mm/sec (3.0 * 320 = 960 pulses/sec)
+        speed = int(3.0 * self.u_steps_per_mm)
+        step_mm = 1.0
         max_dist_mm = 260.0
-        speed = 10000
-        pulses = int(-max_dist_mm * self.u_steps_per_mm)
-        self.connection.axis_move('U', pulses, speed, is_relative=True)
+        steps = int(max_dist_mm / step_mm)
 
-        start_time = time.time()
-        timeout = (abs(pulses) / speed) + 2.0
-
-        while (time.time() - start_time) < timeout:
+        for _ in range(steps):
             status = self.connection.get_home_status('U')
             if status == self.trigger_state:
-                print("U Limit Switch Triggered! Stopping smooth motion.")
-                if hasattr(self.connection, 'axis_stop'):
-                    self.connection.axis_stop('U')
-                time.sleep(0.1)
-                self.move_relative('U', 1.0, speed=5000, ignore_limits=True)
-                time.sleep(0.2)
+                print("U Limit Switch Triggered! Backing off smoothly...")
+                self.move_relative('U', 2.0, speed=speed, ignore_limits=True)
+                time.sleep(0.3)
                 self.u_position = 0.0
                 if hasattr(self.connection, 'set_axis_position'):
                     self.connection.set_axis_position('U', 0)
                 return True
-                
-            time.sleep(0.02)
+
+            self.move_relative('U', -step_mm, speed=speed, ignore_limits=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
-                
+
         print("U Homing reached travel limit.")
         self.u_position = 0.0
         return False
 
     def home_v(self, app_instance=None):
-        """Smooth Continuous Homing Sequence for V-Axis (250 mm max travel)."""
+        """Safe & Smooth Homing Sequence for V-Axis (Build Plate, 250 mm max travel)."""
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] V-Axis reset to 0.000 mm.")
             self.v_position = 0.0
             return True
             
-        print("Starting V-Axis Smooth Homing Sequence...")
-        if self.connection.get_home_status('V') == self.trigger_state:
-            print("V Limit Switch triggered at start. Backing off smoothly...")
-            self.move_relative('V', 2.0, speed=5000, ignore_limits=True)
-            time.sleep(0.3)
-
+        print("Starting V-Axis Safe Homing Sequence...")
+        # Gentle homing speed: 3.0 mm/sec (3.0 * 320 = 960 pulses/sec)
+        speed = int(3.0 * self.v_steps_per_mm)
+        step_mm = 1.0
         max_dist_mm = 260.0
-        speed = 10000
-        pulses = int(-max_dist_mm * self.v_steps_per_mm)
-        self.connection.axis_move('V', pulses, speed, is_relative=True)
+        steps = int(max_dist_mm / step_mm)
 
-        start_time = time.time()
-        timeout = (abs(pulses) / speed) + 2.0
-
-        while (time.time() - start_time) < timeout:
+        for _ in range(steps):
             status = self.connection.get_home_status('V')
             if status == self.trigger_state:
-                print("V Limit Switch Triggered! Stopping smooth motion.")
-                if hasattr(self.connection, 'axis_stop'):
-                    self.connection.axis_stop('V')
-                time.sleep(0.1)
-                self.move_relative('V', 1.0, speed=5000, ignore_limits=True)
-                time.sleep(0.2)
+                print("V Limit Switch Triggered! Backing off smoothly...")
+                self.move_relative('V', 2.0, speed=speed, ignore_limits=True)
+                time.sleep(0.3)
                 self.v_position = 0.0
                 if hasattr(self.connection, 'set_axis_position'):
                     self.connection.set_axis_position('V', 0)
                 return True
-                
-            time.sleep(0.02)
+
+            self.move_relative('V', -step_mm, speed=speed, ignore_limits=True)
+            time.sleep(0.01)
             if app_instance:
                 app_instance.processEvents()
-                
+
         print("V Homing reached travel limit.")
         self.v_position = 0.0
         return False
