@@ -597,6 +597,8 @@ def main():
                             widget.setText(f"{val:+.3f} mm")
                     elif hasattr(widget, 'display'):
                         widget.display(f"{val:.2f}")
+                    elif hasattr(widget, 'setText'):
+                        widget.setText(f"{val:+.3f} mm")
 
     # Wire Motion Jog Buttons with multi-alias widget discovery and immediate LCD updates
     def on_jog_u(step_sign):
@@ -736,6 +738,9 @@ def main():
         btn = get_widget(bname)
         if btn and hasattr(btn, 'clicked'):
             btn.clicked.connect(lambda checked=False: home_galvo_action())
+
+    # Populate initial axis readouts on startup
+    update_axis_lcds()
 
     btn_estop = get_widget('btnEmergencyStop')
     if btn_estop and hasattr(btn_estop, 'clicked'):

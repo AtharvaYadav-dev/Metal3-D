@@ -119,3 +119,12 @@
 2026-08-17 11:55 - INFO - ==================================================
 2026-08-17 11:55 - INFO - New session close at 2026-08-17 11:55
 2026-08-17 11:55 - INFO - ==================================================
+2026-08-19 10:22 - INFO - UI load successful
+2026-08-19 10:22 - CRITICAL - Laser 1 : OFF
+2026-08-19 10:22 - CRITICAL - Laser 2 : OFF
+2026-08-19 10:22 - INFO - Stepper Lasers Shutdown
+2026-08-19 10:22 - INFO - COM connection close successfully
+2026-08-19 10:22 - INFO - Main window close successfully
+2026-08-19 10:22 - INFO - ==================================================
+2026-08-19 10:22 - INFO - New session close at 2026-08-19 10:22
+2026-08-19 10:22 - INFO - ==================================================

@@ -10,6 +10,8 @@ class StepperController:
         self.z_steps_per_mm = z_steps_per_mm
         self.u_steps_per_mm = u_steps_per_mm
         self.v_steps_per_mm = v_steps_per_mm
+        self.next_ready_time = 0.0
+        self.trigger_state = 0  # 0 = Triggered (Active-Low / Sinking NPN.NO)
 
     def get_axis_steps_per_mm(self, axis='Z'):
         ax = str(axis).upper()
@@ -20,8 +22,6 @@ class StepperController:
         elif ax == 'V':
             return self.v_steps_per_mm
         return self.steps_per_mm
-        self.next_ready_time = 0.0
-        self.trigger_state = 0  # 0 = Triggered (Active-Low / Sinking NPN.NO)
 
     def get_physical_z(self):
         """Reads the exact pulse counter from the hardware and converts it to mm."""
@@ -212,7 +212,7 @@ class StepperController:
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] Axis reset to 0.000 mm.")
-            self.z_position = 0.0
+            self.u_position = 0.0
             return True
             
         print("Starting U-Axis Homing Sequence...")
@@ -248,7 +248,7 @@ class StepperController:
         import time
         if not self.connection or not getattr(self.connection, 'is_initialized', False):
             print("[SIMULATION HOMING] Axis reset to 0.000 mm.")
-            self.z_position = 0.0
+            self.v_position = 0.0
             return True
             
         print("Starting V-Axis Homing Sequence...")
