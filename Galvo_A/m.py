@@ -403,7 +403,7 @@ def main():
     try:
         if StepperController:
             conn = getattr(galvo_controller, 'connection', None) if galvo_controller else None
-            stepper_controller = StepperController(conn, u_steps_per_mm=64.0, v_steps_per_mm=64.0, z_steps_per_mm=54.87)
+            stepper_controller = StepperController(conn, u_steps_per_mm=1600.0, v_steps_per_mm=1600.0, z_steps_per_mm=6400.0)
         else:
             stepper_controller = None
     except Exception as err:
@@ -450,23 +450,6 @@ def main():
                 btn = getattr(window, btn_name)
                 btn.clicked.connect(lambda checked=False, idx=page_idx: window.stackedWidget.setCurrentIndex(idx))
 
-    # Travel Step Selector
-    def set_travel(val):
-        travel_state[0] = val
-        print(f"[Motion Control] Travel step set to {val} mm")
-
-    for btn_name, val in [
-        ('travelpushButton_1', 0.01),
-        ('travelpushButton_2', 0.1),
-        ('travelpushButton_3', 1.0),
-        ('travelpushButton_4', 5.0),
-        ('travelpushButton_5', 10.0),
-        ('travelpushButton_6', 50.0)
-    ]:
-        if hasattr(window, btn_name):
-            btn = getattr(window, btn_name)
-            btn.clicked.connect(lambda checked=False, v=val: set_travel(v))
-
     # Robust helper to resolve widgets across QUiLoader hierarchy (case-insensitive & multi-alias)
     def get_widget(name):
         if hasattr(window, name):
@@ -479,6 +462,26 @@ def main():
             if child.objectName().lower() == name_lower:
                 return child
         return None
+
+    # Travel Step Selector
+    def set_travel(val):
+        travel_state[0] = val
+        print(f"[Motion Control] Travel step set to {val} mm")
+
+    travel_connected = set()
+    for btn_name, val in [
+        ('travelpushButton_1', 0.01),
+        ('travelpushButton_2', 0.1),
+        ('travelpushButton_3', 1.0),
+        ('travelpushButton_4', 5.0),
+        ('travelpushButton_5', 10.0),
+        ('travelpushButton_6', 50.0)
+    ]:
+        btn = get_widget(btn_name)
+        if btn and btn not in travel_connected:
+            if hasattr(btn, 'clicked'):
+                btn.clicked.connect(lambda checked=False, v=val: set_travel(v))
+            travel_connected.add(btn)
 
     # 2. Swap 3D OpenGL View Widget immediately
     gl_view = None
@@ -622,47 +625,29 @@ def main():
             stepper_controller.move_z_relative(step_mm)
         update_axis_lcds()
 
-    # Bind U+ Aliases
-    for name in ['upluspushButton', 'uplusPushButton', 'uplus_btn', 'uplusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.clicked.connect(lambda checked=False: on_jog_u(1.0))
+    # Helper to deduplicate button bindings so no widget receives duplicate click signal connections
+    def connect_unique_buttons(button_names, callback, text_override=None):
+        connected = set()
+        for name in button_names:
+            btn = get_widget(name)
+            if btn and btn not in connected:
+                if text_override:
+                    btn.setText(text_override)
+                if hasattr(btn, 'clicked'):
+                    btn.clicked.connect(callback)
+                connected.add(btn)
 
-    # Bind U- Aliases
-    for name in ['uminuspushButton', 'uminusPushButton', 'uminus_btn', 'uminusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.clicked.connect(lambda checked=False: on_jog_u(-1.0))
-
-    # Bind V+ Aliases
-    for name in ['vpluspushButton', 'vplusPushButton', 'vplus_btn', 'vplusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.clicked.connect(lambda checked=False: on_jog_v(1.0))
-
-    # Bind V- Aliases
-    for name in ['vminuspushButton', 'vminusPushButton', 'vminus_btn', 'vminusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.setText("-V (Platform DOWN)")
-            btn.clicked.connect(lambda checked=False: on_jog_v(-1.0))
-
-    # Bind Z+ Aliases
-    for name in ['zpluspushButton', 'zplusPushButton', 'zplus_btn', 'zplusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.clicked.connect(lambda checked=False: on_jog_z(1.0))
-
-    # Bind Z- Aliases
-    for name in ['zminuspushButton', 'zminusPushButton', 'zminus_btn', 'zminusgalvo']:
-        btn = get_widget(name)
-        if btn:
-            btn.clicked.connect(lambda checked=False: on_jog_z(-1.0))
+    # Bind U+, U-, V+, V-, Z+, Z- Aliases cleanly without duplicates
+    connect_unique_buttons(['upluspushButton', 'uplusPushButton', 'uplus_btn', 'uplusgalvo'], lambda checked=False: on_jog_u(1.0))
+    connect_unique_buttons(['uminuspushButton', 'uminusPushButton', 'uminus_btn', 'uminusgalvo'], lambda checked=False: on_jog_u(-1.0))
+    connect_unique_buttons(['vpluspushButton', 'vplusPushButton', 'vplus_btn', 'vplusgalvo'], lambda checked=False: on_jog_v(1.0))
+    connect_unique_buttons(['vminuspushButton', 'vminusPushButton', 'vminus_btn', 'vminusgalvo'], lambda checked=False: on_jog_v(-1.0), text_override="-V (Platform DOWN)")
+    connect_unique_buttons(['zpluspushButton', 'zplusPushButton', 'zplus_btn', 'zplusgalvo'], lambda checked=False: on_jog_z(1.0))
+    connect_unique_buttons(['zminuspushButton', 'zminusPushButton', 'zminus_btn', 'zminusgalvo'], lambda checked=False: on_jog_z(-1.0))
 
     recoater_sweep = get_widget('btnrecoaterSweep')
     if recoater_sweep:
         recoater_sweep.setText("Home Recoater (Z)")
-        recoater_sweep.clicked.connect(lambda checked=False: home_z_action())
 
     # Homing Action Callbacks
     def home_u_action():
@@ -707,37 +692,12 @@ def main():
         else:
             print("[Homing] Galvo controller offline. (Simulated)")
 
-    # Wire Homing Buttons
-    u_btn_names = ['btnhomeU', 'uhomepushButton', 'uhomepushButton_g']
-    v_btn_names = ['btnhomeV', 'vhomepushButton', 'vhomepushButton_g']
-    z_btn_names = ['btnhomeZ', 'zhomepushButton', 'zhomepushButton_g', 'btnrecoaterHome', 'btnrecoaterSweep']
-    all_btn_names = ['allhomepushButton', 'homePushButton']
-    galvo_btn_names = ['galvohomepushButton', 'galvozhomePushButton', 'galvoallhomePushButton']
-
-    for bname in u_btn_names:
-        btn = get_widget(bname)
-        if btn and hasattr(btn, 'clicked'):
-            btn.clicked.connect(lambda checked=False: home_u_action())
-
-    for bname in v_btn_names:
-        btn = get_widget(bname)
-        if btn and hasattr(btn, 'clicked'):
-            btn.clicked.connect(lambda checked=False: home_v_action())
-
-    for bname in z_btn_names:
-        btn = get_widget(bname)
-        if btn and hasattr(btn, 'clicked'):
-            btn.clicked.connect(lambda checked=False: home_z_action())
-
-    for bname in all_btn_names:
-        btn = get_widget(bname)
-        if btn and hasattr(btn, 'clicked'):
-            btn.clicked.connect(lambda checked=False: home_all_steppers_action())
-
-    for bname in galvo_btn_names:
-        btn = get_widget(bname)
-        if btn and hasattr(btn, 'clicked'):
-            btn.clicked.connect(lambda checked=False: home_galvo_action())
+    # Wire Homing Buttons cleanly without duplicates
+    connect_unique_buttons(['btnhomeU', 'uhomepushButton', 'uhomepushButton_g'], lambda checked=False: home_u_action())
+    connect_unique_buttons(['btnhomeV', 'vhomepushButton', 'vhomepushButton_g'], lambda checked=False: home_v_action())
+    connect_unique_buttons(['btnhomeZ', 'zhomepushButton', 'zhomepushButton_g', 'btnrecoaterHome', 'btnrecoaterSweep'], lambda checked=False: home_z_action())
+    connect_unique_buttons(['allhomepushButton', 'homePushButton'], lambda checked=False: home_all_steppers_action())
+    connect_unique_buttons(['galvohomepushButton', 'galvozhomePushButton', 'galvoallhomePushButton'], lambda checked=False: home_galvo_action())
 
     # Populate initial axis readouts on startup
     update_axis_lcds()

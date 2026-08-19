@@ -1,7 +1,7 @@
 from core.connection import BaseConnection
 
 class StepperController:
-    def __init__(self, connection: BaseConnection, steps_per_mm=1600.0, z_steps_per_mm=54.87, u_steps_per_mm=64.0, v_steps_per_mm=64.0):
+    def __init__(self, connection: BaseConnection, steps_per_mm=1600.0, z_steps_per_mm=6400.0, u_steps_per_mm=1600.0, v_steps_per_mm=1600.0):
         self.connection = connection
         self.z_position = 0.0
         self.u_position = 0.0
