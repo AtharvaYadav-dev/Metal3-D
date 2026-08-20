@@ -1,0 +1,18 @@
+# Runtime Logs & Hardware Dumps
+galvo.txt
+buttons.txt
+misc.txt
+obj_names.txt
+obj_names_ui.txt
+ui_buttons.txt
+ui_buttons_utf8.txt
+scratch_snippets.txt
+*.log
+
+# Byte-compiled / Python Cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Scratch & Temporary
+scratch/

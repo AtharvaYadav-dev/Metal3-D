@@ -1,0 +1,321 @@
+/* ===================================================================
+   INDUSTRIAL PRECISION DESIGN SYSTEM - STYLESHEET FOR LPBF CONTROL
+   =================================================================== */
+
+* {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: #e3e1eb;
+    font-size: 11px;
+    outline: none;
+}
+
+QMainWindow, QDialog {
+    background-color: #12131a;
+}
+
+QWidget {
+    background-color: #12131a;
+    color: #e3e1eb;
+}
+
+/* FRAMES & CONTAINERS - Modern Industrial Glassmorphic / Sharp High-Contrast */
+QFrame {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+}
+
+QFrame#sidebarFrame {
+    background-color: #1a1b22;
+    border-right: 1px solid #444653;
+}
+
+QFrame#topNavFrame {
+    background-color: #1a1b22;
+    border-bottom: 1px solid #444653;
+}
+
+QFrame#cardFrame, QFrame[card="true"] {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+}
+
+/* GROUP BOX CARDS */
+QGroupBox {
+    background-color: #1e1f26;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    margin-top: 18px;
+    padding: 12px 8px 8px 8px;
+    font-weight: 600;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 8px;
+    padding: 2px 8px;
+    background-color: #282a31;
+    color: #b8c4ff;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    text-transform: uppercase;
+}
+
+/* BUTTONS */
+QPushButton {
+    background-color: #282a31;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    color: #e3e1eb;
+    padding: 6px 14px;
+    min-height: 24px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+QPushButton:hover {
+    background-color: #33343c;
+    border-color: #8e909f;
+    color: #ffffff;
+}
+
+QPushButton:pressed {
+    background-color: #1a1b22;
+    border-color: #1e40af;
+}
+
+QPushButton:checked {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: 1px solid #b8c4ff;
+    font-weight: bold;
+}
+
+/* ACCENT BUTTON STYLES */
+/* Primary Action Button (Secondary Orange) */
+QPushButton#btn_start_print, QPushButton#btn_act_simulate, QPushButton#btn_import_build, QPushButton[accent="primary"], QPushButton[accent="orange"] {
+    background-color: #ec6a06;
+    color: #ffffff;
+    border: 1px solid #ffb690;
+    font-weight: 700;
+}
+
+QPushButton#btn_start_print:hover, QPushButton#btn_act_simulate:hover, QPushButton#btn_import_build:hover, QPushButton[accent="primary"]:hover, QPushButton[accent="orange"]:hover {
+    background-color: #ff7715;
+    border-color: #ffffff;
+}
+
+/* Critical Emergency Stop Button (Crimson) */
+QPushButton#btn_emergency_stop, QPushButton[accent="critical"], QPushButton[accent="red"] {
+    background-color: #ef4444;
+    color: #ffffff;
+    border: 1px solid #ffb4ab;
+    font-weight: 700;
+}
+
+QPushButton#btn_emergency_stop:hover, QPushButton[accent="critical"]:hover, QPushButton[accent="red"]:hover {
+    background-color: #dc2626;
+    border-color: #ffffff;
+}
+
+/* Secondary Action Button (Primary Container Blue) */
+QPushButton[accent="secondary"], QPushButton[accent="blue"] {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: 1px solid #b8c4ff;
+    font-weight: 600;
+}
+
+QPushButton[accent="secondary"]:hover, QPushButton[accent="blue"]:hover {
+    background-color: #2563eb;
+    border-color: #ffffff;
+}
+
+/* INPUT CONTROLS */
+QLineEdit, QTextEdit, QSpinBox, QDoubleSpinBox, QComboBox {
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    color: #b8c4ff;
+    padding: 5px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+}
+
+QLineEdit:focus, QTextEdit:focus, QSpinBox:focus, QDoubleSpinBox:focus, QComboBox:focus {
+    border: 1px solid #1e40af;
+    background-color: #12131a;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 24px;
+    background: #1a1b22;
+}
+
+QComboBox QAbstractItemView {
+    background-color: #1a1b22;
+    border: 1px solid #444653;
+    color: #e3e1eb;
+    selection-background-color: #1e40af;
+}
+
+/* PROGRESS BAR */
+QProgressBar {
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    border-radius: 0px;
+    text-align: center;
+    color: #ffffff;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+QProgressBar::chunk {
+    background-color: #1e40af;
+    border-radius: 0px;
+}
+
+/* SLIDERS */
+QSlider::groove:horizontal {
+    border: 1px solid #444653;
+    height: 8px;
+    background: #0d0e14;
+    border-radius: 0px;
+}
+
+QSlider::handle:horizontal {
+    background: #1e40af;
+    border: 1px solid #b8c4ff;
+    width: 16px;
+    margin: -5px 0;
+    border-radius: 0px;
+}
+
+QSlider::handle:horizontal:hover {
+    background: #ec6a06;
+    border-color: #ffb690;
+}
+
+/* DATA READOUT LCD / LABELS */
+QLabel#uposlcddisplay, QLabel#vposlcddisplay, QLabel#zposlcddisplay, QLabel.data-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: #b8c4ff;
+    background-color: #0d0e14;
+    border: 1px solid #444653;
+    padding: 6px 12px;
+    border-radius: 0px;
+}
+
+/* STATUS BADGES */
+QLabel.status-emerald {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid #10b981;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+QLabel.status-amber {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid #f59e0b;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+QLabel.status-crimson {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 3px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* TAB WIDGETS */
+QTabWidget::pane {
+    border: 1px solid #444653;
+    background-color: #1e1f26;
+    border-radius: 0px;
+}
+
+QTabBar::tab {
+    background-color: #1a1b22;
+    color: #c4c5d5;
+    padding: 8px 16px;
+    border: 1px solid #444653;
+    border-bottom: none;
+    border-radius: 0px;
+    margin-right: 2px;
+    font-weight: 600;
+}
+
+QTabBar::tab:selected {
+    background-color: #1e1f26;
+    color: #b8c4ff;
+    border-top: 2px solid #1e40af;
+}
+
+QTabBar::tab:hover {
+    color: #ffffff;
+    background-color: #282a31;
+}
+
+/* SCROLLBARS */
+QScrollBar:vertical, QScrollBar:horizontal {
+    border: none;
+    background: #0d0e14;
+    width: 8px;
+    height: 8px;
+}
+
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #33343c;
+    border-radius: 0px;
+}
+
+QScrollBar::handle:vertical:hover, QScrollBar::handle:horizontal:hover {
+    background: #8e909f;
+}
+
+QScrollBar::add-line, QScrollBar::sub-line {
+    border: none;
+    background: none;
+}
+
+/* SPECIFIC UI ELEMENT STYLES */
+QLabel#logoLabel {
+    background-color: #ffffff;
+    border-radius: 6px;
+    padding: 4px;
+}
+
+QPushButton#btn_sensor_debug {
+    background-color: #1e3a8a;
+    color: #93c5fd;
+    font-weight: bold;
+    border: 1px solid #3b82f6;
+    padding: 4px 10px;
+}
+
+QPushButton#btn_sensor_debug:hover {
+    background-color: #1d4ed8;
+    color: #ffffff;
+    border-color: #60a5fa;
+}
+
