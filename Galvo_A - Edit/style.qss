@@ -1,0 +1,186 @@
+/* GLOBAL STYLES */
+* {
+    font-family: "Segoe UI", "Inter", "Roboto", sans-serif;
+    color: #E2E8F0;
+    font-size: 11px;
+}
+
+QWidget {
+    background-color: #0A0E17;
+}
+
+/* MAIN WINDOW / SIDEBAR EXCLUSIONS (Assuming sidebar has a specific class or we style general frames) */
+QFrame {
+    background-color: transparent;
+}
+
+/* CARDS (QGroupBox) */
+QGroupBox {
+    background-color: #151B27;
+    border: 1px solid #1E293B;
+    border-radius: 4px;
+    margin-top: 14px; /* space for title */
+    padding-top: 8px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 5px;
+    left: 8px;
+    color: #94A3B8;
+    font-weight: bold;
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+/* BUTTONS */
+QPushButton {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    color: #F8FAFC;
+    padding: 4px 8px;
+    min-height: 20px;
+    font-weight: 500;
+}
+
+QPushButton:hover {
+    background-color: #2563EB;
+    border: 1px solid #3B82F6;
+}
+
+QPushButton:pressed {
+    background-color: #1D4ED8;
+}
+
+/* SPECIFIC BUTTON STYLES (If they have specific object names we can style them later, 
+   but for now general buttons look like this) */
+QPushButton#btn_emergency_stop, QPushButton[text="EMERGENCY STOP"] {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #EF4444;
+    border: 1px solid #DC2626;
+}
+
+QPushButton#btn_emergency_stop:hover, QPushButton[text="EMERGENCY STOP"]:hover {
+    background-color: #DC2626;
+    color: white;
+}
+
+/* TEXT INPUTS / COMBOBOXES */
+QLineEdit, QComboBox, QSpinBox, QDoubleSpinBox, QTimeEdit, QDateEdit {
+    background-color: #0F172A;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 6px;
+    color: #F8FAFC;
+}
+
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border: 1px solid #3B82F6;
+}
+
+QComboBox::drop-down {
+    border: none;
+    width: 20px;
+}
+
+QComboBox::down-arrow {
+    image: url(down_arrow.png); /* Might need an actual icon, but default looks okay if themed */
+}
+
+/* TABLES */
+QTableWidget, QTableView {
+    background-color: #0F172A;
+    border: 1px solid #1E293B;
+    border-radius: 4px;
+    gridline-color: #1E293B;
+    color: #E2E8F0;
+    selection-background-color: #1E40AF;
+}
+
+QHeaderView::section {
+    background-color: #151B27;
+    color: #94A3B8;
+    padding: 4px;
+    border: none;
+    border-bottom: 1px solid #1E293B;
+    font-weight: bold;
+    font-size: 11px;
+}
+
+/* SLIDERS */
+QSlider::groove:horizontal {
+    border: 1px solid #334155;
+    height: 6px;
+    background: #0F172A;
+    margin: 2px 0;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background: #3B82F6;
+    border: 1px solid #2563EB;
+    width: 14px;
+    margin: -4px 0;
+    border-radius: 7px;
+}
+
+/* PROGRESS BARS */
+QProgressBar {
+    border: 1px solid #1E293B;
+    border-radius: 4px;
+    background-color: #0F172A;
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar::chunk {
+    background-color: #10B981; /* Green for health/progress */
+    border-radius: 3px;
+}
+
+/* TABS */
+QTabWidget::pane {
+    border: 1px solid #1E293B;
+    background-color: #151B27;
+    border-radius: 4px;
+}
+
+QTabBar::tab {
+    background-color: #0F172A;
+    color: #94A3B8;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-bottom: 2px solid transparent;
+}
+
+QTabBar::tab:selected {
+    color: #3B82F6;
+    border-bottom: 2px solid #3B82F6;
+}
+
+QTabBar::tab:hover {
+    color: #F8FAFC;
+}
+
+/* SCROLLBARS */
+QScrollBar:vertical {
+    border: none;
+    background: #0F172A;
+    width: 10px;
+    margin: 0px 0px 0px 0px;
+}
+
+QScrollBar::handle:vertical {
+    background: #334155;
+    min-height: 20px;
+    border-radius: 5px;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
