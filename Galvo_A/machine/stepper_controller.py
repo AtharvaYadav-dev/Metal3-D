@@ -252,32 +252,32 @@ class StepperController:
         # 1. Back off if already on sensor
         if self.connection.get_home_status(ax) == self.trigger_state:
             print("U-Axis sensor currently active. Backing off +2.0 mm...")
-            self.move_relative(ax, 2.0, speed=10000, ignore_limits=True)
+            self.move_relative(ax, 2.0, speed=2500, ignore_limits=True)
             time.sleep(0.3)
 
-        # 2. Initiate ONE smooth continuous move towards home switch
+        # 2. Initiate ONE smooth continuous move towards home switch (Slow & Steady: ~10 mm/s)
         max_homing_dist = -300.0
-        homing_speed = 15000
+        homing_speed = 3200  # 3200 pulses/sec = 10.0 mm/s for U axis (320 steps/mm)
         pulses = int(max_homing_dist * self.u_steps_per_mm)
 
-        print(f"Initiating continuous homing move towards U home sensor...")
+        print(f"Initiating slow continuous homing move towards U home sensor ({homing_speed} pulses/s)...")
         self.connection.axis_move(ax, pulses, homing_speed, is_relative=True)
 
         # 3. High-frequency sensor status monitoring loop
         start_time = time.time()
-        max_timeout = 30.0
+        max_timeout = 60.0
 
         while time.time() - start_time < max_timeout:
             status = self.connection.get_home_status(ax)
             if status == self.trigger_state:
-                print("🚨 U-Axis Home Sensor Triggered! Halting motion smoothly.")
+                print("[SENSOR TRIGGERED] U-Axis Home Sensor Triggered! Halting motion smoothly.")
                 if hasattr(self.connection, 'sd_stop'):
                     self.connection.sd_stop(ax)
                 elif hasattr(self.connection, 'stop'):
                     self.connection.stop()
                 time.sleep(0.1)
 
-                self.move_relative(ax, 1.0, speed=5000, ignore_limits=True)
+                self.move_relative(ax, 1.0, speed=1600, ignore_limits=True)
                 time.sleep(0.2)
 
                 self.u_position = 0.0
@@ -310,37 +310,37 @@ class StepperController:
             self.v_position = 0.0
             return True
 
-        print("Starting Smooth V-Axis Homing Sequence...")
+        print("Starting Slow & Smooth V-Axis Homing Sequence...")
 
         # 1. Back off if already on sensor
         if self.connection.get_home_status(ax) == self.trigger_state:
             print("V-Axis sensor currently active. Backing off +2.0 mm...")
-            self.move_relative(ax, 2.0, speed=10000, ignore_limits=True)
+            self.move_relative(ax, 2.0, speed=2500, ignore_limits=True)
             time.sleep(0.3)
 
-        # 2. Initiate ONE smooth continuous move towards home switch
+        # 2. Initiate ONE smooth continuous move towards home switch (Slow & Steady: ~10 mm/s)
         max_homing_dist = -300.0
-        homing_speed = 15000
+        homing_speed = 3200  # 3200 pulses/sec = 10.0 mm/s for V axis (320 steps/mm)
         pulses = int(max_homing_dist * self.v_steps_per_mm)
 
-        print(f"Initiating continuous homing move towards V home sensor...")
+        print(f"Initiating slow continuous homing move towards V home sensor ({homing_speed} pulses/s)...")
         self.connection.axis_move(ax, pulses, homing_speed, is_relative=True)
 
         # 3. High-frequency sensor status monitoring loop
         start_time = time.time()
-        max_timeout = 30.0
+        max_timeout = 60.0
 
         while time.time() - start_time < max_timeout:
             status = self.connection.get_home_status(ax)
             if status == self.trigger_state:
-                print("🚨 V-Axis Home Sensor Triggered! Halting motion smoothly.")
+                print("[SENSOR TRIGGERED] V-Axis Home Sensor Triggered! Halting motion smoothly.")
                 if hasattr(self.connection, 'sd_stop'):
                     self.connection.sd_stop(ax)
                 elif hasattr(self.connection, 'stop'):
                     self.connection.stop()
                 time.sleep(0.1)
 
-                self.move_relative(ax, 1.0, speed=5000, ignore_limits=True)
+                self.move_relative(ax, 1.0, speed=1600, ignore_limits=True)
                 time.sleep(0.2)
 
                 self.v_position = 0.0
@@ -348,6 +348,7 @@ class StepperController:
                     self.connection.set_axis_position(ax, 0)
                 print("V-Axis Homing Successful! Position set to 0.000 mm.")
                 return True
+
 
             if app_instance:
                 app_instance.processEvents()
