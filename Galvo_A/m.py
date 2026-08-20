@@ -169,15 +169,16 @@ class Print3DThread(QThread):
                 telemetry
             )
 
-            u_move = -self.layer_thickness
+            u_move = abs(self.layer_thickness)
             self.progress_signal.emit(
                 layer, self.total_layers,
-                f"[BUILD PLATE U] Lowering Build Platform: DOWN {abs(u_move):.3f} mm",
+                f"[BUILD PLATE U] Lowering Build Platform: DOWN +{u_move:.3f} mm",
                 telemetry
             )
             if self.stepper:
                 self.stepper.move_relative("U", u_move)
             time.sleep(0.3)
+
 
             v_move = self.layer_thickness * 1.5
             self.progress_signal.emit(

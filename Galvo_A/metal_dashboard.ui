@@ -747,7 +747,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
        <item>
         <widget class="QStackedWidget" name="stackedWidget">
          <property name="currentIndex">
-          <number>0</number>
+          <number>1</number>
          </property>
          <widget class="QWidget" name="page_dashboard">
           <layout class="QVBoxLayout" name="dashboardLayout" stretch="5,1">
@@ -1033,7 +1033,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                      <property name="minimumSize">
                       <size>
                        <width>0</width>
-                       <height>42</height>
+                       <height>38</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -1049,7 +1049,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                      <property name="minimumSize">
                       <size>
                        <width>0</width>
-                       <height>42</height>
+                       <height>38</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -1065,7 +1065,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                      <property name="minimumSize">
                       <size>
                        <width>0</width>
-                       <height>42</height>
+                       <height>38</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -1329,7 +1329,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                    </font>
                   </property>
                   <property name="text">
-                   <string>+U (Supply Powder UP)</string>
+                   <string>+U (Build Plate DOWN)</string>
                   </property>
                  </widget>
                 </item>
@@ -1349,14 +1349,17 @@ QScrollBar::add-line, QScrollBar::sub-line {
                    </font>
                   </property>
                   <property name="text">
-                   <string>-U (Supply Powder DOWN)</string>
+                   <string>-U (Build Plate UP)</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="btnhomeU">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #1e40af; color: white; border: 1px solid #b8c4ff; font-weight: bold; border-radius: 0px;</string>
+                  </property>
                   <property name="text">
-                   <string>Home Powder Bay (U)</string>
+                   <string>Home Build Plate (U)</string>
                   </property>
                  </widget>
                 </item>
@@ -1408,7 +1411,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                    </font>
                   </property>
                   <property name="text">
-                   <string>+V (Platform UP)</string>
+                   <string>+V (Powder Bay DOWN)</string>
                   </property>
                  </widget>
                 </item>
@@ -1428,14 +1431,17 @@ QScrollBar::add-line, QScrollBar::sub-line {
                    </font>
                   </property>
                   <property name="text">
-                   <string>-V (Platform DOWN)</string>
+                   <string>-V (Powder Bay UP)</string>
                   </property>
                  </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="btnhomeV">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: #1e40af; color: white; border: 1px solid #b8c4ff; font-weight: bold; border-radius: 0px;</string>
+                  </property>
                   <property name="text">
-                   <string>Home Build Plate (V)</string>
+                   <string>Home Powder Bay (V)</string>
                   </property>
                  </widget>
                 </item>

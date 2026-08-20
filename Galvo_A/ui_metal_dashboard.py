@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'metal_dashboardYBxREH.ui'
+## Form generated from reading UI file 'metal_dashboardEmFnvN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.2
 ##
@@ -361,6 +361,33 @@ class Ui_MainWindow(object):
 
         self.previewLayout.addLayout(self.sliderRow)
 
+        self.processControlRow = QHBoxLayout()
+        self.processControlRow.setSpacing(12)
+        self.processControlRow.setObjectName(u"processControlRow")
+        self.btn_start_process = QPushButton(self.gb_build_preview_dash)
+        self.btn_start_process.setObjectName(u"btn_start_process")
+        self.btn_start_process.setMinimumSize(QSize(0, 38))
+        self.btn_start_process.setStyleSheet(u"QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #10b981, stop:1 #059669); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #047857; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #10b981; } QPushButton:pressed { background: #047857; }")
+
+        self.processControlRow.addWidget(self.btn_start_process)
+
+        self.btn_pause_process = QPushButton(self.gb_build_preview_dash)
+        self.btn_pause_process.setObjectName(u"btn_pause_process")
+        self.btn_pause_process.setMinimumSize(QSize(0, 38))
+        self.btn_pause_process.setStyleSheet(u"QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #f59e0b, stop:1 #d97706); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #b45309; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #f59e0b; } QPushButton:pressed { background: #b45309; }")
+
+        self.processControlRow.addWidget(self.btn_pause_process)
+
+        self.btn_stop_process = QPushButton(self.gb_build_preview_dash)
+        self.btn_stop_process.setObjectName(u"btn_stop_process")
+        self.btn_stop_process.setMinimumSize(QSize(0, 38))
+        self.btn_stop_process.setStyleSheet(u"QPushButton { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ef4444, stop:1 #dc2626); color: #ffffff; font-weight: bold; font-size: 13px; font-family: sans-serif; border: 1px solid #b91c1c; border-radius: 6px; padding: 6px 12px; } QPushButton:hover { background: #ef4444; } QPushButton:pressed { background: #b91c1c; }")
+
+        self.processControlRow.addWidget(self.btn_stop_process)
+
+
+        self.previewLayout.addLayout(self.processControlRow)
+
 
         self.columnsLayout.addWidget(self.gb_build_preview_dash)
 
@@ -413,6 +440,9 @@ class Ui_MainWindow(object):
 
         self.columnsLayout.addWidget(self.gb_telemetry)
 
+        self.columnsLayout.setStretch(0, 3)
+        self.columnsLayout.setStretch(1, 6)
+        self.columnsLayout.setStretch(2, 3)
 
         self.dashboardLayout.addWidget(self.columnsWidget)
 
@@ -450,6 +480,8 @@ class Ui_MainWindow(object):
 
         self.dashboardLayout.addWidget(self.gb_console_log)
 
+        self.dashboardLayout.setStretch(0, 5)
+        self.dashboardLayout.setStretch(1, 1)
         self.stackedWidget.addWidget(self.page_dashboard)
         self.page_machine_control = QWidget()
         self.page_machine_control.setObjectName(u"page_machine_control")
@@ -499,6 +531,7 @@ class Ui_MainWindow(object):
 
         self.btnhomeU = QPushButton(self.gb_powder_bay)
         self.btnhomeU.setObjectName(u"btnhomeU")
+        self.btnhomeU.setStyleSheet(u"background-color: #1e40af; color: white; border: 1px solid #b8c4ff; font-weight: bold; border-radius: 0px;")
 
         self.uLayout.addWidget(self.btnhomeU)
 
@@ -534,6 +567,7 @@ class Ui_MainWindow(object):
 
         self.btnhomeV = QPushButton(self.gb_build_plate)
         self.btnhomeV.setObjectName(u"btnhomeV")
+        self.btnhomeV.setStyleSheet(u"background-color: #1e40af; color: white; border: 1px solid #b8c4ff; font-weight: bold; border-radius: 0px;")
 
         self.vLayout.addWidget(self.btnhomeV)
 
@@ -684,7 +718,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1034,6 +1068,9 @@ class Ui_MainWindow(object):
         self.lbl_3d_preview_placeholder.setText(QCoreApplication.translate("MainWindow", u"3D OPENGL PART VIEWPORT", None))
         self.lblSlice.setText(QCoreApplication.translate("MainWindow", u"Layer Cut:", None))
         self.chk_section_view.setText(QCoreApplication.translate("MainWindow", u"Section Cut", None))
+        self.btn_start_process.setText(QCoreApplication.translate("MainWindow", u"START PROCESS", None))
+        self.btn_pause_process.setText(QCoreApplication.translate("MainWindow", u"PAUSE PROCESS", None))
+        self.btn_stop_process.setText(QCoreApplication.translate("MainWindow", u"STOP PROCESS", None))
         self.gb_telemetry.setTitle(QCoreApplication.translate("MainWindow", u"HARDWARE TELEMETRY", None))
         self.lbl_laser_gauge.setText(QCoreApplication.translate("MainWindow", u"LASER POWER GAUGE", None))
         self.lbl_oxy_gauge.setText(QCoreApplication.translate("MainWindow", u"O2 LEVEL GAUGE", None))
@@ -1047,14 +1084,14 @@ class Ui_MainWindow(object):
         self.lblMotionTitle.setText(QCoreApplication.translate("MainWindow", u"MOTION CONTROL & MANUAL AXIS JOGGING", None))
         self.gb_powder_bay.setTitle(QCoreApplication.translate("MainWindow", u"POWDER BAY (FEEDER - U AXIS)", None))
         self.uposlcddisplay.setText(QCoreApplication.translate("MainWindow", u"+0.000 mm", None))
-        self.upluspushButton.setText(QCoreApplication.translate("MainWindow", u"+U (Supply Powder UP)", None))
-        self.uminuspushButton.setText(QCoreApplication.translate("MainWindow", u"-U (Supply Powder DOWN)", None))
-        self.btnhomeU.setText(QCoreApplication.translate("MainWindow", u"Home Powder Bay (U)", None))
+        self.upluspushButton.setText(QCoreApplication.translate("MainWindow", u"+U (Build Plate DOWN)", None))
+        self.uminuspushButton.setText(QCoreApplication.translate("MainWindow", u"-U (Build Plate UP)", None))
+        self.btnhomeU.setText(QCoreApplication.translate("MainWindow", u"Home Build Plate (U)", None))
         self.gb_build_plate.setTitle(QCoreApplication.translate("MainWindow", u"BUILD PLATE (PLATFORM - V AXIS)", None))
         self.vposlcddisplay.setText(QCoreApplication.translate("MainWindow", u"+0.000 mm", None))
-        self.vpluspushButton.setText(QCoreApplication.translate("MainWindow", u"+V (Platform UP)", None))
-        self.vminuspushButton.setText(QCoreApplication.translate("MainWindow", u"-V (Platform DOWN)", None))
-        self.btnhomeV.setText(QCoreApplication.translate("MainWindow", u"Home Build Plate (V)", None))
+        self.vpluspushButton.setText(QCoreApplication.translate("MainWindow", u"+V (Powder Bay DOWN)", None))
+        self.vminuspushButton.setText(QCoreApplication.translate("MainWindow", u"-V (Powder Bay UP)", None))
+        self.btnhomeV.setText(QCoreApplication.translate("MainWindow", u"Home Powder Bay (V)", None))
         self.gb_recoater.setTitle(QCoreApplication.translate("MainWindow", u"RECOATER BLADE (DOSING - Z AXIS)", None))
         self.zposlcddisplay.setText(QCoreApplication.translate("MainWindow", u"+0.000 mm", None))
         self.zpluspushButton.setText(QCoreApplication.translate("MainWindow", u"+Z (Recoater RIGHT)", None))

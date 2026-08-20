@@ -80,3 +80,7 @@ class MockConnection(BaseConnection):
 
     def stop(self):
         log_command("STOP")
+
+    def sd_stop(self, axis='Z'):
+        log_command(f"SD_STOP {axis}")
+

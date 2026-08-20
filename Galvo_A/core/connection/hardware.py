@@ -145,6 +145,10 @@ class HardwareConnection(BaseConnection):
             self.dll.GT_PROSYS_U3_set_command.argtypes = [c_int32, c_int32]
             self.dll.GT_PROSYS_U3_set_command.restype = c_int32
             
+        if hasattr(self.dll, 'GT_PROSYS_U3_sd_stop'):
+            self.dll.GT_PROSYS_U3_sd_stop.argtypes = [c_short, c_double]
+            self.dll.GT_PROSYS_U3_sd_stop.restype = c_short
+
         if hasattr(self.dll, 'IsConnected'):
             self.dll.IsConnected.argtypes = []
             self.dll.IsConnected.restype = c_short
@@ -154,7 +158,17 @@ class HardwareConnection(BaseConnection):
             self.dll.GT_PROSYS_U3_Close()
         self.is_initialized = False
 
+    def sd_stop(self, axis='Z'):
+        if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_sd_stop'):
+            axis_map = {'X': 0, 'Y': 1, 'Z': 2, 'U': 3, 'V': 4}
+            axis_idx = axis_map.get(str(axis).upper(), 2)
+            try:
+                self.dll.GT_PROSYS_U3_sd_stop(c_short(axis_idx), c_double(0.1))
+            except Exception as e:
+                print(f"Error executing sd_stop for axis {axis}: {e}")
+
     def galvo_move_xy(self, x, y, speed=None):
+
         speed_val = int(speed) if speed else 1000
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_galvo_move_XY'):
             self.dll.GT_PROSYS_U3_galvo_move_XY(int(x), int(y), speed_val, 0.0, 0.0, 0.0)

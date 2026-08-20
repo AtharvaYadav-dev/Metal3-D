@@ -57,3 +57,8 @@ class BaseConnection:
     def stop(self):
         """Emergency stops the execution."""
         pass
+
+    def sd_stop(self, axis='Z'):
+        """Smoothly decelerates and stops the specified axis."""
+        pass
+
