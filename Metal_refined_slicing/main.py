@@ -238,14 +238,17 @@ class Print3DThread(QThread):
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z) DONE (Z=0.00 mm)", self._get_telemetry(layer, "Step 1/11: Recoater Home DONE"))
             time.sleep(0.2)
 
-            # Step 2: BUILD PLATE HOME(U)
-            if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) IN PROGRESS...", self._get_telemetry(layer, "Step 2/11: Build Plate Homing"))
-            if self.stepper:
-                self.stepper.home_u()
-            if not self._wait_for_stepper_ready(layer, "Step 2/11"): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) DONE (U=0.00 mm)", self._get_telemetry(layer, "Step 2/11: Build Plate Home DONE"))
-            time.sleep(0.2)
+            # Step 2: BUILD PLATE HOME(U) (Executed only once on Layer 1, skipped on Layer >= 2)
+            if layer == 1:
+                if not self._check_pause_and_stop(): break
+                self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) IN PROGRESS...", self._get_telemetry(layer, "Step 2/11: Build Plate Homing"))
+                if self.stepper:
+                    self.stepper.home_u()
+                if not self._wait_for_stepper_ready(layer, "Step 2/11"): break
+                self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) DONE (U=0.00 mm)", self._get_telemetry(layer, "Step 2/11: Build Plate Home DONE"))
+                time.sleep(0.2)
+            else:
+                self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) SKIPPED (Layer {layer} > 1)", self._get_telemetry(layer, "Step 2/11: Build Plate Home Skipped"))
 
             # Step 3: POWDER BAY(V) WILL DO +0.02 MM
             if not self._check_pause_and_stop(): break
