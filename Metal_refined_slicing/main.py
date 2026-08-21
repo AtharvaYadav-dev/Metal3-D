@@ -431,6 +431,17 @@ class Metal3DPrinterApp:
                 pix = QPixmap(logo_path).scaled(102, 102, Qt.KeepAspectRatio, Qt.SmoothTransformation)
                 self.window.logoLabel.setPixmap(pix)
 
+        # Handle window close gracefully to prevent focus-loss motor triggers during teardown
+        orig_close = getattr(self.window, 'closeEvent', None)
+        def safe_close_event(event):
+            if self.print_thread and hasattr(self.print_thread, 'isRunning') and self.print_thread.isRunning():
+                self.print_thread.stop()
+            if orig_close:
+                orig_close(event)
+            else:
+                event.accept()
+        self.window.closeEvent = safe_close_event
+
     def _apply_stylesheet(self):
         """Applies style.qss stylesheet to the application."""
         style_path = os.path.join(os.path.dirname(__file__), "style.qss")
@@ -566,15 +577,26 @@ class Metal3DPrinterApp:
             chk_section.clicked.connect(lambda: on_slider_changed(slider_layer.value() if slider_layer else 0))
 
     def _setup_powder_prep(self):
-        """Initializes Powder Preparation controls (mass, density, target depth calculation, presets, V-axis move)."""
-        combo_preset = self.get_widget("combo_powder_preset")
+        """Initializes Powder Preparation controls (custom mass 0.5kg-7.0kg, density, target depth calculation, V-axis move)."""
         dspn_weight = self.get_widget("dspn_powder_weight")
         dspn_density = self.get_widget("dspn_powder_density")
         lbl_calc = self.get_widget("lbl_calc_powder_depth")
         btn_set = self.get_widget("btn_set_powder_depth")
 
+        if dspn_weight:
+            dspn_weight.setRange(0.50, 7.00)
+            dspn_weight.setSingleStep(0.10)
+
         def recalculate():
             w = dspn_weight.value() if dspn_weight else 4.90
+            # Strictly enforce 0.5 kg to 7.0 kg limit
+            if w < 0.50:
+                w = 0.50
+                if dspn_weight: dspn_weight.setValue(0.50)
+            elif w > 7.00:
+                w = 7.00
+                if dspn_weight: dspn_weight.setValue(7.00)
+
             d = dspn_density.value() if dspn_density else 0.50
             if d <= 0.0:
                 d = 0.50
@@ -587,17 +609,6 @@ class Metal3DPrinterApp:
                 lbl_calc.setText(f"Target Depth (V-Axis): {height_mm:.2f} mm ({height_cm:.1f} cm)")
             return height_mm, w, d
 
-        def on_preset_changed(idx):
-            presets = {
-                0: 4.90,  # Full Bay (114mm)
-                1: 3.70,  # 75%
-                2: 2.50,  # 50%
-                3: 1.20   # 25%
-            }
-            if idx in presets and dspn_weight:
-                dspn_weight.setValue(presets[idx])
-                recalculate()
-
         def on_set_powder_depth():
             depth_mm, weight_kg, density = recalculate()
             if self.stepper_controller:
@@ -607,12 +618,8 @@ class Metal3DPrinterApp:
             else:
                 print(f"\n[Powder Prep (Simulated)] Powder Bay (V-Axis) depth set to {depth_mm:.2f} mm for {weight_kg:.2f} kg powder.")
 
-        if combo_preset:
-            combo_preset.currentIndexChanged.connect(on_preset_changed)
-
         if dspn_weight:
             dspn_weight.valueChanged.connect(lambda v: recalculate())
-            dspn_weight.editingFinished.connect(on_set_powder_depth)
 
         if dspn_density:
             dspn_density.valueChanged.connect(lambda v: recalculate())

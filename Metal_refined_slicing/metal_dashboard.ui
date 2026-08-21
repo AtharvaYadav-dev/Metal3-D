@@ -958,54 +958,11 @@ QScrollBar::add-line, QScrollBar::sub-line {
                      <number>8</number>
                     </property>
                     <item>
-                     <layout class="QHBoxLayout" name="presetRow">
-                      <item>
-                       <widget class="QLabel" name="lbl_preset">
-                        <property name="text">
-                         <string>Preset Mass:</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="QComboBox" name="combo_powder_preset">
-                        <property name="styleSheet">
-                         <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #b8c4ff; padding: 4px; font-weight: bold;</string>
-                        </property>
-                        <item>
-                         <property name="text">
-                          <string>4.9 kg (Full Bay - 114.0 mm)</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>3.7 kg (75% Depth - 85.5 mm)</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>2.5 kg (50% Depth - 57.0 mm)</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>1.2 kg (25% Depth - 28.5 mm)</string>
-                         </property>
-                        </item>
-                        <item>
-                         <property name="text">
-                          <string>Custom Weight...</string>
-                         </property>
-                        </item>
-                       </widget>
-                      </item>
-                     </layout>
-                    </item>
-                    <item>
                      <layout class="QHBoxLayout" name="weightInputRow">
                       <item>
                        <widget class="QLabel" name="lbl_weight">
                         <property name="text">
-                         <string>Mass (kg):</string>
+                         <string>Mass (0.5 - 7.0 kg):</string>
                         </property>
                        </widget>
                       </item>
@@ -1015,10 +972,10 @@ QScrollBar::add-line, QScrollBar::sub-line {
                          <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #00f0ff; padding: 4px; font-weight: bold; font-family: 'JetBrains Mono';</string>
                         </property>
                         <property name="minimum">
-                         <double>0.00</double>
+                         <double>0.50</double>
                         </property>
                         <property name="maximum">
-                         <double>20.00</double>
+                         <double>7.00</double>
                         </property>
                         <property name="singleStep">
                          <double>0.10</double>
