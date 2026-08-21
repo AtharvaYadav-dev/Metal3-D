@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QTextEdit, QPushButton, QCheckBox,
     QFileDialog, QLabel, QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox,
     QProgressBar, QSlider, QGroupBox, QFrame, QStackedWidget, QVBoxLayout,
-    QHBoxLayout, QGridLayout, QFormLayout
+    QHBoxLayout, QGridLayout, QFormLayout, QMessageBox
 )
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, QObject, Signal, Slot, QThread, Qt, QTimer
@@ -147,128 +147,147 @@ class Print3DThread(QThread):
         self.is_running = False
         self.is_paused = False
 
+    def _check_pause_and_stop(self):
+        while self.is_paused and self.is_running:
+            time.sleep(0.1)
+        return self.is_running
+
+    def _get_telemetry(self, layer, step_info=""):
+        return {
+            "layer": layer,
+            "total_layers": self.total_layers,
+            "u_pos": self.stepper.u_position if self.stepper else 0.0,
+            "v_pos": self.stepper.v_position if self.stepper else 0.0,
+            "z_pos": self.stepper.z_position if self.stepper else 0.0,
+            "step_info": step_info,
+            "progress_pct": int(((layer - 1) / max(1, self.total_layers)) * 100)
+        }
+
+    def _smooth_z_move(self, target_z, layer, step_num, step_name):
+        """Moves Z axis to target position smoothly with continuous status & position updates."""
+        if not self._check_pause_and_stop():
+            return False
+
+        if self.stepper and self.stepper.connection and getattr(self.stepper.connection, 'is_initialized', False):
+            # Hardware move
+            self.stepper.move_z_absolute(target_z)
+            telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name}")
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} -> Z={target_z:.2f} mm", telemetry)
+        else:
+            # Smooth simulated movement
+            start_z = self.stepper.z_position if self.stepper else 0.0
+            dist = target_z - start_z
+            steps_cnt = max(5, int(abs(dist) / 20.0))
+            for i in range(1, steps_cnt + 1):
+                if not self._check_pause_and_stop():
+                    return False
+                curr = start_z + (dist * (i / steps_cnt))
+                if self.stepper:
+                    self.stepper.z_position = curr
+                telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name}")
+                self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} (Moving Z... {curr:.2f} mm)", telemetry)
+                time.sleep(0.04)
+        return self.is_running
+
     def run(self):
         for layer in range(1, self.total_layers + 1):
-            if not self.is_running:
+            if not self._check_pause_and_stop():
                 break
 
-            while self.is_paused and self.is_running:
-                time.sleep(0.2)
+            telemetry = self._get_telemetry(layer, "Starting Layer Process")
+            self.progress_signal.emit(
+                layer, self.total_layers,
+                f"\n======================================================\n[PROCESS LAYER {layer}/{self.total_layers}] INITIATING 11-STEP PROCESS\n======================================================",
+                telemetry
+            )
 
-            if not self.is_running:
+            # Step 1: RECOATER HOME(Z)
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z)", self._get_telemetry(layer, "Step 1/11: Recoater Home(Z)"))
+            if self.stepper:
+                self.stepper.home_z()
+            time.sleep(0.2)
+
+            # Step 2: BUILD PLATE HOME(U)
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U)", self._get_telemetry(layer, "Step 2/11: Build Plate Home(U)"))
+            if self.stepper:
+                self.stepper.home_u()
+            time.sleep(0.2)
+
+            # Step 3: POWDER BAY(V) WILL DO +0.02 MM
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 3/11: POWDER BAY(V) +0.02 MM", self._get_telemetry(layer, "Step 3/11: Powder Bay(V) +0.02 mm"))
+            if self.stepper:
+                self.stepper.move_relative("V", 0.02)
+            time.sleep(0.2)
+
+            # Step 4: RECOATER WILL MOVE TO 240 MM
+            if not self._smooth_z_move(240.0, layer, 4, "RECOATER MOVE TO 240 MM"):
                 break
-
-            telemetry = {
-                "layer": layer,
-                "total_layers": self.total_layers,
-                "u_pos": self.stepper.u_position if self.stepper else 0.0,
-                "v_pos": self.stepper.v_position if self.stepper else 0.0,
-                "z_pos": self.stepper.z_position if self.stepper else 0.0,
-                "progress_pct": int((layer / self.total_layers) * 100)
-            }
-
-            self.progress_signal.emit(
-                layer, self.total_layers,
-                f"[=== LPBF BUILD LAYER {layer}/{self.total_layers} ===",
-                telemetry
-            )
-
-            u_move = abs(self.layer_thickness)
-            self.progress_signal.emit(
-                layer, self.total_layers,
-                f"[BUILD PLATE U] Lowering Build Platform: DOWN +{u_move:.3f} mm",
-                telemetry
-            )
-            if self.stepper:
-                self.stepper.move_relative("U", u_move)
             time.sleep(0.2)
 
-            v_move = self.layer_thickness * 1.5
-            self.progress_signal.emit(
-                layer, self.total_layers,
-                f"[POWDER BAY V] Supplying Powder: UP +{v_move:.3f} mm",
-                telemetry
-            )
+            # Step 5: WAIT FOR 5 SECS TO LASER PRINTING FOR NOW WILL WAIT FOR 5 SECS
+            if not self._check_pause_and_stop(): break
+            for sec in range(5, 0, -1):
+                if not self._check_pause_and_stop(): break
+                self.progress_signal.emit(
+                    layer, self.total_layers,
+                    f"[Layer {layer}/{self.total_layers}] Step 5/11: LASER PRINTING SIMULATION... ({sec}s remaining)",
+                    self._get_telemetry(layer, f"Step 5/11: Laser Printing ({sec}s)")
+                )
+                for _ in range(10):
+                    if not self._check_pause_and_stop(): break
+                    time.sleep(0.1)
+
+            if not self._check_pause_and_stop(): break
+
+            # Step 6: BUILD PLATE WILL DO -0.02 MM
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 6/11: BUILD PLATE(U) -0.02 MM", self._get_telemetry(layer, "Step 6/11: Build Plate(U) -0.02 mm"))
             if self.stepper:
-                self.stepper.move_relative("V", v_move)
+                self.stepper.move_relative("U", -0.02)
             time.sleep(0.2)
 
+            # Step 7: RECOATER WILL MOVE TO 760 MM
+            if not self._smooth_z_move(760.0, layer, 7, "RECOATER MOVE TO 760 MM"):
+                break
+            time.sleep(0.2)
+
+            # Step 8: BUILD PLATE WILL DO -0.02 MM
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 8/11: BUILD PLATE(U) -0.02 MM", self._get_telemetry(layer, "Step 8/11: Build Plate(U) -0.02 mm"))
+            if self.stepper:
+                self.stepper.move_relative("U", -0.02)
+            time.sleep(0.2)
+
+            # Step 9: RECOATER HOME(Z)
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 9/11: RECOATER HOME(Z)", self._get_telemetry(layer, "Step 9/11: Recoater Home(Z)"))
+            if self.stepper:
+                self.stepper.home_z()
+            time.sleep(0.2)
+
+            # Step 10: BUILD PLATE WILL DO +0.02 MM
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 10/11: BUILD PLATE(U) +0.02 MM", self._get_telemetry(layer, "Step 10/11: Build Plate(U) +0.02 mm"))
+            if self.stepper:
+                self.stepper.move_relative("U", 0.02)
+            time.sleep(0.2)
+
+            # Step 11: POWDER BAY(V) WILL DO +0.02 MM
+            if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 11/11: POWDER BAY(V) +0.02 MM", self._get_telemetry(layer, "Step 11/11: Powder Bay(V) +0.02 mm"))
+            if self.stepper:
+                self.stepper.move_relative("V", 0.02)
+            time.sleep(0.2)
+
+            # Finish layer
+            telemetry = self._get_telemetry(layer, "Layer Finished")
+            telemetry["progress_pct"] = int((layer / max(1, self.total_layers)) * 100)
             self.progress_signal.emit(
                 layer, self.total_layers,
-                f"[RECOATER Z] Sweeping dosing blade across build bed (300.0 mm)...",
-                telemetry
-            )
-            if self.stepper:
-                self.stepper.move_z_relative(300.0)
-                time.sleep(0.4)
-                self.stepper.move_z_relative(-300.0)
-                time.sleep(0.4)
-            else:
-                time.sleep(0.3)
-
-            layer_planner = MotionPlanner()
-            polys_to_print = []
-
-            if self.mesh:
-                z_height = layer * self.layer_thickness
-                angle_deg = (layer * 67.0) % 360.0
-                if z_height <= self.mesh.bounds[1][2]:
-                    self.progress_signal.emit(
-                        layer, self.total_layers,
-                        f"[LPBF SLICER] Solidifying Layer {layer}/{self.total_layers} at Z={z_height:.3f} mm (Bottom Cones + Part, 67° Hatch Angle: {angle_deg:.1f}°)...",
-                        telemetry
-                    )
-                    try:
-                        if not hasattr(self, "slicer"):
-                            self.slicer = MetalLPBFSlicer(layer_thickness=self.layer_thickness, hatch_spacing=0.10, hatch_angle_step=67.0)
-                        vec_data = self.slicer.slice_build_layer(self.mesh, self.support_mesh, z_height, layer_index=layer)
-                        polys_to_print = vec_data.get("all_vectors", [])
-                    except Exception as err:
-                        self.progress_signal.emit(
-                            layer, self.total_layers,
-                            f"[SLICER WARNING] Solidification error at Z={z_height:.3f}: {err}",
-                            telemetry
-                        )
-            else:
-                polys_to_print = self.base_polygons or []
-
-            if polys_to_print and self.config:
-                for poly in polys_to_print:
-                    if not poly:
-                        continue
-                    pt = poly[0]
-                    gx, gy = self.config.apply_transform(pt[0], pt[1])
-                    layer_planner.add_jump(gx, gy, speed=2000000)
-                    for pt in poly[1:]:
-                        gx, gy = self.config.apply_transform(pt[0], pt[1])
-                        layer_planner.add_mark(gx, gy, speed=1000000)
-                layer_planner.optimize_path()
-                layer_planner.commit_to_send_queue()
-
-            if self.galvo and layer_planner.send_queue:
-                self.progress_signal.emit(
-                    layer, self.total_layers,
-                    f"[LASER SIMULATOR] Firing fiber laser - {len(layer_planner.send_queue)} vector commands...",
-                    telemetry
-                )
-                if hasattr(self.galvo, 'execute_queue'):
-                    self.galvo.execute_queue(layer_planner.send_queue, loop_count=1)
-            else:
-                self.progress_signal.emit(
-                    layer, self.total_layers,
-                    f"[LASER SIMULATOR] Simulating fiber laser exposure on Layer {layer} (67° Hatch Angle)...",
-                    telemetry
-                )
-                time.sleep(0.3)
-
-            if self.stepper:
-                telemetry["u_pos"] = self.stepper.u_position
-                telemetry["v_pos"] = self.stepper.v_position
-                telemetry["z_pos"] = self.stepper.z_position
-
-            self.progress_signal.emit(
-                layer, self.total_layers,
-                f"Layer {layer}/{self.total_layers} Solidified & Completed Successfully.",
+                f"[Layer {layer}/{self.total_layers}] Layer {layer} Completed Successfully.",
                 telemetry
             )
 
@@ -356,6 +375,7 @@ class Metal3DPrinterApp:
         # State Variables
         self.travel_step = 10.0
         self.active_file_path = None
+        self.powder_prep_done = False
         self.galvo_config = CoordinateConfig()
         self.metal_slicer = MetalLPBFSlicer(layer_thickness=0.05, hatch_spacing=0.10, hatch_angle_step=67.0)
         self.support_generator = ConeSupportGenerator(cone_diameter=0.5, grid_spacing=2.0, base_elevation=5.0)
@@ -467,7 +487,7 @@ class Metal3DPrinterApp:
                 self.stepper_controller = None
         except Exception as err:
             print("[Stepper Warning] Stepper init notice:", err)
-            self.stepper_controller = None
+            self.stepper_controller = StepperController(None) if StepperController else None
 
     def _setup_console_logger(self):
         """Wires stdout/stderr to PySide6 console log text edit."""
@@ -611,6 +631,7 @@ class Metal3DPrinterApp:
 
         def on_set_powder_depth():
             depth_mm, weight_kg, density = recalculate()
+            self.powder_prep_done = True
             if self.stepper_controller:
                 print(f"\n[Powder Prep] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {weight_kg:.2f} kg powder (Density: {density:.2f} g/cm³)...")
                 self.stepper_controller.move_axis('V', depth_mm)
@@ -1140,8 +1161,13 @@ class Metal3DPrinterApp:
             self.window.btn_import_build.clicked.connect(lambda checked=False: self.load_build_file_action())
 
     def _setup_process_controls(self):
-        """Wires Start, Pause, Resume, and Stop print process control buttons."""
+        """Wires Start, Pause, Resume, and Stop print process control buttons with checks and UI progress updates."""
         slider_layer = self.get_widget("slider_layer")
+        slider_build_layer = self.get_widget("slider_build_layer")
+        lbl_status = self.get_widget("lblStatusBadge")
+        lbl_calc_layers = self.get_widget("lbl_calc_layers")
+        lbl_build_layer_info = self.get_widget("lbl_build_layer_info")
+        progress_bar = self.get_widget("progressBar")
 
         def start_sim_action():
             if self.print_thread and self.print_thread.isRunning():
@@ -1168,10 +1194,28 @@ class Metal3DPrinterApp:
                 self.render_3d_preview(current_layer=layer, max_layer=total)
                 if slider_layer:
                     slider_layer.setValue(layer)
-                if hasattr(self.window, 'progressBar'):
-                    self.window.progressBar.setValue(telemetry.get('progress_pct', 0))
+                if slider_build_layer:
+                    slider_build_layer.setValue(layer)
+                if progress_bar:
+                    progress_bar.setValue(telemetry.get('progress_pct', 0))
+                if lbl_status:
+                    lbl_status.setText(f"PRINTING LAYER {layer} / {total}")
+                if lbl_calc_layers:
+                    lbl_calc_layers.setText(f"Printing Layer {layer} / {total} Layers")
+                if lbl_build_layer_info:
+                    z_val = telemetry.get('z_pos', 0.0)
+                    lbl_build_layer_info.setText(f"Layer {layer} / {total} (Z={z_val:.3f} mm)")
+
+            def on_finished():
+                print("\n🎉 [PROCESS COMPLETED] ALL LAYERS PRINTED SUCCESSFULLY!")
+                if lbl_status:
+                    lbl_status.setText("PROCESS COMPLETE")
+                btn_pause = self.get_widget("btn_pause_process")
+                if btn_pause:
+                    btn_pause.setText("PAUSE PROCESS")
 
             self.print_thread.progress_signal.connect(on_progress)
+            self.print_thread.finished_signal.connect(on_finished)
             self.print_thread.start()
 
         if hasattr(self.window, 'btn_act_simulate'):
@@ -1182,44 +1226,78 @@ class Metal3DPrinterApp:
                 if getattr(self.print_thread, 'is_paused', False):
                     self.print_thread.resume()
                     print("\n[PROCESS] PRINT PROCESS RESUMED BY USER.")
-                    if hasattr(self.window, 'btn_pause_process'):
-                        self.window.btn_pause_process.setText("PAUSE PROCESS")
+                    btn_pause = self.get_widget("btn_pause_process")
+                    if btn_pause:
+                        btn_pause.setText("PAUSE PROCESS")
+                    if lbl_status:
+                        lbl_status.setText("PRINTING IN PROGRESS")
                 else:
                     print("\n[WARNING] PRINT PROCESS IS ALREADY RUNNING.")
                 return
-            print("\n[PROCESS] STARTING LPBF PRINT PROCESS...")
+
+            # Check 1: Powder bay preparation check
+            if not self.powder_prep_done:
+                print("\n⚠️ [PROCESS BLOCKED] Powder bay preparation is not completed!")
+                QMessageBox.warning(
+                    self.window,
+                    "Powder Bay Preparation",
+                    "Please set the powder bay depth!"
+                )
+                return
+
+            # Check 2: Valid file selection check
+            if not self.active_file_path or (not self.loaded_mesh and not self.loaded_base_polygons):
+                print("\n⚠️ [PROCESS BLOCKED] No valid LPBF build file selected!")
+                QMessageBox.warning(
+                    self.window,
+                    "File Selection Required",
+                    "Please select a valid file!"
+                )
+                return
+
+            print("\n🚀 [PROCESS] EVERYTHING IS OK. STARTING LPBF PRINT PROCESS...")
+            btn_pause = self.get_widget("btn_pause_process")
+            if btn_pause:
+                btn_pause.setText("PAUSE PROCESS")
             start_sim_action()
 
         def pause_process_action():
             if self.print_thread and self.print_thread.isRunning():
+                btn_pause = self.get_widget("btn_pause_process")
                 if getattr(self.print_thread, 'is_paused', False):
                     self.print_thread.resume()
                     print("\n[PROCESS] PRINT PROCESS RESUMED BY USER.")
-                    if hasattr(self.window, 'btn_pause_process'):
-                        self.window.btn_pause_process.setText("PAUSE PROCESS")
+                    if btn_pause:
+                        btn_pause.setText("PAUSE PROCESS")
+                    if lbl_status:
+                        lbl_status.setText("PRINTING IN PROGRESS")
                 else:
                     self.print_thread.pause()
                     print("\n[PROCESS] PRINT PROCESS PAUSED BY USER.")
-                    if hasattr(self.window, 'btn_pause_process'):
-                        self.window.btn_pause_process.setText("RESUME PROCESS")
+                    if btn_pause:
+                        btn_pause.setText("RESUME PROCESS")
+                    if lbl_status:
+                        lbl_status.setText("PAUSED")
             else:
                 print("\n[WARNING] NO ACTIVE PRINT PROCESS TO PAUSE.")
 
         def stop_process_action():
             if self.print_thread and self.print_thread.isRunning():
                 self.print_thread.stop()
-                print("\n[PROCESS] PRINT PROCESS CANCELED BY USER.")
-                if hasattr(self.window, 'btn_pause_process'):
-                    self.window.btn_pause_process.setText("PAUSE PROCESS")
+                print("\n[PROCESS] PRINT PROCESS STOPPED BY USER.")
+                btn_pause = self.get_widget("btn_pause_process")
+                if btn_pause:
+                    btn_pause.setText("PAUSE PROCESS")
+                if lbl_status:
+                    lbl_status.setText("STOPPED")
+                if progress_bar:
+                    progress_bar.setValue(0)
             else:
                 print("\n[WARNING] NO ACTIVE PRINT PROCESS TO STOP.")
 
-        if hasattr(self.window, 'btn_start_process'):
-            self.window.btn_start_process.clicked.connect(start_process_action)
-        if hasattr(self.window, 'btn_pause_process'):
-            self.window.btn_pause_process.clicked.connect(pause_process_action)
-        if hasattr(self.window, 'btn_stop_process'):
-            self.window.btn_stop_process.clicked.connect(stop_process_action)
+        self._connect_unique_buttons(['btn_start_process'], lambda checked=False: start_process_action())
+        self._connect_unique_buttons(['btn_pause_process'], lambda checked=False: pause_process_action())
+        self._connect_unique_buttons(['btn_stop_process'], lambda checked=False: stop_process_action())
 
     def _setup_telemetry_gauges(self):
         """Swaps static labels with CircularGauge widgets."""
