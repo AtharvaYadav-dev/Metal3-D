@@ -163,31 +163,59 @@ class Print3DThread(QThread):
             "progress_pct": int(((layer - 1) / max(1, self.total_layers)) * 100)
         }
 
+    def _wait_for_stepper_ready(self, layer, step_info=""):
+        """Waits until hardware or simulation stepper motion is completely finished before moving to next step."""
+        if not self._check_pause_and_stop():
+            return False
+        if self.stepper and hasattr(self.stepper, 'next_ready_time'):
+            while time.time() < self.stepper.next_ready_time:
+                if not self._check_pause_and_stop():
+                    return False
+                time.sleep(0.05)
+        return self._check_pause_and_stop()
+
     def _smooth_z_move(self, target_z, layer, step_num, step_name):
-        """Moves Z axis to target position smoothly with continuous status & position updates."""
+        """Moves Z axis to target position smoothly and blocks until target position is reached."""
         if not self._check_pause_and_stop():
             return False
 
         if self.stepper and self.stepper.connection and getattr(self.stepper.connection, 'is_initialized', False):
             # Hardware move
             self.stepper.move_z_absolute(target_z)
+            if not self._wait_for_stepper_ready(layer, step_name):
+                return False
             telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name}")
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} -> Z={target_z:.2f} mm", telemetry)
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} -> REACHED Z={target_z:.2f} mm", telemetry)
         else:
-            # Smooth simulated movement
+            # Smooth simulated movement with step-by-step position updates until target reached
             start_z = self.stepper.z_position if self.stepper else 0.0
             dist = target_z - start_z
-            steps_cnt = max(5, int(abs(dist) / 20.0))
-            for i in range(1, steps_cnt + 1):
-                if not self._check_pause_and_stop():
-                    return False
-                curr = start_z + (dist * (i / steps_cnt))
-                if self.stepper:
-                    self.stepper.z_position = curr
-                telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name}")
-                self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} (Moving Z... {curr:.2f} mm)", telemetry)
-                time.sleep(0.04)
-        return self.is_running
+            if abs(dist) > 0.001:
+                steps_cnt = max(10, int(abs(dist) / 10.0))  # 10mm per step for clear visual motion
+                for i in range(1, steps_cnt + 1):
+                    if not self._check_pause_and_stop():
+                        return False
+                    curr = start_z + (dist * (i / steps_cnt))
+                    if self.stepper:
+                        self.stepper.z_position = curr
+                    telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name}")
+                    self.progress_signal.emit(
+                        layer, self.total_layers,
+                        f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} (Moving Z... {curr:.2f} mm / {target_z:.2f} mm)",
+                        telemetry
+                    )
+                    time.sleep(0.06)
+
+            if self.stepper:
+                self.stepper.z_position = target_z
+
+            telemetry = self._get_telemetry(layer, f"Step {step_num}/11: {step_name} Complete")
+            self.progress_signal.emit(
+                layer, self.total_layers,
+                f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} DONE -> Recoater reached Z={target_z:.2f} mm",
+                telemetry
+            )
+        return self._check_pause_and_stop()
 
     def run(self):
         for layer in range(1, self.total_layers + 1):
@@ -203,37 +231,48 @@ class Print3DThread(QThread):
 
             # Step 1: RECOATER HOME(Z)
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z)", self._get_telemetry(layer, "Step 1/11: Recoater Home(Z)"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z) IN PROGRESS...", self._get_telemetry(layer, "Step 1/11: Recoater Homing"))
             if self.stepper:
                 self.stepper.home_z()
+            if not self._wait_for_stepper_ready(layer, "Step 1/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z) DONE (Z=0.00 mm)", self._get_telemetry(layer, "Step 1/11: Recoater Home DONE"))
             time.sleep(0.2)
 
             # Step 2: BUILD PLATE HOME(U)
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U)", self._get_telemetry(layer, "Step 2/11: Build Plate Home(U)"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) IN PROGRESS...", self._get_telemetry(layer, "Step 2/11: Build Plate Homing"))
             if self.stepper:
                 self.stepper.home_u()
+            if not self._wait_for_stepper_ready(layer, "Step 2/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) DONE (U=0.00 mm)", self._get_telemetry(layer, "Step 2/11: Build Plate Home DONE"))
             time.sleep(0.2)
 
             # Step 3: POWDER BAY(V) WILL DO +0.02 MM
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 3/11: POWDER BAY(V) +0.02 MM", self._get_telemetry(layer, "Step 3/11: Powder Bay(V) +0.02 mm"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 3/11: POWDER BAY(V) +0.02 MM IN PROGRESS...", self._get_telemetry(layer, "Step 3/11: Powder Bay +0.02mm"))
             if self.stepper:
                 self.stepper.move_relative("V", 0.02)
+            if not self._wait_for_stepper_ready(layer, "Step 3/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 3/11: POWDER BAY(V) +0.02 MM DONE", self._get_telemetry(layer, "Step 3/11: Powder Bay DONE"))
             time.sleep(0.2)
 
-            # Step 4: RECOATER WILL MOVE TO 240 MM
+            # Step 4: RECOATER WILL MOVE TO 240 MM (BLOCKS UNTIL Z REACHES EXACTLY 240 MM)
             if not self._smooth_z_move(240.0, layer, 4, "RECOATER MOVE TO 240 MM"):
                 break
             time.sleep(0.2)
 
-            # Step 5: WAIT FOR 5 SECS TO LASER PRINTING FOR NOW WILL WAIT FOR 5 SECS
+            # Step 5: WAIT FOR 5 SECS TO LASER PRINTING (STARTS ONLY AFTER RECOATER IS CONFIRMED AT 240 MM)
             if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(
+                layer, self.total_layers,
+                f"[Layer {layer}/{self.total_layers}] Step 5/11: Recoater verified at 240.00 mm. STARTING LASER PRINTING (5 Seconds Simulation)...",
+                self._get_telemetry(layer, "Step 5/11: Laser Printing Start")
+            )
             for sec in range(5, 0, -1):
                 if not self._check_pause_and_stop(): break
                 self.progress_signal.emit(
                     layer, self.total_layers,
-                    f"[Layer {layer}/{self.total_layers}] Step 5/11: LASER PRINTING SIMULATION... ({sec}s remaining)",
+                    f"[Layer {layer}/{self.total_layers}] Step 5/11: LASER PRINTING... ({sec}s remaining)",
                     self._get_telemetry(layer, f"Step 5/11: Laser Printing ({sec}s)")
                 )
                 for _ in range(10):
@@ -241,45 +280,56 @@ class Print3DThread(QThread):
                     time.sleep(0.1)
 
             if not self._check_pause_and_stop(): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 5/11: LASER PRINTING DONE", self._get_telemetry(layer, "Step 5/11: Laser Printing DONE"))
 
             # Step 6: BUILD PLATE WILL DO -0.02 MM
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 6/11: BUILD PLATE(U) -0.02 MM", self._get_telemetry(layer, "Step 6/11: Build Plate(U) -0.02 mm"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 6/11: BUILD PLATE(U) -0.02 MM IN PROGRESS...", self._get_telemetry(layer, "Step 6/11: Build Plate -0.02mm"))
             if self.stepper:
                 self.stepper.move_relative("U", -0.02)
+            if not self._wait_for_stepper_ready(layer, "Step 6/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 6/11: BUILD PLATE(U) -0.02 MM DONE", self._get_telemetry(layer, "Step 6/11: Build Plate DONE"))
             time.sleep(0.2)
 
-            # Step 7: RECOATER WILL MOVE TO 760 MM
+            # Step 7: RECOATER WILL MOVE TO 760 MM (BLOCKS UNTIL Z REACHES EXACTLY 760 MM)
             if not self._smooth_z_move(760.0, layer, 7, "RECOATER MOVE TO 760 MM"):
                 break
             time.sleep(0.2)
 
             # Step 8: BUILD PLATE WILL DO -0.02 MM
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 8/11: BUILD PLATE(U) -0.02 MM", self._get_telemetry(layer, "Step 8/11: Build Plate(U) -0.02 mm"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 8/11: BUILD PLATE(U) -0.02 MM IN PROGRESS...", self._get_telemetry(layer, "Step 8/11: Build Plate -0.02mm"))
             if self.stepper:
                 self.stepper.move_relative("U", -0.02)
+            if not self._wait_for_stepper_ready(layer, "Step 8/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 8/11: BUILD PLATE(U) -0.02 MM DONE", self._get_telemetry(layer, "Step 8/11: Build Plate DONE"))
             time.sleep(0.2)
 
             # Step 9: RECOATER HOME(Z)
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 9/11: RECOATER HOME(Z)", self._get_telemetry(layer, "Step 9/11: Recoater Home(Z)"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 9/11: RECOATER HOME(Z) IN PROGRESS...", self._get_telemetry(layer, "Step 9/11: Recoater Homing"))
             if self.stepper:
                 self.stepper.home_z()
+            if not self._wait_for_stepper_ready(layer, "Step 9/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 9/11: RECOATER HOME(Z) DONE (Z=0.00 mm)", self._get_telemetry(layer, "Step 9/11: Recoater Home DONE"))
             time.sleep(0.2)
 
             # Step 10: BUILD PLATE WILL DO +0.02 MM
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 10/11: BUILD PLATE(U) +0.02 MM", self._get_telemetry(layer, "Step 10/11: Build Plate(U) +0.02 mm"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 10/11: BUILD PLATE(U) +0.02 MM IN PROGRESS...", self._get_telemetry(layer, "Step 10/11: Build Plate +0.02mm"))
             if self.stepper:
                 self.stepper.move_relative("U", 0.02)
+            if not self._wait_for_stepper_ready(layer, "Step 10/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 10/11: BUILD PLATE(U) +0.02 MM DONE", self._get_telemetry(layer, "Step 10/11: Build Plate DONE"))
             time.sleep(0.2)
 
             # Step 11: POWDER BAY(V) WILL DO +0.02 MM
             if not self._check_pause_and_stop(): break
-            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 11/11: POWDER BAY(V) +0.02 MM", self._get_telemetry(layer, "Step 11/11: Powder Bay(V) +0.02 mm"))
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 11/11: POWDER BAY(V) +0.02 MM IN PROGRESS...", self._get_telemetry(layer, "Step 11/11: Powder Bay +0.02mm"))
             if self.stepper:
                 self.stepper.move_relative("V", 0.02)
+            if not self._wait_for_stepper_ready(layer, "Step 11/11"): break
+            self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 11/11: POWDER BAY(V) +0.02 MM DONE", self._get_telemetry(layer, "Step 11/11: Powder Bay DONE"))
             time.sleep(0.2)
 
             # Finish layer
@@ -589,6 +639,19 @@ class Metal3DPrinterApp:
         def on_slider_changed(val):
             if slider_layer:
                 max_val = slider_layer.maximum()
+                thick = self.metal_slicer.layer_thickness if hasattr(self, 'metal_slicer') else 0.05
+                z_cut = val * thick
+                lbl_info = self.get_widget("lbl_build_layer_info")
+                if lbl_info:
+                    lbl_info.setText(f"Layer {val} / {max_val} (Z={z_cut:.3f} mm)")
+                lbl_calc = self.get_widget("lbl_calc_layers")
+                if lbl_calc:
+                    lbl_calc.setText(f"Layer {val} / {max_val} Layers")
+                slider_build = self.get_widget("slider_build_layer")
+                if slider_build and slider_build.value() != val:
+                    slider_build.blockSignals(True)
+                    slider_build.setValue(val)
+                    slider_build.blockSignals(False)
                 self.render_3d_preview(current_layer=val, max_layer=max_val)
 
         if slider_layer:
@@ -759,13 +822,32 @@ class Metal3DPrinterApp:
         print(f"[Build Slicer] Layer {current_layer}/{total_layers} Sliced & Hatched (Part: {len(vec_data['part_contours'])} contours, {len(vec_data['part_hatches'])} hatches | Supports: {len(vec_data['support_contours'])} contours, {len(vec_data['support_hatches'])} hatches).")
 
     def _on_build_layer_slider_changed(self, layer_idx):
-        """Updates 2D Galvo preview and 3D Hatching overlay when Build Setup layer slider moves."""
+        """Updates 2D Galvo preview, 3D Hatching overlay, and layer info label when Build Setup layer slider moves."""
         if not self.loaded_mesh or not trimesh:
             return
 
         thick = self.metal_slicer.layer_thickness
         max_z = self.loaded_mesh.bounds[1][2]
         total_layers = max(1, int(math.ceil(max_z / thick)))
+        z_cut = layer_idx * thick
+
+        lbl_info = self.get_widget("lbl_build_layer_info")
+        if lbl_info:
+            lbl_info.setText(f"Layer {layer_idx} / {total_layers} (Z={z_cut:.3f} mm)")
+
+        lbl_calc = self.get_widget("lbl_calc_layers")
+        if lbl_calc:
+            lbl_calc.setText(f"Layer {layer_idx} / {total_layers} Layers")
+
+        slider_dash = self.get_widget("slider_layer")
+        if slider_dash and slider_dash.value() != layer_idx:
+            slider_dash.blockSignals(True)
+            slider_dash.setValue(layer_idx)
+            slider_dash.blockSignals(False)
+
+        vec_data = self.metal_slicer.slice_build_layer(self.loaded_mesh, self.loaded_support_mesh, z_cut, layer_index=layer_idx)
+        if self.build_setup_galvo_preview:
+            self.build_setup_galvo_preview.draw_layer_vectors(vec_data, z_height=z_cut, layer_idx=layer_idx)
 
         self.render_3d_preview(current_layer=layer_idx, max_layer=total_layers)
 
@@ -1192,10 +1274,14 @@ class Metal3DPrinterApp:
                 print(msg)
                 self.update_axis_lcds()
                 self.render_3d_preview(current_layer=layer, max_layer=total)
-                if slider_layer:
+                if slider_layer and slider_layer.value() != layer:
+                    slider_layer.blockSignals(True)
                     slider_layer.setValue(layer)
-                if slider_build_layer:
+                    slider_layer.blockSignals(False)
+                if slider_build_layer and slider_build_layer.value() != layer:
+                    slider_build_layer.blockSignals(True)
                     slider_build_layer.setValue(layer)
+                    slider_build_layer.blockSignals(False)
                 if progress_bar:
                     progress_bar.setValue(telemetry.get('progress_pct', 0))
                 if lbl_status:
@@ -1203,8 +1289,9 @@ class Metal3DPrinterApp:
                 if lbl_calc_layers:
                     lbl_calc_layers.setText(f"Printing Layer {layer} / {total} Layers")
                 if lbl_build_layer_info:
-                    z_val = telemetry.get('z_pos', 0.0)
-                    lbl_build_layer_info.setText(f"Layer {layer} / {total} (Z={z_val:.3f} mm)")
+                    thick = self.metal_slicer.layer_thickness if hasattr(self, 'metal_slicer') else 0.05
+                    z_layer = layer * thick
+                    lbl_build_layer_info.setText(f"Layer {layer} / {total} (Z={z_layer:.3f} mm)")
 
             def on_finished():
                 print("\n🎉 [PROCESS COMPLETED] ALL LAYERS PRINTED SUCCESSFULLY!")
