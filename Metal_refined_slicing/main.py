@@ -580,19 +580,37 @@ class Metal3DPrinterApp:
                     parent_layout.addWidget(btn_sensor_debug)
 
     def _setup_navigation(self):
-        """Maps sidebar buttons to stackedWidget pages."""
+        """Maps sidebar buttons to stackedWidget pages and keeps a single active highlight."""
         nav_map = {
             'btnDashboard': 0,
             'btnMachineControl': 1,
             'btnBuildSetup': 2,
             'btnSettings': 3
         }
-        if hasattr(self.window, "stackedWidget"):
-            for btn_name, page_idx in nav_map.items():
-                if hasattr(self.window, btn_name):
-                    btn = getattr(self.window, btn_name)
-                    btn.clicked.connect(lambda checked=False, idx=page_idx: self.window.stackedWidget.setCurrentIndex(idx))
+        self._nav_buttons = {}
+        for btn_name, page_idx in nav_map.items():
+            btn = self.get_widget(btn_name)
+            if not btn:
+                continue
+            btn.setCheckable(True)
+            self._nav_buttons[page_idx] = btn
+            btn.clicked.connect(lambda checked=False, idx=page_idx: self._on_nav_clicked(idx))
 
+        if hasattr(self.window, "stackedWidget"):
+            self.window.stackedWidget.currentChanged.connect(self._sync_nav_highlight)
+            self.window.stackedWidget.setCurrentIndex(0)
+            self._sync_nav_highlight(0)
+
+    def _on_nav_clicked(self, page_idx):
+        """Opens the selected page, then keeps only that nav button highlighted."""
+        if hasattr(self.window, "stackedWidget"):
+            self.window.stackedWidget.setCurrentIndex(page_idx)
+        self._sync_nav_highlight(page_idx)
+
+    def _sync_nav_highlight(self, page_idx):
+        """Clears the active style on all nav buttons, then applies it only to the current page."""
+        for idx, btn in getattr(self, "_nav_buttons", {}).items():
+            btn.setChecked(idx == page_idx)
     def _setup_3d_view(self):
         """Swaps 3D preview placeholder label with CustomGLViewWidget and sets up controls."""
         lbl_3d = self.get_widget("lbl_3d_preview_placeholder")
