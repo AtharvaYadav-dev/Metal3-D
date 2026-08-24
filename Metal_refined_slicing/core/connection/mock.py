@@ -56,6 +56,12 @@ class MockConnection(BaseConnection):
         # Mock mode can always return 0 (not triggered)
         return 0
 
+    def sd_stop(self, axis='Z', dec_time=0.05):
+        log_command(f"SD_STOP {axis}")
+
+    def stop(self, axis=None):
+        log_command(f"STOP {axis if axis else 'ALL'}")
+
     def get_axis_position(self, axis):
         # Mock mode doesn't track position automatically, return 0 or simulated position
         return 0

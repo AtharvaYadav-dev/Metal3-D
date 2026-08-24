@@ -54,8 +54,12 @@ class BaseConnection:
         """Sends the command buffer to the physical hardware."""
         pass
 
-    def stop(self):
+    def stop(self, axis=None):
         """Emergency stops the execution."""
+        pass
+
+    def sd_stop(self, axis='Z', dec_time=0.05):
+        """Smoothly stops motion for the specified axis."""
         pass
 
     def sd_stop(self, axis='Z'):

@@ -213,6 +213,25 @@ class HardwareConnection(BaseConnection):
             except Exception as e:
                 print(f"Error moving axis: {e}")
 
+    def sd_stop(self, axis='Z', dec_time=0.05):
+        """Smoothly decelerates and stops the specified axis."""
+        if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_sd_stop'):
+            axis_map = {'X': 0, 'Y': 1, 'Z': 2, 'U': 3, 'V': 4}
+            axis_idx = axis_map.get(str(axis).upper(), 2)
+            try:
+                self.dll.GT_PROSYS_U3_sd_stop(c_short(axis_idx), c_double(dec_time))
+                print(f"[Hardware] Motion stopped for Axis {axis} (index {axis_idx}).")
+            except Exception as e:
+                print(f"[Hardware] Error stopping axis {axis}: {e}")
+
+    def stop(self, axis=None):
+        """Stops motion on specified axis or all axes if None."""
+        if axis is not None:
+            self.sd_stop(axis)
+        else:
+            for ax in ['Z', 'U', 'V', 'X', 'Y']:
+                self.sd_stop(ax)
+
     def get_home_status(self, axis='Z'):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_get_home_status'):
             axis_map = {'X': 0, 'Y': 1, 'Z': 2, 'U': 3, 'V': 4}

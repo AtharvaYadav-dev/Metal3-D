@@ -295,6 +295,14 @@ class StepperController:
             self.connection.sd_stop(ax)
         return False
 
+    def stop_axis(self, axis='V'):
+        """Triggers hardware deceleration stop for the specified axis."""
+        ax = str(axis).upper()
+        if hasattr(self.connection, 'sd_stop'):
+            self.connection.sd_stop(ax, dec_time=0.05)
+        elif hasattr(self.connection, 'stop'):
+            self.connection.stop(ax)
+
     def home_v(self, app_instance=None):
         """
         Smooth Homing Sequence for V-Axis (Powder Bay):
@@ -334,10 +342,7 @@ class StepperController:
             status = self.connection.get_home_status(ax)
             if status == self.trigger_state:
                 print("[SENSOR TRIGGERED] V-Axis Home Sensor Triggered! Halting motion smoothly.")
-                if hasattr(self.connection, 'sd_stop'):
-                    self.connection.sd_stop(ax)
-                elif hasattr(self.connection, 'stop'):
-                    self.connection.stop()
+                self.stop_axis(ax)
                 time.sleep(0.1)
 
                 self.move_relative(ax, 1.0, speed=1600, ignore_limits=True)
@@ -349,13 +354,11 @@ class StepperController:
                 print("V-Axis Homing Successful! Position set to 0.000 mm.")
                 return True
 
-
             if app_instance:
                 app_instance.processEvents()
             time.sleep(0.015)
 
         print("V-Axis Homing failed: Timeout reached without hitting switch.")
-        if hasattr(self.connection, 'sd_stop'):
-            self.connection.sd_stop(ax)
+        self.stop_axis(ax)
         return False
 
