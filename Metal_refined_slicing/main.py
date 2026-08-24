@@ -798,11 +798,16 @@ class Metal3DPrinterApp:
             depth_mm, weight_kg, density, powder_name, model_h = recalculate()
             self.powder_prep_done = True
             if self.stepper_controller:
-                print(f"\n[Powder Prep] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg, Bulk Density: {density:.2f} g/cm³)...")
+                print(f"\n[Powder Prep] Homing Powder Bay (V-Axis) prior to setting depth...")
+                self.stepper_controller.home_v(app_instance=self.app)
+                print(f"[Powder Prep] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg, Bulk Density: {density:.2f} g/cm³)...")
                 self.stepper_controller.move_axis('V', depth_mm)
                 self.update_axis_lcds()
             else:
-                print(f"\n[Powder Prep (Simulated)] Powder Bay (V-Axis) depth set to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg powder).")
+                print(f"\n[Powder Prep (Simulated)] Homing Powder Bay (V-Axis)...")
+                if hasattr(self, 'stepper_controller') and self.stepper_controller:
+                    self.stepper_controller.v_position = 0.0
+                print(f"[Powder Prep (Simulated)] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg powder).")
 
         if cmb_powder:
             cmb_powder.currentIndexChanged.connect(lambda i: recalculate())
@@ -1048,9 +1053,7 @@ class Metal3DPrinterApp:
         if dspn_model_h and model_height_z > 0:
             dspn_model_h.setValue(model_height_z)
 
-        # Automatically set/move Powder Bay position for the design file
-        if hasattr(self, 'on_set_powder_depth') and callable(self.on_set_powder_depth):
-            self.on_set_powder_depth()
+
 
         lbl_file = self.get_widget("lbl_build_file_name")
         if lbl_file:
