@@ -132,7 +132,7 @@ class StepperController:
 
         return True
 
-    def move_z_relative(self, distance_mm, speed=10000, ignore_limits=False):
+    def move_z_relative(self, distance_mm, speed=35000, ignore_limits=False):
         """
         Moves the Z axis relative to the current position in mm.
         (Pulses are inverted so that positive distance moves UPWARD physically)
@@ -157,13 +157,13 @@ class StepperController:
         print(f"Moving Axis Z relative by {distance_mm:+.3f} mm ({pulses} pulses) at speed {speed}")
         self.connection.axis_move('Z', pulses, speed, is_relative=True)
 
-        travel_time = (abs(pulses) / speed) + 0.2
+        travel_time = (abs(pulses) / speed) + 0.05
         self.next_ready_time = time.time() + travel_time
 
         self.z_position += distance_mm
         return True
 
-    def move_z_absolute(self, position_mm, speed=10000, ignore_limits=False):
+    def move_z_absolute(self, position_mm, speed=35000, ignore_limits=False):
         """Moves the Z axis to an absolute position in mm."""
         distance_mm = position_mm - self.z_position
         return self.move_z_relative(distance_mm, speed=speed, ignore_limits=ignore_limits)
@@ -188,12 +188,12 @@ class StepperController:
         # 1. Back off if already on sensor
         if self.connection.get_home_status(ax) == self.trigger_state:
             print("Z-Axis sensor currently active. Backing off +2.0 mm...")
-            self.move_z_relative(2.0, speed=10000, ignore_limits=True)
-            time.sleep(0.3)
+            self.move_z_relative(2.0, speed=20000, ignore_limits=True)
+            time.sleep(0.1)
 
         # 2. Initiate ONE smooth continuous move towards home switch
         max_homing_dist = -900.0  # Max travel stroke
-        homing_speed = 15000
+        homing_speed = 35000
         pulses = int(-max_homing_dist * self.z_steps_per_mm)
 
         print(f"Initiating continuous homing move towards Z home sensor...")

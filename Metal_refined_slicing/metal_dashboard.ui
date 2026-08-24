@@ -922,29 +922,6 @@ QScrollBar::add-line, QScrollBar::sub-line {
                       </property>
                      </widget>
                     </item>
-                    <item>
-                     <widget class="QPushButton" name="btn_act_simulate">
-                      <property name="minimumSize">
-                       <size>
-                        <width>0</width>
-                        <height>38</height>
-                       </size>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <family>Inter</family>
-                        <pointsize>-1</pointsize>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="styleSheet">
-                       <string notr="true">background-color: #ec6a06; color: white; border: 1px solid #ffb690; font-weight: bold; border-radius: 0px;</string>
-                      </property>
-                      <property name="text">
-                       <string>  START BUILD SIMULATION</string>
-                      </property>
-                     </widget>
-                    </item>
                    </layout>
                   </widget>
                  </item>
@@ -958,37 +935,71 @@ QScrollBar::add-line, QScrollBar::sub-line {
                      <number>8</number>
                     </property>
                     <item>
-                     <layout class="QHBoxLayout" name="weightInputRow">
+                     <layout class="QHBoxLayout" name="powderTypeRow">
                       <item>
-                       <widget class="QLabel" name="lbl_weight">
+                       <widget class="QLabel" name="lbl_powder_type_tag">
                         <property name="text">
-                         <string>Mass (0.5 - 7.0 kg):</string>
+                         <string>Powder Type (15-45 µm):</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QDoubleSpinBox" name="dspn_powder_weight">
+                       <widget class="QComboBox" name="cmb_powder_type">
                         <property name="styleSheet">
                          <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #00f0ff; padding: 4px; font-weight: bold; font-family: 'JetBrains Mono';</string>
                         </property>
-                        <property name="minimum">
-                         <double>0.50</double>
-                        </property>
-                        <property name="maximum">
-                         <double>7.00</double>
-                        </property>
-                        <property name="singleStep">
-                         <double>0.10</double>
-                        </property>
-                        <property name="value">
-                         <double>4.90</double>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="lbl_powder_spec">
+                      <property name="styleSheet">
+                       <string notr="true">color: #94a3b8; font-size: 11px; font-family: 'Inter'; font-style: italic;</string>
+                      </property>
+                      <property name="text">
+                       <string>Fine, spherical gas-atomized metal powder (15 to 45 µm) for Galvo SLM/DMLS.</string>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <layout class="QHBoxLayout" name="modelHeightRow">
+                      <item>
+                       <widget class="QLabel" name="lbl_model_height">
+                        <property name="text">
+                         <string>Model Total Height (mm):</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QLabel" name="lbl_density">
+                       <widget class="QDoubleSpinBox" name="dspn_model_height">
+                        <property name="readOnly">
+                         <bool>true</bool>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">background-color: #0d0e14; border: 1px solid #444653; color: #ffb690; padding: 4px; font-weight: bold; font-family: 'JetBrains Mono';</string>
+                        </property>
+                        <property name="minimum">
+                         <double>0.10</double>
+                        </property>
+                        <property name="maximum">
+                         <double>250.00</double>
+                        </property>
+                        <property name="singleStep">
+                         <double>1.00</double>
+                        </property>
+                        <property name="value">
+                         <double>42.17</double>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="lbl_density_tag">
                         <property name="text">
-                         <string>Density (g/cm³):</string>
+                         <string>Bulk Density (g/cm³):</string>
                         </property>
                        </widget>
                       </item>
@@ -1001,31 +1012,62 @@ QScrollBar::add-line, QScrollBar::sub-line {
                          <double>0.10</double>
                         </property>
                         <property name="maximum">
-                         <double>5.00</double>
+                         <double>12.00</double>
                         </property>
                         <property name="singleStep">
                          <double>0.05</double>
                         </property>
                         <property name="value">
-                         <double>0.50</double>
+                         <double>4.50</double>
                         </property>
                        </widget>
                       </item>
                      </layout>
                     </item>
                     <item>
-                     <widget class="QLabel" name="lbl_calc_powder_depth">
-                      <property name="styleSheet">
-                       <string notr="true">color: #00f0ff; background-color: #0d0e14; border: 1px solid #444653; padding: 8px; font-family: 'JetBrains Mono'; font-weight: bold; font-size: 13px;</string>
-                      </property>
-                      <property name="text">
-                       <string>Target Depth (V-Axis): 114.00 mm (11.4 cm)</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignmentFlag::AlignCenter</set>
-                      </property>
-                     </widget>
+                     <layout class="QHBoxLayout" name="calcSummaryRow">
+                      <item>
+                       <widget class="QLabel" name="lbl_calc_powder_depth">
+                        <property name="styleSheet">
+                         <string notr="true">color: #00f0ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold; font-size: 11px;</string>
+                        </property>
+                        <property name="text">
+                         <string>Depth: 84.80 mm (8.48 cm)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="lbl_calc_powder_vol">
+                        <property name="styleSheet">
+                         <string notr="true">color: #b8c4ff; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold; font-size: 11px;</string>
+                        </property>
+                        <property name="text">
+                         <string>Volume: 7,089 cm³ (7.09 L)</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QLabel" name="lbl_calc_powder_kg">
+                        <property name="styleSheet">
+                         <string notr="true">color: #ffb690; background-color: #0d0e14; border: 1px solid #444653; padding: 6px; font-family: 'JetBrains Mono'; font-weight: bold; font-size: 11px;</string>
+                        </property>
+                        <property name="text">
+                         <string>Req Powder: 31.90 kg</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignmentFlag::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
                     </item>
+
                     <item>
                      <widget class="QPushButton" name="btn_set_powder_depth">
                       <property name="minimumSize">
@@ -1779,7 +1821,7 @@ QScrollBar::add-line, QScrollBar::sub-line {
                    <widget class="QDoubleSpinBox" name="spn_base_height">
                     <property name="suffix"><string> mm</string></property>
                     <property name="singleStep"><number>0.5</number></property>
-                    <property name="value"><double>5.00</double></property>
+                    <property name="value"><double>10.00</double></property>
                    </widget>
                   </item>
                   <item row="3" column="0" colspan="2">

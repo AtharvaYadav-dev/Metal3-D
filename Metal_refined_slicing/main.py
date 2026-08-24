@@ -23,7 +23,7 @@ from PySide6.QtWidgets import (
     QApplication, QWidget, QTextEdit, QPushButton, QCheckBox,
     QFileDialog, QLabel, QComboBox, QLineEdit, QSpinBox, QDoubleSpinBox,
     QProgressBar, QSlider, QGroupBox, QFrame, QStackedWidget, QVBoxLayout,
-    QHBoxLayout, QGridLayout, QFormLayout, QMessageBox
+    QHBoxLayout, QGridLayout, QFormLayout, QMessageBox, QTableWidgetItem, QHeaderView
 )
 from PySide6.QtUiTools import QUiLoader
 from PySide6.QtCore import QFile, QIODevice, QObject, Signal, Slot, QThread, Qt, QTimer
@@ -191,7 +191,7 @@ class Print3DThread(QThread):
             start_z = self.stepper.z_position if self.stepper else 0.0
             dist = target_z - start_z
             if abs(dist) > 0.001:
-                steps_cnt = max(10, int(abs(dist) / 10.0))  # 10mm per step for clear visual motion
+                steps_cnt = max(5, int(abs(dist) / 30.0))  # Faster, smooth visual motion
                 for i in range(1, steps_cnt + 1):
                     if not self._check_pause_and_stop():
                         return False
@@ -204,7 +204,7 @@ class Print3DThread(QThread):
                         f"[Layer {layer}/{self.total_layers}] Step {step_num}/11: {step_name} (Moving Z... {curr:.2f} mm / {target_z:.2f} mm)",
                         telemetry
                     )
-                    time.sleep(0.06)
+                    time.sleep(0.01)
 
             if self.stepper:
                 self.stepper.z_position = target_z
@@ -236,7 +236,7 @@ class Print3DThread(QThread):
                 self.stepper.home_z()
             if not self._wait_for_stepper_ready(layer, "Step 1/11"): break
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 1/11: RECOATER HOME(Z) DONE (Z=0.00 mm)", self._get_telemetry(layer, "Step 1/11: Recoater Home DONE"))
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 2: BUILD PLATE HOME(U) (Executed only once on Layer 1, skipped on Layer >= 2)
             if layer == 1:
@@ -246,7 +246,7 @@ class Print3DThread(QThread):
                     self.stepper.home_u()
                 if not self._wait_for_stepper_ready(layer, "Step 2/11"): break
                 self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) DONE (U=0.00 mm)", self._get_telemetry(layer, "Step 2/11: Build Plate Home DONE"))
-                time.sleep(0.2)
+                time.sleep(0.05)
             else:
                 self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 2/11: BUILD PLATE HOME(U) SKIPPED (Layer {layer} > 1)", self._get_telemetry(layer, "Step 2/11: Build Plate Home Skipped"))
 
@@ -257,12 +257,12 @@ class Print3DThread(QThread):
                 self.stepper.move_relative("V", 0.02)
             if not self._wait_for_stepper_ready(layer, "Step 3/11"): break
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 3/11: POWDER BAY(V) +0.02 MM DONE", self._get_telemetry(layer, "Step 3/11: Powder Bay DONE"))
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 4: RECOATER WILL MOVE TO 240 MM (BLOCKS UNTIL Z REACHES EXACTLY 240 MM)
             if not self._smooth_z_move(240.0, layer, 4, "RECOATER MOVE TO 240 MM"):
                 break
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 5: WAIT FOR 5 SECS TO LASER PRINTING (STARTS ONLY AFTER RECOATER IS CONFIRMED AT 240 MM)
             if not self._check_pause_and_stop(): break
@@ -292,12 +292,12 @@ class Print3DThread(QThread):
                 self.stepper.move_relative("U", -0.02)
             if not self._wait_for_stepper_ready(layer, "Step 6/11"): break
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 6/11: BUILD PLATE(U) -0.02 MM DONE", self._get_telemetry(layer, "Step 6/11: Build Plate DONE"))
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 7: RECOATER WILL MOVE TO 760 MM (BLOCKS UNTIL Z REACHES EXACTLY 760 MM)
             if not self._smooth_z_move(760.0, layer, 7, "RECOATER MOVE TO 760 MM"):
                 break
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 8: BUILD PLATE WILL DO -0.02 MM
             if not self._check_pause_and_stop(): break
@@ -306,7 +306,7 @@ class Print3DThread(QThread):
                 self.stepper.move_relative("U", -0.02)
             if not self._wait_for_stepper_ready(layer, "Step 8/11"): break
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 8/11: BUILD PLATE(U) -0.02 MM DONE", self._get_telemetry(layer, "Step 8/11: Build Plate DONE"))
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 9: RECOATER HOME(Z)
             if not self._check_pause_and_stop(): break
@@ -315,7 +315,7 @@ class Print3DThread(QThread):
                 self.stepper.home_z()
             if not self._wait_for_stepper_ready(layer, "Step 9/11"): break
             self.progress_signal.emit(layer, self.total_layers, f"[Layer {layer}/{self.total_layers}] Step 9/11: RECOATER HOME(Z) DONE (Z=0.00 mm)", self._get_telemetry(layer, "Step 9/11: Recoater Home DONE"))
-            time.sleep(0.2)
+            time.sleep(0.02)
 
             # Step 10: BUILD PLATE WILL DO +0.02 MM
             if not self._check_pause_and_stop(): break
@@ -431,7 +431,7 @@ class Metal3DPrinterApp:
         self.powder_prep_done = False
         self.galvo_config = CoordinateConfig()
         self.metal_slicer = MetalLPBFSlicer(layer_thickness=0.05, hatch_spacing=0.10, hatch_angle_step=67.0)
-        self.support_generator = ConeSupportGenerator(cone_diameter=0.5, grid_spacing=2.0, base_elevation=5.0)
+        self.support_generator = ConeSupportGenerator(cone_diameter=0.5, grid_spacing=2.0, base_elevation=10.0)
         self.planner = MotionPlanner()
         self.loaded_mesh = None
         self.loaded_support_mesh = None
@@ -623,17 +623,21 @@ class Metal3DPrinterApp:
             if os.path.exists(demo_stl):
                 self.loaded_mesh = trimesh.load(demo_stl)
                 min_z = self.loaded_mesh.bounds[0][2]
-                translation = trimesh.transformations.translation_matrix([0, 0, 5.0 - min_z])
+                translation = trimesh.transformations.translation_matrix([0, 0, 10.0 - min_z])
                 self.loaded_mesh.apply_transform(translation)
                 self.active_file_path = demo_stl
             else:
                 self.loaded_mesh = trimesh.creation.box(extents=[50.0, 50.0, 25.0])
-                # Elevate box base to Z=5.0mm (center Z=17.5mm)
-                translation = trimesh.transformations.translation_matrix([0, 0, 17.5])
+                # Elevate box base to Z=10.0mm (center Z=22.5mm)
+                translation = trimesh.transformations.translation_matrix([0, 0, 22.5])
                 self.loaded_mesh.apply_transform(translation)
 
             # Auto-generate 0.5mm cone supports for elevated model bottom base
-            self.loaded_support_mesh = self.support_generator.generate_supports_for_mesh(self.loaded_mesh, base_elevation=5.0)
+            self.loaded_support_mesh = self.support_generator.generate_supports_for_mesh(self.loaded_mesh, base_elevation=10.0)
+            dspn_model_h = self.get_widget("dspn_model_height")
+            if dspn_model_h and self.loaded_mesh:
+                model_h_z = abs(self.loaded_mesh.bounds[1][2] - 0.0)
+                dspn_model_h.setValue(model_h_z)
             self.render_3d_preview()
 
         slider_layer = self.get_widget("slider_layer")
@@ -663,57 +667,153 @@ class Metal3DPrinterApp:
             chk_section.clicked.connect(lambda: on_slider_changed(slider_layer.value() if slider_layer else 0))
 
     def _setup_powder_prep(self):
-        """Initializes Powder Preparation controls (custom mass 0.5kg-7.0kg, density, target depth calculation, V-axis move)."""
-        dspn_weight = self.get_widget("dspn_powder_weight")
+        """Initializes Powder Preparation controls with fine 15-45µm spherical gas-atomized powder calculations."""
+        cmb_powder = self.get_widget("cmb_powder_type")
+        dspn_model_h = self.get_widget("dspn_model_height")
+        if dspn_model_h:
+            dspn_model_h.setReadOnly(True)
+            dspn_model_h.setToolTip("Model height is calculated automatically from the imported file.")
         dspn_density = self.get_widget("dspn_powder_density")
-        lbl_calc = self.get_widget("lbl_calc_powder_depth")
+        lbl_spec = self.get_widget("lbl_powder_spec")
+        lbl_depth = self.get_widget("lbl_calc_powder_depth")
+        lbl_kg = self.get_widget("lbl_calc_powder_kg")
         btn_set = self.get_widget("btn_set_powder_depth")
+        gb_powder = self.get_widget("gb_powder_prep")
 
-        if dspn_weight:
-            dspn_weight.setRange(0.50, 7.00)
-            dspn_weight.setSingleStep(0.10)
+        # Fine gas-atomized 15-45µm powders for Galvo Laser SLM/DMLS
+        POWDER_PRESETS = [
+            {
+                "name": "Stainless Steel 316L / 17-4 PH",
+                "bulk_density": 4.50,
+                "solid_density": 8.00,
+                "spec": "316L / 17-4 PH | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 4.50 g/cm³"
+            },
+            {
+                "name": "Tool Steel (H13 / 1.2709 Maraging)",
+                "bulk_density": 4.40,
+                "solid_density": 7.85,
+                "spec": "H13 / 1.2709 Maraging | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 4.40 g/cm³"
+            },
+            {
+                "name": "Titanium Alloy (Ti6Al4V Grade 5)",
+                "bulk_density": 2.50,
+                "solid_density": 4.43,
+                "spec": "Ti6Al4V Grade 5/23 | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 2.50 g/cm³"
+            },
+            {
+                "name": "Nickel Superalloy (Inconel 718)",
+                "bulk_density": 4.70,
+                "solid_density": 8.19,
+                "spec": "Inconel 718 / 625 | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 4.70 g/cm³"
+            },
+            {
+                "name": "Aluminum Alloy (AlSi10Mg)",
+                "bulk_density": 1.50,
+                "solid_density": 2.68,
+                "spec": "AlSi10Mg / AlSi7Mg | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 1.50 g/cm³"
+            },
+            {
+                "name": "Cobalt-Chrome (CoCrMo)",
+                "bulk_density": 4.75,
+                "solid_density": 8.40,
+                "spec": "CoCrMo / Stellite | Fine Spherical Gas-Atomized (15-45 µm) | Apparent Density: 4.75 g/cm³"
+            },
+            {
+                "name": "Custom Metal Powder",
+                "bulk_density": 4.50,
+                "solid_density": 8.00,
+                "spec": "Custom Powder | User-Defined Density for Galvo Laser System"
+            }
+        ]
+
+        if cmb_powder:
+            cmb_powder.blockSignals(True)
+            cmb_powder.clear()
+            for p in POWDER_PRESETS:
+                cmb_powder.addItem(p["name"])
+            cmb_powder.blockSignals(False)
+
+
+
 
         def recalculate():
-            w = dspn_weight.value() if dspn_weight else 4.90
-            # Strictly enforce 0.5 kg to 7.0 kg limit
-            if w < 0.50:
-                w = 0.50
-                if dspn_weight: dspn_weight.setValue(0.50)
-            elif w > 7.00:
-                w = 7.00
-                if dspn_weight: dspn_weight.setValue(7.00)
+            p_idx = cmb_powder.currentIndex() if cmb_powder else 0
+            if p_idx < 0 or p_idx >= len(POWDER_PRESETS):
+                p_idx = 0
 
-            d = dspn_density.value() if dspn_density else 0.50
-            if d <= 0.0:
-                d = 0.50
-            # Feeder Bay internal area: 44.5 cm * 19.4 cm = 863.3 cm^2
-            area_cm2 = 863.3
-            vol_cm3 = (w * 1000.0) / d
-            height_cm = vol_cm3 / area_cm2
-            height_mm = height_cm * 10.0
-            if lbl_calc:
-                lbl_calc.setText(f"Target Depth (V-Axis): {height_mm:.2f} mm ({height_cm:.1f} cm)")
-            return height_mm, w, d
+            preset = POWDER_PRESETS[p_idx]
+
+            # Update density spinbox if not custom or if selection changed
+            if preset["name"] != "Custom Metal Powder":
+                if dspn_density:
+                    dspn_density.blockSignals(True)
+                    dspn_density.setValue(preset["bulk_density"])
+                    dspn_density.blockSignals(False)
+                density = preset["bulk_density"]
+            else:
+                density = dspn_density.value() if dspn_density else 4.50
+
+            if lbl_spec:
+                lbl_spec.setText(preset["spec"])
+
+            model_h = dspn_model_h.value() if dspn_model_h else 42.17
+            if model_h < 0.1:
+                model_h = 0.1
+
+            # Machine Area Ratio R = Area_PowderBay / Area_BuildPlate = (44 * 19) / (41 * 41) = 836 / 1681 = 0.49732302
+            # Powder Bay depth (mm) = Model Height (mm) / 0.49732302
+            area_ratio = 836.0 / 1681.0
+            bay_depth_mm = model_h / area_ratio
+
+            # Clamp between Min (10 mm) and Max (250 mm)
+            if bay_depth_mm < 10.0:
+                bay_depth_mm = 10.0
+            elif bay_depth_mm > 250.0:
+                bay_depth_mm = 250.0
+
+            # Step-by-step Volume & Powder Weight calculation:
+            # 1. Powder Bay dimensions: 44 cm x 19 cm = 836 cm^2
+            # 2. Powder Bay depth in cm = bay_depth_mm / 10
+            # 3. Volume in cm^3 = 44 * 19 * (bay_depth_mm / 10) = 83.6 * bay_depth_mm
+            # 4. Volume in Liters = vol_cm3 / 1000
+            # 5. Powder Weight in kg = (vol_cm3 * density) / 1000
+            vol_cm3 = 83.6 * bay_depth_mm
+            vol_liters = vol_cm3 / 1000.0
+            powder_kg = (vol_cm3 * density) / 1000.0
+
+            lbl_vol = self.get_widget("lbl_calc_powder_vol")
+
+            if lbl_depth:
+                lbl_depth.setText(f"Depth: {bay_depth_mm:.2f} mm ({bay_depth_mm/10:.2f} cm)")
+            if lbl_vol:
+                lbl_vol.setText(f"Volume: {vol_cm3:.0f} cm³ ({vol_liters:.2f} L)")
+            if lbl_kg:
+                lbl_kg.setText(f"Req Powder: {powder_kg:.2f} kg ({preset['name'].split('/')[0]})")
+
+
+
+            return bay_depth_mm, powder_kg, density, preset["name"], model_h
 
         def on_set_powder_depth():
-            depth_mm, weight_kg, density = recalculate()
+            depth_mm, weight_kg, density, powder_name, model_h = recalculate()
             self.powder_prep_done = True
             if self.stepper_controller:
-                print(f"\n[Powder Prep] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {weight_kg:.2f} kg powder (Density: {density:.2f} g/cm³)...")
+                print(f"\n[Powder Prep] Setting Powder Bay (V-Axis) depth to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg, Bulk Density: {density:.2f} g/cm³)...")
                 self.stepper_controller.move_axis('V', depth_mm)
                 self.update_axis_lcds()
             else:
-                print(f"\n[Powder Prep (Simulated)] Powder Bay (V-Axis) depth set to {depth_mm:.2f} mm for {weight_kg:.2f} kg powder.")
+                print(f"\n[Powder Prep (Simulated)] Powder Bay (V-Axis) depth set to {depth_mm:.2f} mm for {model_h:.2f} mm model height ({powder_name}, {weight_kg:.2f} kg powder).")
 
-        if dspn_weight:
-            dspn_weight.valueChanged.connect(lambda v: recalculate())
-
+        if cmb_powder:
+            cmb_powder.currentIndexChanged.connect(lambda i: recalculate())
+        if dspn_model_h:
+            dspn_model_h.valueChanged.connect(lambda v: recalculate())
         if dspn_density:
             dspn_density.valueChanged.connect(lambda v: recalculate())
-
         if btn_set:
             btn_set.clicked.connect(lambda checked=False: on_set_powder_depth())
 
+        self.on_set_powder_depth = on_set_powder_depth
         recalculate()
 
     def _setup_build_setup_page(self):
@@ -759,7 +859,7 @@ class Metal3DPrinterApp:
 
         dia = spn_dia.value() if spn_dia else 0.50
         spacing = spn_spacing.value() if spn_spacing else 2.00
-        elev = spn_elev.value() if spn_elev else 5.00
+        elev = spn_elev.value() if spn_elev else 10.00
 
         # Position mesh elevated at Z = elev above build platform Z=0
         min_z = self.loaded_mesh.bounds[0][2]
@@ -911,9 +1011,9 @@ class Metal3DPrinterApp:
         if ext.endswith('.stl') and trimesh:
             self.loaded_mesh = trimesh.load(file_path)
 
-            # Elevate mesh so bottom base sits at Z = base_height (default 5.0mm clearance)
+            # Elevate mesh so bottom base sits at Z = base_height (default 10.0mm clearance)
             spn_elev = self.get_widget("spn_base_height")
-            elev = spn_elev.value() if spn_elev else 5.0
+            elev = spn_elev.value() if spn_elev else 10.0
             min_z = self.loaded_mesh.bounds[0][2]
             translation = trimesh.transformations.translation_matrix([0, 0, elev - min_z])
             self.loaded_mesh.apply_transform(translation)
@@ -930,6 +1030,27 @@ class Metal3DPrinterApp:
             polygons = parser.parse_to_polygons(file_path)
 
         self.loaded_base_polygons = polygons
+
+        # Calculate model total height from loaded design file (3D Mesh or 2D Vector)
+        model_height_z = 0.0
+        if self.loaded_mesh:
+            model_height_z = abs(self.loaded_mesh.bounds[1][2] - 0.0)
+        elif polygons:
+            all_pts = []
+            for poly in polygons:
+                all_pts.extend(poly)
+            if all_pts:
+                pts_arr = np.array(all_pts)
+                min_y, max_y = pts_arr[:, 1].min(), pts_arr[:, 1].max()
+                model_height_z = abs(max_y - min_y)
+
+        dspn_model_h = self.get_widget("dspn_model_height")
+        if dspn_model_h and model_height_z > 0:
+            dspn_model_h.setValue(model_height_z)
+
+        # Automatically set/move Powder Bay position for the design file
+        if hasattr(self, 'on_set_powder_depth') and callable(self.on_set_powder_depth):
+            self.on_set_powder_depth()
 
         lbl_file = self.get_widget("lbl_build_file_name")
         if lbl_file:
@@ -1308,8 +1429,6 @@ class Metal3DPrinterApp:
             self.print_thread.finished_signal.connect(on_finished)
             self.print_thread.start()
 
-        if hasattr(self.window, 'btn_act_simulate'):
-            self.window.btn_act_simulate.clicked.connect(start_sim_action)
 
         def start_process_action():
             if self.print_thread and self.print_thread.isRunning():

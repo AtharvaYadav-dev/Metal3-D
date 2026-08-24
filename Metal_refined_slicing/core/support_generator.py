@@ -1,7 +1,7 @@
 """
 Cone Support Generator (support_generator.py)
 ===================================================================
-Generates 0.5mm cone support structures strictly up to the base clearance height (e.g., Z=5.0mm).
+Generates 0.5mm cone support structures strictly up to the base clearance height (e.g., Z=10.0mm).
 Supports are anchored to the build plate at Z=0 and stop strictly at the base elevation line under the model,
 preventing any supports from extending up the sides or top of the model.
 """
@@ -19,11 +19,11 @@ class ConeSupportGenerator:
     """
     Generates 3D 0.5mm cone support structures strictly capped at the base clearance height (Z=base_elevation).
     """
-    def __init__(self, cone_diameter=0.5, grid_spacing=2.0, base_elevation=5.0, min_support_height=0.5):
+    def __init__(self, cone_diameter=0.5, grid_spacing=2.0, base_elevation=10.0, min_support_height=0.5):
         """
         :param cone_diameter: Tip and body diameter of cone support in mm (default 0.5mm).
         :param grid_spacing: Grid spacing between adjacent support cones in mm (default 2.0mm).
-        :param base_elevation: Base clearance height of model above build plate in mm (default 5.0mm).
+        :param base_elevation: Base clearance height of model above build plate in mm (default 10.0mm).
         :param min_support_height: Minimum height for support generation in mm.
         """
         self.cone_diameter = float(cone_diameter)
@@ -33,7 +33,7 @@ class ConeSupportGenerator:
 
     def generate_supports_for_mesh(self, mesh, base_elevation=None):
         """
-        Generates vertical 0.5mm cone supports extending from Z=0 up to base_elevation (e.g. 5.0mm).
+        Generates vertical 0.5mm cone supports extending from Z=0 up to base_elevation (e.g. 10.0mm).
         Supports NEVER extend past base_elevation up into the sides or top of the model.
         :param mesh: trimesh.Trimesh object
         :param base_elevation: Clearance height in mm. If specified, overrides self.base_elevation.
