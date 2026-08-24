@@ -495,14 +495,7 @@ class Metal3DPrinterApp:
         logo_path = os.path.join(os.path.dirname(__file__), "logo", "SPPL-logo-sq.png")
         if os.path.exists(logo_path):
             self.window.setWindowIcon(QIcon(logo_path))
-            if hasattr(self.window, 'logoLabel') and self.window.logoLabel:
-                logo_size = 85
-                self.window.logoLabel.setObjectName("logoLabel")
-                self.window.logoLabel.setMinimumSize(logo_size, logo_size)
-                self.window.logoLabel.setMaximumSize(logo_size, logo_size)
-                self.window.logoLabel.setAlignment(Qt.AlignCenter)
-                pix = QPixmap(logo_path).scaled(102, 102, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-                self.window.logoLabel.setPixmap(pix)
+        self._place_sidebar_logo(logo_path)
 
         # Handle window close gracefully to prevent focus-loss motor triggers during teardown
         orig_close = getattr(self.window, 'closeEvent', None)
@@ -514,6 +507,35 @@ class Metal3DPrinterApp:
             else:
                 event.accept()
         self.window.closeEvent = safe_close_event
+
+    def _place_sidebar_logo(self, logo_path):
+        """Moves the header logo to the bottom of the navigation sidebar at a visible size."""
+        logo_label = self.get_widget("logoLabel")
+        sidebar = self.get_widget("sidebarFrame")
+        if not logo_label or not sidebar:
+            return
+
+        header_parent = logo_label.parentWidget()
+        header_layout = header_parent.layout() if header_parent else None
+        if header_layout:
+            header_layout.removeWidget(logo_label)
+
+        logo_size = 168
+        logo_label.setParent(sidebar)
+        logo_label.setMinimumSize(logo_size, logo_size)
+        logo_label.setMaximumSize(logo_size, logo_size)
+        logo_label.setAlignment(Qt.AlignCenter)
+        logo_label.setScaledContents(True)
+        if os.path.exists(logo_path):
+            pix = QPixmap(logo_path).scaled(
+                logo_size, logo_size, Qt.KeepAspectRatio, Qt.SmoothTransformation
+            )
+            logo_label.setPixmap(pix)
+        logo_label.show()
+
+        sidebar_layout = sidebar.layout()
+        if sidebar_layout:
+            sidebar_layout.addWidget(logo_label, 0, Qt.AlignHCenter | Qt.AlignBottom)
 
     def _apply_stylesheet(self):
         """Applies style.qss stylesheet to the application."""
