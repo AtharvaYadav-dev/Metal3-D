@@ -89,26 +89,11 @@ class GalvoCardHandler:
                 try:
                     val = conn.get_home_status(ax_code)
                     is_triggered = (val == trigger_val)
-                    status_text = "[TRIGGERED] (CLOSED / SENSING)" if is_triggered else "[CLEAR] (OPEN / OFF)"
+                    status_text = "🚨 TRIGGERED (CLOSED / SENSING)" if is_triggered else "🟢 CLEAR (OPEN / OFF)"
                     print(f"  {ax_name} : {status_text}  [Raw Value: {val}]")
                 except Exception as err:
                     print(f"  {ax_name} : Error reading sensor -> {err}")
-        print("=" * 52)
-        print("MOTOR DRIVER ALARM & ERROR STATUS REPORT")
-        print("=" * 52)
-        if stepper_controller:
-            errs = stepper_controller.get_all_driver_errors()
-            if not errs:
-                print("ALL MOTOR DRIVERS NORMAL: No active driver alarms or errors detected.")
-            else:
-                for ax_code, (err_code, err_title, err_desc) in errs.items():
-                    print(f"[ALARM DETECTED] -> Axis {ax_code}: {err_code} ({err_title})")
-                    print(f"   Details: {err_desc}")
-        else:
-            print("[Motor Driver Debugger] Stepper controller offline.")
         print("=" * 52 + "\n")
-
-
 
     def run_test_pattern(self):
         """Runs a test calibration pattern on the Galvo card."""
