@@ -9,22 +9,6 @@ class StepperController:
         'V': (0.0, 250.0),  # Powder Bay: 0 to 250 mm
     }
 
-    # Motor Driver Alarm & Error Code Definitions
-    MOTOR_ERROR_CODES = {
-        'Err 001': ("Over-Current Fault", "Output power stage short circuit or motor phase winding shorted."),
-        'Err 002': ("Over-Voltage Fault", "DC bus supply voltage exceeded safe operational threshold."),
-        'Err 003': ("Power Phase Loss", "Input AC/DC power supply phase or line disconnection."),
-        'Err 004': ("Position Following Error", "Motor position out of sync, heavy mechanical bind, or shaft lock."),
-        'Err 005': ("Parameter EEPROM Fault", "Driver internal parameter storage corrupted or out of range."),
-        'Err 006': ("Auto-Tuning Failure", "Motor phase alignment or auto-tuning failure during boot."),
-        'Err 007': ("Motor Driver Alarm (Err 007)", "Motor stall / shaft overload / position loss alarm."),
-        'Err 008': ("Under-Voltage Fault", "Input power supply voltage dropped below minimum operating limit."),
-        'Err 009': ("Over-Temperature Fault", "Driver power module heatsink temperature exceeded thermal threshold."),
-        'Err 010': ("Motor Open Phase Fault", "One or more motor phase winding cables disconnected."),
-        'Err 011': ("Current Loop Saturation", "Control current loop exceeded maximum output limit."),
-        'Err 012': ("Encoder Feedback Error", "Encoder pulse line broken, disconnected, or signal noise error.")
-    }
-
     def __init__(self, connection: BaseConnection, steps_per_mm=1600.0, z_steps_per_mm=1280.0, u_steps_per_mm=320.0, v_steps_per_mm=320.0):
         self.connection = connection
         self.z_position = 0.0
@@ -36,60 +20,6 @@ class StepperController:
         self.v_steps_per_mm = v_steps_per_mm
         self.next_ready_time = 0.0
         self.trigger_state = 0  # 0 = Triggered (Active-Low / Sinking NPN.NO)
-
-    @classmethod
-    def get_error_code_info(cls, code_raw):
-        """Converts raw integer or string code into (code_str, title, description)."""
-        if not code_raw or code_raw == 0 or code_raw == "0" or code_raw == "NORMAL":
-            return None
-
-        if isinstance(code_raw, int):
-            code_str = f"Err {code_raw:03d}"
-        else:
-            s = str(code_raw).strip()
-            if s.isdigit():
-                code_str = f"Err {int(s):03d}"
-            elif s.upper().startswith("ERR"):
-                parts = s.split()
-                if len(parts) >= 2 and parts[1].isdigit():
-                    code_str = f"Err {int(parts[1]):03d}"
-                else:
-                    code_str = s.upper()
-            else:
-                code_str = s
-
-        info = cls.MOTOR_ERROR_CODES.get(code_str)
-        if info:
-            return (code_str, info[0], info[1])
-        return (code_str, f"Driver Fault ({code_str})", "Motor driver alarm signal active.")
-
-    def get_axis_driver_error(self, axis='Z'):
-        """Queries motor driver error for the specified axis."""
-        ax = str(axis).upper()
-        if not self.connection:
-            return None
-        raw_code = self.connection.get_axis_alarm(ax)
-        return self.get_error_code_info(raw_code)
-
-    def get_all_driver_errors(self):
-        """Returns a dict of all active driver errors across Z, U, V, X, Y axes."""
-        errors = {}
-        for ax in ['Z', 'U', 'V', 'X', 'Y']:
-            err = self.get_axis_driver_error(ax)
-            if err:
-                errors[ax] = err
-        return errors
-
-    def clear_driver_alarms(self, axis=None):
-        """Clears driver alarm status for an axis or all axes."""
-        if self.connection:
-            self.connection.reset_axis_alarm(axis)
-
-    def trigger_simulated_driver_error(self, axis='Z', error_code='Err 007'):
-        """Sets a simulated driver error code for UI testing."""
-        if self.connection:
-            self.connection.set_simulated_alarm(axis, error_code)
-
 
     def get_axis_steps_per_mm(self, axis='Z'):
         ax = str(axis).upper()
@@ -169,16 +99,8 @@ class StepperController:
         """Generic relative move for hardware testing & manual operation of U, V axes."""
         ax = str(axis).upper()
 
-        err_info = self.get_axis_driver_error(ax)
-        if err_info:
-            code_str, title, desc = err_info
-            print(f"[DRIVER ERROR BLOCKED] Axis {ax} has active driver fault: {code_str} ({title})! Motion blocked until alarm is cleared.")
-            return False
-
-
         if not ignore_limits:
             distance_mm = self.apply_limits(ax, distance_mm)
-
 
         if abs(distance_mm) < 0.0001:
             return False
@@ -215,16 +137,8 @@ class StepperController:
         Moves the Z axis relative to the current position in mm.
         (Pulses are inverted so that positive distance moves UPWARD physically)
         """
-        err_info = self.get_axis_driver_error('Z')
-        if err_info:
-            code_str, title, desc = err_info
-            print(f"[DRIVER ERROR BLOCKED] Z-Axis has active driver fault: {code_str} ({title})! Motion blocked until alarm is cleared.")
-            return False
-
-
         if not ignore_limits:
             distance_mm = self.apply_limits('Z', distance_mm)
-
 
         if abs(distance_mm) < 0.0001:
             return False

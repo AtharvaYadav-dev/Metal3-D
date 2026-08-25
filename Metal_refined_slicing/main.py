@@ -150,16 +150,7 @@ class Print3DThread(QThread):
     def _check_pause_and_stop(self):
         while self.is_paused and self.is_running:
             time.sleep(0.1)
-        if self.stepper and hasattr(self.stepper, 'get_all_driver_errors'):
-            errors = self.stepper.get_all_driver_errors()
-            if errors:
-                first_ax, (first_code, first_title, first_desc) = next(iter(errors.items()))
-                print(f"\n[PRINT PROCESS ABORTED] Motor driver fault detected on {first_ax}-Axis: {first_code} ({first_title})!")
-
-                self.is_running = False
-                return False
         return self.is_running
-
 
     def _get_telemetry(self, layer, step_info=""):
         return {
@@ -467,9 +458,7 @@ class Metal3DPrinterApp:
         self._setup_file_loader()
         self._setup_process_controls()
         self._setup_telemetry_gauges()
-        self._setup_motor_error_controls()
         self.update_axis_lcds()
-
 
     def get_widget(self, name):
         """Resolves widget by name across UI hierarchy with case-insensitive fallback."""
@@ -1041,8 +1030,7 @@ class Metal3DPrinterApp:
         if hasattr(self.window, "stackedWidget"):
             self.window.stackedWidget.setCurrentIndex(0)  # Switch to Dashboard
 
-        print(f"\n[Build Setup] Sliced LPBF Build with Bottom 0.5mm Cone Supports applied to Main Dashboard!")
-
+        print(f"\n🚀 [Build Setup] Sliced LPBF Build with Bottom 0.5mm Cone Supports applied to Main Dashboard!")
 
     def load_build_file_action(self):
         """Loads STL part file from Build Setup page."""
@@ -1394,12 +1382,11 @@ class Metal3DPrinterApp:
 
         btn_estop = self.get_widget('btnEmergencyStop')
         if btn_estop and hasattr(btn_estop, 'clicked'):
-            btn_estop.clicked.connect(lambda checked=False: print("\n[EMERGENCY STOP] EMERGENCY STOP TRIGGERED!"))
+            btn_estop.clicked.connect(lambda checked=False: print("\n🚨 EMERGENCY STOP TRIGGERED!"))
 
         btn_m_estop = self.get_widget('btn_master_estop')
         if btn_m_estop and hasattr(btn_m_estop, 'clicked'):
-            btn_m_estop.clicked.connect(lambda checked=False: print("\n[EMERGENCY STOP] EMERGENCY STOP TRIGGERED!"))
-
+            btn_m_estop.clicked.connect(lambda checked=False: print("\n🚨 EMERGENCY STOP TRIGGERED!"))
 
     def home_galvo_action(self):
         """Triggers Galvo scanner mirror homing."""
@@ -1474,7 +1461,7 @@ class Metal3DPrinterApp:
                     lbl_build_layer_info.setText(f"Layer {layer} / {total} (Z={z_layer:.3f} mm)")
 
             def on_finished():
-                print("\n[PROCESS COMPLETED] ALL LAYERS PRINTED SUCCESSFULLY!")
+                print("\n🎉 [PROCESS COMPLETED] ALL LAYERS PRINTED SUCCESSFULLY!")
                 if lbl_status:
                     lbl_status.setText("PROCESS COMPLETE")
                 btn_pause = self.get_widget("btn_pause_process")
@@ -1502,7 +1489,7 @@ class Metal3DPrinterApp:
 
             # Check 1: Powder bay preparation check
             if not self.powder_prep_done:
-                print("\n[PROCESS BLOCKED] Powder bay preparation is not completed!")
+                print("\n⚠️ [PROCESS BLOCKED] Powder bay preparation is not completed!")
                 QMessageBox.warning(
                     self.window,
                     "Powder Bay Preparation",
@@ -1512,7 +1499,7 @@ class Metal3DPrinterApp:
 
             # Check 2: Valid file selection check
             if not self.active_file_path or (not self.loaded_mesh and not self.loaded_base_polygons):
-                print("\n[PROCESS BLOCKED] No valid LPBF build file selected!")
+                print("\n⚠️ [PROCESS BLOCKED] No valid LPBF build file selected!")
                 QMessageBox.warning(
                     self.window,
                     "File Selection Required",
@@ -1520,8 +1507,7 @@ class Metal3DPrinterApp:
                 )
                 return
 
-            print("\n[PROCESS] EVERYTHING IS OK. STARTING LPBF PRINT PROCESS...")
-
+            print("\n🚀 [PROCESS] EVERYTHING IS OK. STARTING LPBF PRINT PROCESS...")
             btn_pause = self.get_widget("btn_pause_process")
             if btn_pause:
                 btn_pause.setText("PAUSE PROCESS")
@@ -1588,175 +1574,7 @@ class Metal3DPrinterApp:
         except Exception as e:
             print("Gauge init notice:", e)
 
-    def _setup_motor_error_controls(self):
-        """Initializes Motor Driver Error Badges, per-axis Driver Status Labels, Reset Alarms, and Error Simulator."""
-        # 1. Top Header Motor Driver Status Badge
-        top_frame = self.get_widget("topNavFrame")
-        self.lbl_driver_badge = self.get_widget("lbl_motor_driver_error_status")
-
-        if not self.lbl_driver_badge and top_frame:
-            top_layout = top_frame.layout()
-            if top_layout:
-                self.lbl_driver_badge = QLabel("🟢 MOTOR DRIVERS: NORMAL")
-                self.lbl_driver_badge.setObjectName("lbl_motor_driver_error_status")
-                self.lbl_driver_badge.setStyleSheet(
-                    "background-color: rgba(16, 185, 129, 0.15); color: #10b981; "
-                    "border: 1px solid #10b981; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; "
-                    "font-size: 11px; font-weight: bold;"
-                )
-                top_layout.addWidget(self.lbl_driver_badge)
-
-        # 2. Per-axis Driver Status Labels
-        axis_boxes = [
-            ('gb_recoater', 'Z', 'lbl_z_driver_err', 'Z Recoater Driver:'),
-            ('gb_powder_bay', 'U', 'lbl_u_driver_err', 'U Build Plate Driver:'),
-            ('gb_build_plate', 'V', 'lbl_v_driver_err', 'V Powder Bay Driver:')
-        ]
-
-        self.axis_driver_labels = {}
-
-        for box_name, ax_code, label_name, label_prefix in axis_boxes:
-            gb = self.get_widget(box_name)
-            lbl = self.get_widget(label_name)
-            if not lbl and gb:
-                layout = gb.layout()
-                if layout:
-                    lbl = QLabel(f"{label_prefix} NORMAL")
-                    lbl.setObjectName(label_name)
-                    lbl.setStyleSheet(
-                        "background-color: #0d0e14; color: #10b981; border: 1px solid #444653; "
-                        "padding: 3px 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold;"
-                    )
-                    layout.addWidget(lbl)
-            if lbl:
-                self.axis_driver_labels[ax_code] = (lbl, label_prefix)
-
-        # 3. Add Clear Alarm button and Error Simulation Panel to gb_console_log or gb_master_controls
-        master_gb = self.get_widget("gb_master_controls") or self.get_widget("gb_console_log")
-        if master_gb and master_gb.layout():
-            layout = master_gb.layout()
-
-            err_box = QGroupBox("MOTOR DRIVER ERROR & ALARM CONTROL (e.g. Err 007)")
-            err_box.setObjectName("gb_motor_error_controls")
-            err_box_layout = QHBoxLayout(err_box)
-
-            btn_clear_alarm = QPushButton("🔄 RESET MOTOR ALARMS")
-            btn_clear_alarm.setObjectName("btn_clear_motor_alarms")
-            btn_clear_alarm.setToolTip("Sends hardware ResetAxis signal to clear driver error codes (e.g. Err 007)")
-            btn_clear_alarm.setStyleSheet("background-color: #1e40af; color: #ffffff; font-weight: bold; border: 1px solid #b8c4ff;")
-            btn_clear_alarm.clicked.connect(lambda checked=False: self.clear_motor_alarms_action())
-
-            lbl_sim = QLabel("Simulate Error:")
-            cmb_axis = QComboBox()
-            cmb_axis.setObjectName("cmb_sim_err_axis")
-            cmb_axis.addItems(["Z (Recoater)", "U (Build Plate)", "V (Powder Bay)", "X (Galvo X)", "Y (Galvo Y)"])
-
-            cmb_code = QComboBox()
-            cmb_code.setObjectName("cmb_sim_err_code")
-            cmb_code.addItems([
-                "Err 007 - Motor Stall / Shaft Overload",
-                "Err 001 - Over-Current Short Circuit",
-                "Err 002 - Over-Voltage Fault",
-                "Err 004 - Position Following Error",
-                "Err 005 - EEPROM Parameter Fault",
-                "Err 008 - Under-Voltage Fault",
-                "Err 009 - Driver Over-Temperature",
-                "Err 010 - Open Phase Disconnection",
-                "Err 012 - Encoder Feedback Fault",
-                "NORMAL - Clear Error"
-            ])
-
-            btn_trigger_sim = QPushButton("⚠️ TRIGGER ERROR")
-            btn_trigger_sim.setObjectName("btn_trigger_sim_err")
-            btn_trigger_sim.setStyleSheet("background-color: #ef4444; color: #ffffff; font-weight: bold; border: 1px solid #ffb4ab;")
-            btn_trigger_sim.clicked.connect(lambda checked=False: self.trigger_simulated_error_action())
-
-            err_box_layout.addWidget(btn_clear_alarm)
-            err_box_layout.addWidget(lbl_sim)
-            err_box_layout.addWidget(cmb_axis)
-            err_box_layout.addWidget(cmb_code)
-            err_box_layout.addWidget(btn_trigger_sim)
-
-            layout.addWidget(err_box)
-
-        # 4. Timer to update driver errors every 500ms
-        self.motor_error_timer = QTimer(self.window)
-        self.motor_error_timer.timeout.connect(self.update_motor_driver_errors_ui)
-        self.motor_error_timer.start(500)
-
-    def update_motor_driver_errors_ui(self):
-        """Polls motor driver error status from StepperController and updates UI badges/labels."""
-        if not self.stepper_controller:
-            return
-
-        errors = self.stepper_controller.get_all_driver_errors()
-
-        # Update Top Badge
-        if hasattr(self, 'lbl_driver_badge') and self.lbl_driver_badge:
-            if not errors:
-                self.lbl_driver_badge.setText("🟢 MOTOR DRIVERS: NORMAL")
-                self.lbl_driver_badge.setStyleSheet(
-                    "background-color: rgba(16, 185, 129, 0.15); color: #10b981; "
-                    "border: 1px solid #10b981; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; "
-                    "font-size: 11px; font-weight: bold;"
-                )
-            else:
-                first_ax, (first_code, first_title, first_desc) = next(iter(errors.items()))
-                self.lbl_driver_badge.setText(f"⚠️ MOTOR DRIVER ERROR: {first_code} ({first_ax}-Axis: {first_title})")
-                self.lbl_driver_badge.setStyleSheet(
-                    "background-color: rgba(239, 68, 68, 0.25); color: #ff6b6b; "
-                    "border: 1.5px solid #ef4444; padding: 4px 10px; font-family: 'JetBrains Mono', monospace; "
-                    "font-size: 11px; font-weight: bold;"
-                )
-
-        # Update per-axis Labels
-        for ax_code, (lbl, prefix) in getattr(self, 'axis_driver_labels', {}).items():
-            if ax_code in errors:
-                code_str, title, desc = errors[ax_code]
-                lbl.setText(f"{prefix} 🚨 {code_str} ({title})")
-                lbl.setStyleSheet(
-                    "background-color: rgba(239, 68, 68, 0.2); color: #ff6b6b; border: 1px solid #ef4444; "
-                    "padding: 3px 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold;"
-                )
-            else:
-                lbl.setText(f"{prefix} 🟢 NORMAL")
-                lbl.setStyleSheet(
-                    "background-color: #0d0e14; color: #10b981; border: 1px solid #444653; "
-                    "padding: 3px 6px; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: bold;"
-                )
-
-    def clear_motor_alarms_action(self):
-        """Clears all motor driver alarm states."""
-        if self.stepper_controller:
-            self.stepper_controller.clear_driver_alarms()
-            print("\n[Motor Alarm Reset] Reset pulse sent to all motor drivers. Alarms cleared.")
-        self.update_motor_driver_errors_ui()
-
-    def trigger_simulated_error_action(self):
-        """Triggers a simulated driver error from UI controls."""
-        cmb_axis = self.get_widget("cmb_sim_err_axis")
-        cmb_code = self.get_widget("cmb_sim_err_code")
-
-        ax_str = cmb_axis.currentText() if cmb_axis else "Z"
-        ax_code = ax_str.split()[0]
-
-        code_text = cmb_code.currentText() if cmb_code else "Err 007"
-        if "NORMAL" in code_text:
-            code_val = None
-        else:
-            code_val = code_text.split(" - ")[0]
-
-        if self.stepper_controller:
-            self.stepper_controller.trigger_simulated_driver_error(ax_code, code_val)
-            if code_val:
-                print(f"\n[SIMULATION] Motor Driver Alarm {code_val} triggered on Axis {ax_code}!")
-            else:
-                print(f"\n[SIMULATION] Motor Driver Alarm cleared on Axis {ax_code}.")
-
-        self.update_motor_driver_errors_ui()
-
     def run(self):
-
         """Shows the main window and runs the application event loop."""
         self.window.show()
         sys.exit(self.app.exec())
