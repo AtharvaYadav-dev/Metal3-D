@@ -30,6 +30,30 @@ class MockConnection(BaseConnection):
     """
     def __init__(self):
         super().__init__()
+        self.simulated_alarms = {}
+
+    def get_axis_alarm(self, axis='Z'):
+        ax = str(axis).upper()
+        return self.simulated_alarms.get(ax, 0)
+
+    def reset_axis_alarm(self, axis=None):
+        if axis is not None:
+            ax = str(axis).upper()
+            self.simulated_alarms.pop(ax, None)
+            log_command(f"RESET_ALARM {ax}")
+        else:
+            self.simulated_alarms.clear()
+            log_command("RESET_ALARM ALL")
+
+    def set_simulated_alarm(self, axis='Z', error_code='Err 007'):
+        ax = str(axis).upper()
+        if error_code:
+            self.simulated_alarms[ax] = error_code
+            log_command(f"SET_SIMULATED_ALARM {ax} {error_code}")
+        else:
+            self.simulated_alarms.pop(ax, None)
+            log_command(f"CLEAR_SIMULATED_ALARM {ax}")
+
 
     def initialize(self):
         log_command("INIT_CARD (MOCK)")

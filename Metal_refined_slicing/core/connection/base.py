@@ -62,7 +62,15 @@ class BaseConnection:
         """Smoothly stops motion for the specified axis."""
         pass
 
-    def sd_stop(self, axis='Z'):
-        """Smoothly decelerates and stops the specified axis."""
+    def get_axis_alarm(self, axis='Z'):
+        """Gets the motor driver alarm status for an axis (0 = Normal, >0/str = Error)."""
+        return 0
+
+    def reset_axis_alarm(self, axis=None):
+        """Resets motor driver alarm(s)."""
+        pass
+
+    def set_simulated_alarm(self, axis='Z', error_code='Err 007'):
+        """Sets a simulated motor driver error code for testing."""
         pass
 

@@ -13,6 +13,8 @@ class HardwareConnection(BaseConnection):
     def __init__(self):
         super().__init__()
         self.dll = None
+        self.simulated_alarms = {}
+
 
     def initialize(self):
         try:
@@ -137,6 +139,10 @@ class HardwareConnection(BaseConnection):
             self.dll.GT_PROSYS_U3_ResetAxis.argtypes = [c_short]
             self.dll.GT_PROSYS_U3_ResetAxis.restype = c_short
 
+        if hasattr(self.dll, 'GT_PROSYS_U3_get_alm'):
+            self.dll.GT_PROSYS_U3_get_alm.argtypes = [c_short]
+            self.dll.GT_PROSYS_U3_get_alm.restype = c_short
+
         if hasattr(self.dll, 'GT_PROSYS_U3_get_command'):
             self.dll.GT_PROSYS_U3_get_command.argtypes = [c_int32, POINTER(c_int32)]
             self.dll.GT_PROSYS_U3_get_command.restype = c_int32
@@ -241,6 +247,47 @@ class HardwareConnection(BaseConnection):
             except Exception:
                 return 0
         return 0
+
+    def get_axis_alarm(self, axis='Z'):
+        ax = str(axis).upper()
+        if ax in self.simulated_alarms:
+            return self.simulated_alarms[ax]
+
+        if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_get_alm'):
+            axis_map = {'X': 0, 'Y': 1, 'Z': 2, 'U': 3, 'V': 4}
+            axis_idx = axis_map.get(ax, 2)
+            try:
+                val = self.dll.GT_PROSYS_U3_get_alm(c_short(axis_idx))
+                return val
+            except Exception as e:
+                print(f"Error querying GT_PROSYS_U3_get_alm for axis {ax}: {e}")
+                return 0
+        return 0
+
+    def reset_axis_alarm(self, axis=None):
+        if axis is not None:
+            ax_list = [str(axis).upper()]
+        else:
+            ax_list = ['Z', 'U', 'V', 'X', 'Y']
+
+        for ax in ax_list:
+            self.simulated_alarms.pop(ax, None)
+            if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_ResetAxis'):
+                axis_map = {'X': 0, 'Y': 1, 'Z': 2, 'U': 3, 'V': 4}
+                axis_idx = axis_map.get(ax, 2)
+                try:
+                    self.dll.GT_PROSYS_U3_ResetAxis(c_short(axis_idx))
+                    print(f"[Hardware] Sent GT_PROSYS_U3_ResetAxis for Axis {ax} (index {axis_idx}).")
+                except Exception as e:
+                    print(f"[Hardware] Error resetting alarm for axis {ax}: {e}")
+
+    def set_simulated_alarm(self, axis='Z', error_code='Err 007'):
+        ax = str(axis).upper()
+        if error_code:
+            self.simulated_alarms[ax] = error_code
+        else:
+            self.simulated_alarms.pop(ax, None)
+
 
     def get_axis_position(self, axis):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_get_command'):
