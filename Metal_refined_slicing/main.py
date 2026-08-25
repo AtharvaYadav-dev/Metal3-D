@@ -426,7 +426,7 @@ class Metal3DPrinterApp:
         self.build_setup_galvo_preview = None
 
         # State Variables
-        self.travel_step = 10.0
+        self.travel_step = 1.0
         self.active_file_path = None
         self.powder_prep_done = False
         self.galvo_config = CoordinateConfig()
@@ -1282,12 +1282,17 @@ class Metal3DPrinterApp:
                     btn.clicked.connect(callback)
                 connected.add(btn)
 
-    def _setup_motion_controls(self):
-        """Wires travel step selector and U, V, Z jog buttons."""
-        def set_travel(val):
-            self.travel_step = val
+    def _set_travel_step(self, val, announce=True):
+        """Stores the jog step and keeps only that travel button highlighted (QPushButton:checked / Home blue)."""
+        self.travel_step = val
+        for btn, step in getattr(self, "_travel_step_buttons", []):
+            btn.setChecked(abs(step - val) < 1e-9)
+        if announce:
             print(f"[Motion Control] Travel step set to {val} mm")
 
+    def _setup_motion_controls(self):
+        """Wires travel step selector and U, V, Z jog buttons."""
+        self._travel_step_buttons = []
         travel_connected = set()
         for btn_name, val in [
             ('travelpushButton_1', 0.01),
@@ -1299,9 +1304,13 @@ class Metal3DPrinterApp:
         ]:
             btn = self.get_widget(btn_name)
             if btn and btn not in travel_connected:
+                btn.setCheckable(True)
                 if hasattr(btn, 'clicked'):
-                    btn.clicked.connect(lambda checked=False, v=val: set_travel(v))
+                    btn.clicked.connect(lambda checked=False, v=val: self._set_travel_step(v))
+                self._travel_step_buttons.append((btn, val))
                 travel_connected.add(btn)
+
+        self._set_travel_step(1.0, announce=False)
 
         def on_jog_u(step_sign):
             step_mm = self.travel_step * step_sign
