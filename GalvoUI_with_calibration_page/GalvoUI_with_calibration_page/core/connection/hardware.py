@@ -198,6 +198,7 @@ class HardwareConnection(BaseConnection):
     def wait_for_motion(self):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_galvo_run_status'):
             import time
+            time.sleep(0.01) # Allow hardware to register the buffer execution
             while self.dll.GT_PROSYS_U3_galvo_run_status() == 1:
                 if hasattr(self.dll, 'IsConnected') and self.dll.IsConnected() == 0:
                     raise ConnectionError("Galvo hardware disconnected during motion")
