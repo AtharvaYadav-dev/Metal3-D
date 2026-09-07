@@ -26,7 +26,6 @@ from machine.galvo_controller import GalvoController
 from machine.stepper_controller import StepperController
 from core.svg_parser import SVGParser
 from core.text_parser import TextParser
-
 from pygrabber.dshow_graph import FilterGraph
 from camera_thread import CameraThread
 from PySide6.QtGui import QPixmap, QImage

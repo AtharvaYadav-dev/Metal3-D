@@ -57,3 +57,641 @@
 2026-08-27 15:53:25,892 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1dd25ba17c0 at 1dd29042150>
 2026-08-27 15:53:26,410 - INFO - UI load successful
 2026-08-27 15:53:36,784 - INFO - Profile : Supervisor
+2026-08-27 16:14:13,495 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 16:14:13,543 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 16:14:14,226 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 16:14:14,940 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 16:14:14,940 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 16:14:14,941 - INFO - Created a memory-only package.
+2026-08-27 16:14:14,948 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 16:14:14,964 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 16:14:14,970 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 16:14:15,005 - DEBUG - Release <POINTER(ITypeLib) ptr=0x29440c4acf0 at 294424b7f50>
+2026-08-27 16:14:15,006 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 16:14:15,020 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 16:14:15,039 - DEBUG - Release <POINTER(ITypeLib) ptr=0x29440c478b0 at 294424b7f50>
+2026-08-27 16:14:17,911 - INFO - UI load successful
+2026-08-27 16:15:29,179 - CRITICAL - Laser 1 : OFF
+2026-08-27 16:15:29,180 - CRITICAL - Laser 2 : OFF
+2026-08-27 16:15:29,180 - INFO - Lasers Shutdown
+2026-08-27 16:15:29,180 - INFO - COM connection close successfully
+2026-08-27 16:15:29,180 - INFO - Main window close successfully
+2026-08-27 16:15:29,180 - INFO - ==================================================
+2026-08-27 16:15:29,180 - INFO - New session close at 2026-08-27 16:15
+2026-08-27 16:15:29,181 - INFO - ==================================================
+2026-08-27 16:15:29,217 - DEBUG - Calling CoUninitialize()
+2026-08-27 16:15:29,217 - DEBUG - CoUninitialize() done.
+2026-08-27 16:15:44,235 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 16:15:44,247 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 16:15:44,436 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 16:15:44,520 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 16:15:44,520 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 16:15:44,520 - INFO - Created a memory-only package.
+2026-08-27 16:15:44,523 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 16:15:44,529 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 16:15:44,530 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 16:15:44,550 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18a0c0f2670 at 18a0d721dd0>
+2026-08-27 16:15:44,550 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 16:15:44,551 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 16:15:44,557 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18a0c0ef230 at 18a0d721dd0>
+2026-08-27 16:15:47,125 - INFO - UI load successful
+2026-08-27 16:16:31,428 - INFO - Profile : Supervisor
+2026-08-27 16:25:43,427 - CRITICAL - Laser 1 : OFF
+2026-08-27 16:25:43,427 - CRITICAL - Laser 2 : OFF
+2026-08-27 16:25:43,427 - INFO - Lasers Shutdown
+2026-08-27 16:25:43,428 - INFO - COM connection close successfully
+2026-08-27 16:25:43,428 - INFO - Main window close successfully
+2026-08-27 16:25:43,428 - INFO - ==================================================
+2026-08-27 16:25:43,428 - INFO - New session close at 2026-08-27 16:25
+2026-08-27 16:25:43,428 - INFO - ==================================================
+2026-08-27 16:25:43,439 - DEBUG - Calling CoUninitialize()
+2026-08-27 16:25:43,440 - DEBUG - CoUninitialize() done.
+2026-08-27 17:09:26,399 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:09:26,412 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:09:26,609 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:09:26,704 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:09:26,705 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:09:26,705 - INFO - Created a memory-only package.
+2026-08-27 17:09:26,708 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:09:26,714 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:09:26,716 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:09:26,737 - DEBUG - Release <POINTER(ITypeLib) ptr=0x22f1184d2e0 at 22f13111dd0>
+2026-08-27 17:09:26,737 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:09:26,738 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:09:26,744 - DEBUG - Release <POINTER(ITypeLib) ptr=0x22f1184b760 at 22f13111dd0>
+2026-08-27 17:09:29,256 - INFO - UI load successful
+2026-08-27 17:09:59,682 - WARNING - Failed login attempt for user: Supervisor
+2026-08-27 17:10:08,608 - INFO - Profile : Supervisor
+2026-08-27 17:13:08,422 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:13:08,422 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:13:08,422 - INFO - Lasers Shutdown
+2026-08-27 17:13:08,422 - INFO - COM connection close successfully
+2026-08-27 17:13:08,422 - INFO - Main window close successfully
+2026-08-27 17:13:08,422 - INFO - ==================================================
+2026-08-27 17:13:08,422 - INFO - New session close at 2026-08-27 17:13
+2026-08-27 17:13:08,422 - INFO - ==================================================
+2026-08-27 17:13:08,432 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:13:08,432 - DEBUG - CoUninitialize() done.
+2026-08-27 17:13:15,489 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:13:15,501 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:13:15,702 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:13:15,786 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:13:15,786 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:13:15,786 - INFO - Created a memory-only package.
+2026-08-27 17:13:15,789 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:13:15,794 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:13:15,796 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:13:15,815 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1efec2b2850 at 1efedb65dd0>
+2026-08-27 17:13:15,815 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:13:15,816 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:13:15,822 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1efec2b2850 at 1efedb65dd0>
+2026-08-27 17:13:18,378 - INFO - UI load successful
+2026-08-27 17:13:23,787 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:13:23,787 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:13:23,787 - INFO - Lasers Shutdown
+2026-08-27 17:13:23,787 - INFO - COM connection close successfully
+2026-08-27 17:13:23,787 - INFO - Main window close successfully
+2026-08-27 17:13:23,787 - INFO - ==================================================
+2026-08-27 17:13:23,788 - INFO - New session close at 2026-08-27 17:13
+2026-08-27 17:13:23,788 - INFO - ==================================================
+2026-08-27 17:13:23,800 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:13:23,800 - DEBUG - CoUninitialize() done.
+2026-08-27 17:13:34,914 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:13:34,929 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:13:35,120 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:13:35,206 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:13:35,206 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:13:35,206 - INFO - Created a memory-only package.
+2026-08-27 17:13:35,209 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:13:35,215 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:13:35,216 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:13:35,236 - DEBUG - Release <POINTER(ITypeLib) ptr=0x251e87e3f00 at 251fa771dd0>
+2026-08-27 17:13:35,236 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:13:35,237 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:13:35,243 - DEBUG - Release <POINTER(ITypeLib) ptr=0x251e87e15c0 at 251fa771dd0>
+2026-08-27 17:13:37,761 - INFO - UI load successful
+2026-08-27 17:14:40,930 - WARNING - Failed login attempt for user: Supervisor
+2026-08-27 17:14:55,194 - WARNING - Failed login attempt for user: Supervisor
+2026-08-27 17:15:05,204 - INFO - Profile : Supervisor
+2026-08-27 17:21:29,953 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:21:29,954 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:21:29,954 - INFO - Lasers Shutdown
+2026-08-27 17:21:29,954 - INFO - COM connection close successfully
+2026-08-27 17:21:29,954 - INFO - Main window close successfully
+2026-08-27 17:21:29,954 - INFO - ==================================================
+2026-08-27 17:21:29,954 - INFO - New session close at 2026-08-27 17:21
+2026-08-27 17:21:29,954 - INFO - ==================================================
+2026-08-27 17:21:29,970 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:21:29,973 - DEBUG - CoUninitialize() done.
+2026-08-27 17:21:33,281 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:21:33,292 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:21:33,463 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:21:33,543 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:21:33,543 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:21:33,543 - INFO - Created a memory-only package.
+2026-08-27 17:21:33,546 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:21:33,551 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:21:33,553 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:21:33,573 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1d6e9253700 at 1d6eb211dd0>
+2026-08-27 17:21:33,573 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:21:33,574 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:21:33,580 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1d6e9254d00 at 1d6eb211dd0>
+2026-08-27 17:21:36,085 - INFO - UI load successful
+2026-08-27 17:21:46,303 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:21:46,303 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:21:46,303 - INFO - Lasers Shutdown
+2026-08-27 17:21:46,303 - INFO - COM connection close successfully
+2026-08-27 17:21:46,303 - INFO - Main window close successfully
+2026-08-27 17:21:46,303 - INFO - ==================================================
+2026-08-27 17:21:46,304 - INFO - New session close at 2026-08-27 17:21
+2026-08-27 17:21:46,304 - INFO - ==================================================
+2026-08-27 17:21:46,315 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:21:46,315 - DEBUG - CoUninitialize() done.
+2026-08-27 17:31:57,831 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:31:57,843 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:31:58,023 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:31:58,101 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:31:58,102 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:31:58,102 - INFO - Created a memory-only package.
+2026-08-27 17:31:58,104 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:31:58,110 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:31:58,111 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:31:58,131 - DEBUG - Release <POINTER(ITypeLib) ptr=0x198cad3dc10 at 198cc565dd0>
+2026-08-27 17:31:58,131 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:31:58,132 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:31:58,137 - DEBUG - Release <POINTER(ITypeLib) ptr=0x198cad3e710 at 198cc565dd0>
+2026-08-27 17:32:00,676 - INFO - UI load successful
+2026-08-27 17:32:37,403 - INFO - Profile : Supervisor
+2026-08-27 17:36:29,301 - INFO - File selected : D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-27 17:36:33,239 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-27 17:45:55,935 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:45:55,936 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:45:55,936 - INFO - Lasers Shutdown
+2026-08-27 17:45:55,936 - INFO - COM connection close successfully
+2026-08-27 17:45:55,936 - INFO - Main window close successfully
+2026-08-27 17:45:55,936 - INFO - ==================================================
+2026-08-27 17:45:55,936 - INFO - New session close at 2026-08-27 17:45
+2026-08-27 17:45:55,936 - INFO - ==================================================
+2026-08-27 17:45:55,948 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:45:55,949 - DEBUG - CoUninitialize() done.
+2026-08-27 17:45:59,347 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:45:59,359 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:45:59,518 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:45:59,595 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:45:59,595 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:45:59,595 - INFO - Created a memory-only package.
+2026-08-27 17:45:59,598 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:45:59,603 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:45:59,605 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:45:59,624 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1d256a825d0 at 1d258115dd0>
+2026-08-27 17:45:59,624 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:45:59,625 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:45:59,631 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1d256a80fd0 at 1d258115dd0>
+2026-08-27 17:46:02,165 - INFO - UI load successful
+2026-08-27 17:46:46,319 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:46:46,319 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:46:46,319 - INFO - Lasers Shutdown
+2026-08-27 17:46:46,319 - INFO - COM connection close successfully
+2026-08-27 17:46:46,320 - INFO - Main window close successfully
+2026-08-27 17:46:46,320 - INFO - ==================================================
+2026-08-27 17:46:46,320 - INFO - New session close at 2026-08-27 17:46
+2026-08-27 17:46:46,320 - INFO - ==================================================
+2026-08-27 17:46:46,327 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:46:46,327 - DEBUG - CoUninitialize() done.
+2026-08-27 17:47:12,931 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:47:12,943 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:47:13,123 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:47:13,204 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:47:13,204 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:47:13,204 - INFO - Created a memory-only package.
+2026-08-27 17:47:13,207 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:47:13,213 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:47:13,214 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:47:13,233 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1e452689550 at 1e453cb1dd0>
+2026-08-27 17:47:13,233 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:47:13,234 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:47:13,240 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1e452687f50 at 1e453cb1dd0>
+2026-08-27 17:47:15,787 - INFO - UI load successful
+2026-08-27 17:47:56,655 - INFO - Profile : Supervisor
+2026-08-27 17:50:06,887 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:50:06,887 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:50:06,887 - INFO - Lasers Shutdown
+2026-08-27 17:50:06,887 - INFO - COM connection close successfully
+2026-08-27 17:50:06,887 - INFO - Main window close successfully
+2026-08-27 17:50:06,887 - INFO - ==================================================
+2026-08-27 17:50:06,887 - INFO - New session close at 2026-08-27 17:50
+2026-08-27 17:50:06,887 - INFO - ==================================================
+2026-08-27 17:50:06,900 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:50:06,901 - DEBUG - CoUninitialize() done.
+2026-08-27 17:50:14,056 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:50:14,070 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:50:14,256 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:50:14,340 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:50:14,341 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:50:14,341 - INFO - Created a memory-only package.
+2026-08-27 17:50:14,344 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:50:14,349 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:50:14,351 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:50:14,371 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1dcbb9d4350 at 1dcbd311dd0>
+2026-08-27 17:50:14,371 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:50:14,372 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:50:14,378 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1dcbb9d7790 at 1dcbd311dd0>
+2026-08-27 17:50:17,067 - INFO - UI load successful
+2026-08-27 17:50:47,192 - INFO - Profile : Supervisor
+2026-08-27 17:51:17,523 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:51:17,524 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:51:17,524 - INFO - Lasers Shutdown
+2026-08-27 17:51:17,524 - INFO - COM connection close successfully
+2026-08-27 17:51:17,524 - INFO - Main window close successfully
+2026-08-27 17:51:17,524 - INFO - ==================================================
+2026-08-27 17:51:17,524 - INFO - New session close at 2026-08-27 17:51
+2026-08-27 17:51:17,524 - INFO - ==================================================
+2026-08-27 17:51:17,535 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:51:17,535 - DEBUG - CoUninitialize() done.
+2026-08-27 17:51:24,164 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:51:24,174 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:51:24,334 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:51:24,410 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:51:24,410 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:51:24,410 - INFO - Created a memory-only package.
+2026-08-27 17:51:24,414 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:51:24,419 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:51:24,421 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:51:24,440 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ed5c598030 at 1ed5dba5dd0>
+2026-08-27 17:51:24,440 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:51:24,441 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:51:24,447 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ed5c596fb0 at 1ed5dba5dd0>
+2026-08-27 17:51:27,005 - INFO - UI load successful
+2026-08-27 17:51:55,911 - INFO - Profile : Supervisor
+2026-08-27 17:52:28,962 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:52:28,962 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:52:28,962 - INFO - Lasers Shutdown
+2026-08-27 17:52:28,962 - INFO - COM connection close successfully
+2026-08-27 17:52:28,962 - INFO - Main window close successfully
+2026-08-27 17:52:28,962 - INFO - ==================================================
+2026-08-27 17:52:28,962 - INFO - New session close at 2026-08-27 17:52
+2026-08-27 17:52:28,962 - INFO - ==================================================
+2026-08-27 17:52:28,975 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:52:28,975 - DEBUG - CoUninitialize() done.
+2026-08-27 17:53:10,309 - DEBUG - OpenGL_accelerate module loaded
+2026-08-27 17:53:10,320 - DEBUG - Using accelerated ArrayDatatype
+2026-08-27 17:53:10,480 - DEBUG - CoInitializeEx(None, 2)
+2026-08-27 17:53:10,559 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-27 17:53:10,559 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-27 17:53:10,559 - INFO - Created a memory-only package.
+2026-08-27 17:53:10,562 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-27 17:53:10,567 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-27 17:53:10,569 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:53:10,588 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2a3a9c27fb0 at 2a3ab595dd0>
+2026-08-27 17:53:10,589 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-27 17:53:10,589 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-27 17:53:10,595 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2a3a9c25eb0 at 2a3ab595dd0>
+2026-08-27 17:53:13,126 - INFO - UI load successful
+2026-08-27 17:53:49,425 - INFO - Profile : Supervisor
+2026-08-27 17:57:07,390 - CRITICAL - Laser 1 : OFF
+2026-08-27 17:57:07,390 - CRITICAL - Laser 2 : OFF
+2026-08-27 17:57:07,390 - INFO - Lasers Shutdown
+2026-08-27 17:57:07,390 - INFO - COM connection close successfully
+2026-08-27 17:57:07,390 - INFO - Main window close successfully
+2026-08-27 17:57:07,390 - INFO - ==================================================
+2026-08-27 17:57:07,390 - INFO - New session close at 2026-08-27 17:57
+2026-08-27 17:57:07,391 - INFO - ==================================================
+2026-08-27 17:57:07,402 - DEBUG - Calling CoUninitialize()
+2026-08-27 17:57:07,402 - DEBUG - CoUninitialize() done.
+2026-08-28 10:21:09,905 - DEBUG - OpenGL_accelerate module loaded
+2026-08-28 10:21:10,082 - DEBUG - Using accelerated ArrayDatatype
+2026-08-28 10:21:10,814 - DEBUG - CoInitializeEx(None, 2)
+2026-08-28 10:21:10,986 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-28 10:21:10,986 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-28 10:21:10,986 - INFO - Created a memory-only package.
+2026-08-28 10:21:10,989 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-28 10:21:11,001 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-28 10:21:11,005 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:21:11,034 - DEBUG - Release <POINTER(ITypeLib) ptr=0x24e2e09ba50 at 24e2f911dd0>
+2026-08-28 10:21:11,034 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-28 10:21:11,038 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:21:11,048 - DEBUG - Release <POINTER(ITypeLib) ptr=0x24e2e09c290 at 24e2f911dd0>
+2026-08-28 10:21:14,751 - INFO - UI load successful
+2026-08-28 10:22:16,059 - WARNING - Failed login attempt for user: Supervisor
+2026-08-28 10:22:25,217 - INFO - Profile : Supervisor
+2026-08-28 10:23:41,222 - INFO - File selected : D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-28 10:24:19,415 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-28 10:26:06,538 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-28 10:27:59,584 - CRITICAL - Laser 1 : OFF
+2026-08-28 10:27:59,585 - CRITICAL - Laser 2 : OFF
+2026-08-28 10:27:59,585 - INFO - Lasers Shutdown
+2026-08-28 10:27:59,585 - INFO - COM connection close successfully
+2026-08-28 10:27:59,585 - INFO - Main window close successfully
+2026-08-28 10:27:59,585 - INFO - ==================================================
+2026-08-28 10:27:59,585 - INFO - New session close at 2026-08-28 10:27
+2026-08-28 10:27:59,585 - INFO - ==================================================
+2026-08-28 10:27:59,599 - DEBUG - Calling CoUninitialize()
+2026-08-28 10:27:59,599 - DEBUG - CoUninitialize() done.
+2026-08-28 10:28:12,031 - DEBUG - OpenGL_accelerate module loaded
+2026-08-28 10:28:12,053 - DEBUG - Using accelerated ArrayDatatype
+2026-08-28 10:28:12,389 - DEBUG - CoInitializeEx(None, 2)
+2026-08-28 10:28:12,512 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-28 10:28:12,513 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-28 10:28:12,513 - INFO - Created a memory-only package.
+2026-08-28 10:28:12,516 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-28 10:28:12,526 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-28 10:28:12,531 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:28:12,556 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2c6c556f7d0 at 2c6c6cb5dd0>
+2026-08-28 10:28:12,557 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-28 10:28:12,561 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:28:12,570 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2c6c5570010 at 2c6c6cb5dd0>
+2026-08-28 10:28:15,246 - INFO - UI load successful
+2026-08-28 10:28:50,702 - INFO - Profile : Supervisor
+2026-08-28 10:29:14,575 - CRITICAL - Laser 1 : OFF
+2026-08-28 10:29:14,576 - CRITICAL - Laser 2 : OFF
+2026-08-28 10:29:14,576 - INFO - Lasers Shutdown
+2026-08-28 10:29:14,576 - INFO - COM connection close successfully
+2026-08-28 10:29:14,576 - INFO - Main window close successfully
+2026-08-28 10:29:14,576 - INFO - ==================================================
+2026-08-28 10:29:14,576 - INFO - New session close at 2026-08-28 10:29
+2026-08-28 10:29:14,576 - INFO - ==================================================
+2026-08-28 10:29:14,587 - DEBUG - Calling CoUninitialize()
+2026-08-28 10:29:14,588 - DEBUG - CoUninitialize() done.
+2026-08-28 10:29:22,133 - DEBUG - OpenGL_accelerate module loaded
+2026-08-28 10:29:22,143 - DEBUG - Using accelerated ArrayDatatype
+2026-08-28 10:29:22,311 - DEBUG - CoInitializeEx(None, 2)
+2026-08-28 10:29:22,387 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-28 10:29:22,388 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-28 10:29:22,388 - INFO - Created a memory-only package.
+2026-08-28 10:29:22,390 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-28 10:29:22,396 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-28 10:29:22,397 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:29:22,418 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ec1234a470 at 1ec13c21dd0>
+2026-08-28 10:29:22,418 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-28 10:29:22,419 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:29:22,425 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ec1234af70 at 1ec13c21dd0>
+2026-08-28 10:29:24,956 - INFO - UI load successful
+2026-08-28 10:30:09,429 - INFO - Profile : Supervisor
+2026-08-28 10:48:52,300 - CRITICAL - Laser 1 : OFF
+2026-08-28 10:48:52,300 - CRITICAL - Laser 2 : OFF
+2026-08-28 10:48:52,300 - INFO - Lasers Shutdown
+2026-08-28 10:48:52,300 - INFO - COM connection close successfully
+2026-08-28 10:48:52,300 - INFO - Main window close successfully
+2026-08-28 10:48:52,300 - INFO - ==================================================
+2026-08-28 10:48:52,301 - INFO - New session close at 2026-08-28 10:48
+2026-08-28 10:48:52,301 - INFO - ==================================================
+2026-08-28 10:48:52,313 - DEBUG - Calling CoUninitialize()
+2026-08-28 10:48:52,313 - DEBUG - CoUninitialize() done.
+2026-08-28 10:49:01,920 - DEBUG - OpenGL_accelerate module loaded
+2026-08-28 10:49:01,933 - DEBUG - Using accelerated ArrayDatatype
+2026-08-28 10:49:02,099 - DEBUG - CoInitializeEx(None, 2)
+2026-08-28 10:49:02,180 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-28 10:49:02,180 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-28 10:49:02,180 - INFO - Created a memory-only package.
+2026-08-28 10:49:02,183 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-28 10:49:02,188 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-28 10:49:02,189 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:49:02,209 - DEBUG - Release <POINTER(ITypeLib) ptr=0x245650a06a0 at 24577155dd0>
+2026-08-28 10:49:02,210 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-28 10:49:02,210 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-28 10:49:02,216 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2456509f360 at 24577155dd0>
+2026-08-28 10:49:04,747 - INFO - UI load successful
+2026-08-29 10:24:22,273 - CRITICAL - Laser 1 : OFF
+2026-08-29 10:24:22,284 - CRITICAL - Laser 2 : OFF
+2026-08-29 10:24:22,284 - INFO - Lasers Shutdown
+2026-08-29 10:24:22,284 - INFO - COM connection close successfully
+2026-08-29 10:24:22,284 - INFO - Main window close successfully
+2026-08-29 10:24:22,291 - INFO - ==================================================
+2026-08-29 10:24:22,291 - INFO - New session close at 2026-08-29 10:24
+2026-08-29 10:24:22,291 - INFO - ==================================================
+2026-08-29 10:24:22,327 - DEBUG - Calling CoUninitialize()
+2026-08-29 10:24:22,330 - DEBUG - CoUninitialize() done.
+2026-08-29 10:24:33,268 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 10:24:33,392 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 10:24:34,020 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 10:24:34,195 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 10:24:34,196 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 10:24:34,196 - INFO - Created a memory-only package.
+2026-08-29 10:24:34,199 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 10:24:34,211 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 10:24:34,214 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:24:34,245 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1b37e427270 at 1b3104e1dd0>
+2026-08-29 10:24:34,245 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 10:24:34,250 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:24:34,286 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1b37e424bf0 at 1b3104e1dd0>
+2026-08-29 10:24:38,080 - INFO - UI load successful
+2026-08-29 10:26:05,327 - INFO - Profile : Supervisor
+2026-08-29 10:27:46,394 - CRITICAL - Laser 1 : OFF
+2026-08-29 10:27:46,395 - CRITICAL - Laser 2 : OFF
+2026-08-29 10:27:46,395 - INFO - Lasers Shutdown
+2026-08-29 10:27:46,395 - INFO - COM connection close successfully
+2026-08-29 10:27:46,395 - INFO - Main window close successfully
+2026-08-29 10:27:46,395 - INFO - ==================================================
+2026-08-29 10:27:46,395 - INFO - New session close at 2026-08-29 10:27
+2026-08-29 10:27:46,395 - INFO - ==================================================
+2026-08-29 10:27:46,407 - DEBUG - Calling CoUninitialize()
+2026-08-29 10:27:46,407 - DEBUG - CoUninitialize() done.
+2026-08-29 10:27:59,495 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 10:27:59,507 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 10:27:59,751 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 10:27:59,887 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 10:27:59,888 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 10:27:59,888 - INFO - Created a memory-only package.
+2026-08-29 10:27:59,893 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 10:27:59,903 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 10:27:59,905 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:27:59,942 - DEBUG - Release <POINTER(ITypeLib) ptr=0x25aa96df940 at 25aaad85dd0>
+2026-08-29 10:27:59,943 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 10:27:59,944 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:27:59,953 - DEBUG - Release <POINTER(ITypeLib) ptr=0x25aa96e1200 at 25aaad85dd0>
+2026-08-29 10:28:02,566 - INFO - UI load successful
+2026-08-29 10:28:18,242 - INFO - Profile : Supervisor
+2026-08-29 10:30:23,718 - CRITICAL - Laser 1 : OFF
+2026-08-29 10:30:23,718 - CRITICAL - Laser 2 : OFF
+2026-08-29 10:30:23,719 - INFO - Lasers Shutdown
+2026-08-29 10:30:23,719 - INFO - COM connection close successfully
+2026-08-29 10:30:23,719 - INFO - Main window close successfully
+2026-08-29 10:30:23,719 - INFO - ==================================================
+2026-08-29 10:30:23,719 - INFO - New session close at 2026-08-29 10:30
+2026-08-29 10:30:23,719 - INFO - ==================================================
+2026-08-29 10:30:23,729 - DEBUG - Calling CoUninitialize()
+2026-08-29 10:30:23,729 - DEBUG - CoUninitialize() done.
+2026-08-29 10:42:29,012 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 10:42:29,053 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 10:42:29,687 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 10:42:29,824 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 10:42:29,824 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 10:42:29,824 - INFO - Created a memory-only package.
+2026-08-29 10:42:29,827 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 10:42:29,837 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 10:42:29,841 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:42:29,871 - DEBUG - Release <POINTER(ITypeLib) ptr=0x26f6d4ac970 at 26f6eb65dd0>
+2026-08-29 10:42:29,871 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 10:42:29,874 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 10:42:29,884 - DEBUG - Release <POINTER(ITypeLib) ptr=0x26f6d4ac970 at 26f6eb65dd0>
+2026-08-29 10:42:33,665 - INFO - UI load successful
+2026-08-29 10:43:21,903 - WARNING - Failed login attempt for user: Supervisor
+2026-08-29 10:43:31,578 - INFO - Profile : Supervisor
+2026-08-29 11:54:47,055 - CRITICAL - Laser 1 : OFF
+2026-08-29 11:54:47,056 - CRITICAL - Laser 2 : OFF
+2026-08-29 11:54:47,056 - INFO - Lasers Shutdown
+2026-08-29 11:54:47,056 - INFO - COM connection close successfully
+2026-08-29 11:54:47,056 - INFO - Main window close successfully
+2026-08-29 11:54:47,056 - INFO - ==================================================
+2026-08-29 11:54:47,056 - INFO - New session close at 2026-08-29 11:54
+2026-08-29 11:54:47,056 - INFO - ==================================================
+2026-08-29 11:54:47,069 - DEBUG - Calling CoUninitialize()
+2026-08-29 11:54:47,069 - DEBUG - CoUninitialize() done.
+2026-08-29 11:54:53,431 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 11:54:53,565 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 11:54:54,008 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 11:54:54,127 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 11:54:54,127 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 11:54:54,127 - INFO - Created a memory-only package.
+2026-08-29 11:54:54,130 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 11:54:54,136 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 11:54:54,137 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 11:54:54,157 - DEBUG - Release <POINTER(ITypeLib) ptr=0x193a144ccf0 at 193a2e45dd0>
+2026-08-29 11:54:54,158 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 11:54:54,159 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 11:54:54,165 - DEBUG - Release <POINTER(ITypeLib) ptr=0x193a144c1f0 at 193a2e45dd0>
+2026-08-29 11:54:58,391 - INFO - UI load successful
+2026-08-29 11:55:58,376 - INFO - Profile : Supervisor
+2026-08-29 15:46:15,728 - CRITICAL - Laser 1 : OFF
+2026-08-29 15:46:15,729 - CRITICAL - Laser 2 : OFF
+2026-08-29 15:46:15,729 - INFO - Lasers Shutdown
+2026-08-29 15:46:15,729 - INFO - COM connection close successfully
+2026-08-29 15:46:15,729 - INFO - Main window close successfully
+2026-08-29 15:46:15,729 - INFO - ==================================================
+2026-08-29 15:46:15,729 - INFO - New session close at 2026-08-29 15:46
+2026-08-29 15:46:15,729 - INFO - ==================================================
+2026-08-29 15:46:15,745 - DEBUG - Calling CoUninitialize()
+2026-08-29 15:46:15,748 - DEBUG - CoUninitialize() done.
+2026-08-29 15:46:23,509 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 15:46:23,523 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 15:46:23,708 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 15:46:23,791 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 15:46:23,791 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 15:46:23,792 - INFO - Created a memory-only package.
+2026-08-29 15:46:23,794 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 15:46:23,801 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 15:46:23,802 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 15:46:23,823 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ec8ff6c1f0 at 1ec91f31dd0>
+2026-08-29 15:46:23,824 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 15:46:23,824 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 15:46:23,831 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1ec8ff6dab0 at 1ec91f31dd0>
+2026-08-29 15:46:26,344 - INFO - UI load successful
+2026-08-29 15:47:06,784 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 15:47:06,797 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 15:47:06,978 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 15:47:07,059 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 15:47:07,059 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 15:47:07,060 - INFO - Created a memory-only package.
+2026-08-29 15:47:07,063 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 15:47:07,068 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 15:47:07,069 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 15:47:07,089 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18d246e9b60 at 18d25db5dd0>
+2026-08-29 15:47:07,089 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 15:47:07,090 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 15:47:07,096 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18d246eb160 at 18d25db5dd0>
+2026-08-29 15:47:09,598 - INFO - UI load successful
+2026-08-29 15:47:39,193 - INFO - Profile : Supervisor
+2026-08-29 17:30:56,154 - CRITICAL - Laser 1 : OFF
+2026-08-29 17:30:56,154 - CRITICAL - Laser 2 : OFF
+2026-08-29 17:30:56,154 - INFO - Lasers Shutdown
+2026-08-29 17:30:56,154 - INFO - COM connection close successfully
+2026-08-29 17:30:56,154 - INFO - Main window close successfully
+2026-08-29 17:30:56,155 - INFO - ==================================================
+2026-08-29 17:30:56,155 - INFO - New session close at 2026-08-29 17:30
+2026-08-29 17:30:56,155 - INFO - ==================================================
+2026-08-29 17:30:56,168 - DEBUG - Calling CoUninitialize()
+2026-08-29 17:30:56,168 - DEBUG - CoUninitialize() done.
+2026-08-29 17:31:01,242 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 17:31:01,254 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 17:31:01,427 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 17:31:01,505 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 17:31:01,505 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 17:31:01,505 - INFO - Created a memory-only package.
+2026-08-29 17:31:01,509 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 17:31:01,514 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 17:31:01,516 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 17:31:01,535 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18e8abe6a10 at 18e8c211dd0>
+2026-08-29 17:31:01,535 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 17:31:01,536 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 17:31:01,544 - DEBUG - Release <POINTER(ITypeLib) ptr=0x18e8abe8b10 at 18e8c211dd0>
+2026-08-29 17:31:04,117 - INFO - UI load successful
+2026-08-29 17:31:20,761 - CRITICAL - Laser 1 : OFF
+2026-08-29 17:31:20,762 - CRITICAL - Laser 2 : OFF
+2026-08-29 17:31:20,762 - INFO - Lasers Shutdown
+2026-08-29 17:31:20,762 - INFO - COM connection close successfully
+2026-08-29 17:31:20,762 - INFO - Main window close successfully
+2026-08-29 17:31:20,762 - INFO - ==================================================
+2026-08-29 17:31:20,762 - INFO - New session close at 2026-08-29 17:31
+2026-08-29 17:31:20,762 - INFO - ==================================================
+2026-08-29 17:31:20,773 - DEBUG - Calling CoUninitialize()
+2026-08-29 17:31:20,773 - DEBUG - CoUninitialize() done.
+2026-08-29 17:31:59,446 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 17:31:59,458 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 17:31:59,629 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 17:31:59,706 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 17:31:59,706 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 17:31:59,706 - INFO - Created a memory-only package.
+2026-08-29 17:31:59,709 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 17:31:59,714 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 17:31:59,716 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 17:31:59,737 - DEBUG - Release <POINTER(ITypeLib) ptr=0x13fb5605c90 at 13fb6c51dd0>
+2026-08-29 17:31:59,738 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 17:31:59,738 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 17:31:59,744 - DEBUG - Release <POINTER(ITypeLib) ptr=0x13fb5606a50 at 13fb6c51dd0>
+2026-08-29 17:32:02,267 - INFO - UI load successful
+2026-08-29 17:33:01,361 - INFO - Profile : Supervisor
+2026-08-29 17:38:14,490 - CRITICAL - Laser 1 : OFF
+2026-08-29 17:38:14,491 - CRITICAL - Laser 2 : OFF
+2026-08-29 17:38:14,491 - INFO - Lasers Shutdown
+2026-08-29 17:38:14,491 - INFO - COM connection close successfully
+2026-08-29 17:38:14,491 - INFO - Main window close successfully
+2026-08-29 17:38:14,491 - INFO - ==================================================
+2026-08-29 17:38:14,491 - INFO - New session close at 2026-08-29 17:38
+2026-08-29 17:38:14,491 - INFO - ==================================================
+2026-08-29 17:38:14,502 - DEBUG - Calling CoUninitialize()
+2026-08-29 17:38:14,503 - DEBUG - CoUninitialize() done.
+2026-08-29 18:03:37,355 - DEBUG - OpenGL_accelerate module loaded
+2026-08-29 18:03:37,369 - DEBUG - Using accelerated ArrayDatatype
+2026-08-29 18:03:37,561 - DEBUG - CoInitializeEx(None, 2)
+2026-08-29 18:03:37,642 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-29 18:03:37,642 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-29 18:03:37,642 - INFO - Created a memory-only package.
+2026-08-29 18:03:37,645 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-29 18:03:37,650 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-29 18:03:37,651 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 18:03:37,672 - DEBUG - Release <POINTER(ITypeLib) ptr=0x197fd5e1c90 at 197fee55dd0>
+2026-08-29 18:03:37,672 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-29 18:03:37,673 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-29 18:03:37,679 - DEBUG - Release <POINTER(ITypeLib) ptr=0x197fd5e2a50 at 197fee55dd0>
+2026-08-29 18:03:40,205 - INFO - UI load successful
+2026-08-29 18:04:38,866 - INFO - Profile : Supervisor
+2026-08-29 18:12:07,363 - INFO - File selected : D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-29 18:12:10,333 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-29 18:14:29,773 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-29 18:20:48,634 - CRITICAL - Laser 1 : OFF
+2026-08-29 18:20:48,634 - CRITICAL - Laser 2 : OFF
+2026-08-29 18:20:48,634 - INFO - Lasers Shutdown
+2026-08-29 18:20:48,634 - INFO - COM connection close successfully
+2026-08-29 18:20:48,634 - INFO - Main window close successfully
+2026-08-29 18:20:48,634 - INFO - ==================================================
+2026-08-29 18:20:48,634 - INFO - New session close at 2026-08-29 18:20
+2026-08-29 18:20:48,634 - INFO - ==================================================
+2026-08-29 18:20:48,647 - DEBUG - Calling CoUninitialize()
+2026-08-29 18:20:48,647 - DEBUG - CoUninitialize() done.
+2026-08-31 16:51:51,087 - DEBUG - OpenGL_accelerate module loaded
+2026-08-31 16:51:51,123 - DEBUG - Using accelerated ArrayDatatype
+2026-08-31 16:51:51,485 - DEBUG - CoInitializeEx(None, 2)
+2026-08-31 16:51:51,598 - INFO - Could not import comtypes.gen, trying to create it.
+2026-08-31 16:51:51,598 - INFO - Creating comtypes.gen package failed: [WinError 5] Access is denied: 'C:\\Program Files\\Python313\\Lib\\site-packages\\comtypes\\gen'
+2026-08-31 16:51:51,599 - INFO - Created a memory-only package.
+2026-08-31 16:51:51,601 - INFO - Using writeable comtypes cache directory: 'C:\Users\ES2\AppData\Roaming\Python\Python313\comtypes_cache'
+2026-08-31 16:51:51,612 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-08-31 16:51:51,617 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-31 16:51:51,640 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2989bd0a710 at 2989d371dd0>
+2026-08-31 16:51:51,641 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-08-31 16:51:51,645 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-08-31 16:51:51,652 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2989bd0af50 at 2989d371dd0>
+2026-08-31 16:51:55,489 - INFO - UI load successful
+2026-08-31 16:52:11,362 - INFO - Profile : Supervisor
+2026-08-31 16:56:59,697 - INFO - File selected : D:/Metal_3D/Galvo_A/svg_files/ide2.svg
+2026-08-31 16:57:08,475 - INFO - Parameters saved for D:/Metal_3D/Galvo_A/svg_files/ide2.svg
