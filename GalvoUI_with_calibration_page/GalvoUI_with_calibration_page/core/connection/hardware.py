@@ -267,24 +267,28 @@ class HardwareConnection(BaseConnection):
             self.dll.GT_PROSYS_U3_set_do_bit(c_short(io_pin), c_short(state))
 
     def laser_on(self):
+        self.send_buffer()
+        self.wait_for_motion()
         print("HARDWARE COMMAND: laser_on() called. Setting DO1 (Pin 0) to HIGH (1) to turn ON the laser/LED.")
         self.set_io(0, 1)
-        self.send_buffer()
 
     def laser_off(self):
+        self.send_buffer()
+        self.wait_for_motion()
         print("HARDWARE COMMAND: laser_off() called. Setting DO1 (Pin 0) to LOW (0) to turn OFF the laser/LED.")
         self.set_io(0, 0)
-        self.send_buffer()
 
     def reddot_on(self):
+        self.send_buffer()
+        self.wait_for_motion()
         print("HARDWARE COMMAND: reddot_on() called. Setting DO3 (Index 2, Pin 21) to HIGH (1) to turn ON the red dot laser.")
         self.set_io(2, 1)
-        self.send_buffer()
 
     def reddot_off(self):
+        self.send_buffer()
+        self.wait_for_motion()
         print("HARDWARE COMMAND: reddot_off() called. Setting DO3 (Index 2, Pin 21) to LOW (0) to turn OFF the red dot laser.")
         self.set_io(2, 0)
-        self.send_buffer()
 
     def send_buffer(self):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_send_buffer'):
