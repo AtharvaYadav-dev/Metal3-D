@@ -2,7 +2,7 @@ import os
 import math
 from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QGridLayout, 
                                QLabel, QPushButton, QLineEdit, QMessageBox, QWidget, 
-                               QGroupBox, QApplication, QFrame, QScrollArea)
+                               QGroupBox, QApplication, QFrame, QScrollArea, QSlider)
 from PySide6.QtGui import QPainter, QPen, QColor, QFont, QBrush
 from PySide6.QtCore import Qt, QRect, QTimer
 from core.calibration_generator import generate_cor_file, calculate_analytical_parameters
@@ -202,14 +202,42 @@ class CalibrationGeneratorDialog(QDialog):
         laser_layout = QGridLayout()
         
         laser_layout.addWidget(QLabel("Power (%):"), 0, 0)
-        self.input_power = QLineEdit("100")
-        self.input_power.setMaximumWidth(70)
-        laser_layout.addWidget(self.input_power, 0, 1)
+        self.slider_power = QSlider(Qt.Horizontal)
+        self.slider_power.setRange(0, 100)
+        self.slider_power.setValue(100)
+        self.lbl_power_val = QLabel("100")
+        pow_lay = QHBoxLayout()
+        pow_lay.addWidget(self.slider_power)
+        pow_lay.addWidget(self.lbl_power_val)
+        self.slider_power.valueChanged.connect(lambda v: self.lbl_power_val.setText(str(v)))
+        laser_layout.addLayout(pow_lay, 0, 1)
         
         laser_layout.addWidget(QLabel("Freq (kHz):"), 0, 2)
-        self.input_freq = QLineEdit("30")
-        self.input_freq.setMaximumWidth(70)
-        laser_layout.addWidget(self.input_freq, 0, 3)
+        self.slider_freq = QSlider(Qt.Horizontal)
+        self.slider_freq.setRange(20, 80)
+        self.slider_freq.setValue(30)
+        self.lbl_freq_val = QLabel("30")
+        freq_lay = QHBoxLayout()
+        freq_lay.addWidget(self.slider_freq)
+        freq_lay.addWidget(self.lbl_freq_val)
+        self.slider_freq.valueChanged.connect(lambda v: self.lbl_freq_val.setText(str(v)))
+        laser_layout.addLayout(freq_lay, 0, 3)
+        
+        # Sync with main window if available
+        if self.main_window and hasattr(self.main_window, 'ui'):
+            if hasattr(self.main_window.ui, 'galvolaserpowerHorizontalSlider'):
+                main_pwr = self.main_window.ui.galvolaserpowerHorizontalSlider
+                self.slider_power.setRange(main_pwr.minimum(), main_pwr.maximum())
+                self.slider_power.setValue(main_pwr.value())
+                self.slider_power.valueChanged.connect(main_pwr.setValue)
+                main_pwr.valueChanged.connect(self.slider_power.setValue)
+                
+            if hasattr(self.main_window.ui, 'galvolaserfreqHorizontalSlider'):
+                main_freq = self.main_window.ui.galvolaserfreqHorizontalSlider
+                self.slider_freq.setRange(main_freq.minimum(), main_freq.maximum())
+                self.slider_freq.setValue(main_freq.value())
+                self.slider_freq.valueChanged.connect(main_freq.setValue)
+                main_freq.valueChanged.connect(self.slider_freq.setValue)
         
         laser_layout.addWidget(QLabel("Mark Speed:"), 1, 0)
         self.input_mark_speed = QLineEdit("1000000")
@@ -464,8 +492,8 @@ class CalibrationGeneratorDialog(QDialog):
         conn = self.galvo_controller.connection
         
         try:
-            pwr = float(self.input_power.text())
-            freq = float(self.input_freq.text())
+            pwr = float(self.slider_power.value())
+            freq = float(self.slider_freq.value())
             mark_speed = int(self.input_mark_speed.text())
             jump_speed = int(self.input_jump_speed.text())
             w_val = float(self.input_w.text())
@@ -482,7 +510,7 @@ class CalibrationGeneratorDialog(QDialog):
         min_y = c - hw
         max_y = c + hw
         
-        freq_hz = freq * 1000.0
+        freq_hz = freq
         crt_val = 100.0 - pwr
         if hasattr(conn, 'set_analog_do_bit'):
             for test_bit in [0, 1, 2]:
@@ -709,8 +737,8 @@ class CalibrationGeneratorDialog(QDialog):
             w_val = float(self.input_w.text())
             mark_speed = int(self.input_mark_speed.text())
             jump_speed = int(self.input_jump_speed.text())
-            pwr = float(self.input_power.text())
-            freq = float(self.input_freq.text())
+            pwr = float(self.slider_power.value())
+            freq = float(self.slider_freq.value())
         except ValueError:
             w_val, mark_speed, jump_speed, pwr, freq = 50.0, 1000000, 2000000, 100.0, 30.0
 
@@ -722,7 +750,7 @@ class CalibrationGeneratorDialog(QDialog):
         if hasattr(conn, 'set_calibration_enabled'):
             conn.set_calibration_enabled(True)
             
-        freq_hz = freq * 1000.0
+        freq_hz = freq
         crt_val = 100.0 - pwr
         if hasattr(conn, 'set_analog_do_bit'):
             for test_bit in [0, 1, 2]:

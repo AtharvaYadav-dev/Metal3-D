@@ -1383,3 +1383,23 @@
 2026-09-07 16:23 - INFO - ==================================================
 2026-09-07 16:23 - INFO - New session close at 2026-09-07 16:23
 2026-09-07 16:23 - INFO - ==================================================
+2026-09-07 17:09 - INFO - UI load successful
+2026-09-07 17:09 - INFO - Profile : Supervisor
+2026-09-07 17:15 - CRITICAL - Laser 1 : OFF
+2026-09-07 17:15 - CRITICAL - Laser 2 : OFF
+2026-09-07 17:15 - INFO - Stepper Lasers Shutdown
+2026-09-07 17:15 - INFO - COM connection close successfully
+2026-09-07 17:15 - INFO - Main window close successfully
+2026-09-07 17:15 - INFO - ==================================================
+2026-09-07 17:15 - INFO - New session close at 2026-09-07 17:15
+2026-09-07 17:15 - INFO - ==================================================
+2026-09-07 17:31 - INFO - UI load successful
+2026-09-07 17:31 - INFO - Profile : Supervisor
+2026-09-07 17:32 - CRITICAL - Laser 1 : OFF
+2026-09-07 17:32 - CRITICAL - Laser 2 : OFF
+2026-09-07 17:32 - INFO - Stepper Lasers Shutdown
+2026-09-07 17:32 - INFO - COM connection close successfully
+2026-09-07 17:32 - INFO - Main window close successfully
+2026-09-07 17:32 - INFO - ==================================================
+2026-09-07 17:32 - INFO - New session close at 2026-09-07 17:32
+2026-09-07 17:32 - INFO - ==================================================
