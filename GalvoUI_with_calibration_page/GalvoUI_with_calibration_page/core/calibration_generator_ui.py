@@ -240,12 +240,12 @@ class CalibrationGeneratorDialog(QDialog):
                 main_freq.valueChanged.connect(self.slider_freq.setValue)
         
         laser_layout.addWidget(QLabel("Mark Speed:"), 1, 0)
-        self.input_mark_speed = QLineEdit("1000000")
+        self.input_mark_speed = QLineEdit("100000")
         self.input_mark_speed.setMaximumWidth(70)
         laser_layout.addWidget(self.input_mark_speed, 1, 1)
         
         laser_layout.addWidget(QLabel("Jump Speed:"), 1, 2)
-        self.input_jump_speed = QLineEdit("2000000")
+        self.input_jump_speed = QLineEdit("200000")
         self.input_jump_speed.setMaximumWidth(70)
         laser_layout.addWidget(self.input_jump_speed, 1, 3)
         
@@ -454,13 +454,20 @@ class CalibrationGeneratorDialog(QDialog):
         ]
         
         self.reddot_step = 0
+        
+        has_continuous = hasattr(conn.dll, 'GT_PROSYS_U3_set_continous_mode_on') if hasattr(conn, 'dll') else False
+        if has_continuous:
+            conn.dll.GT_PROSYS_U3_set_continous_mode_on()
+            
         def _step():
             if not self.is_reddot_framing:
                 return
-            x, y = pts[self.reddot_step % len(pts)]
-            self.reddot_step += 1
             try:
-                conn.galvo_move_xy(int(x), int(y), 2000000)
+                # Push the whole box at once so the buffer doesn't starve
+                for x, y in pts:
+                    conn.galvo_move_xy(int(x), int(y), 2000000)
+                # Close the loop
+                conn.galvo_move_xy(int(pts[0][0]), int(pts[0][1]), 2000000)
             except Exception:
                 pass
                 
@@ -477,7 +484,11 @@ class CalibrationGeneratorDialog(QDialog):
             self.reddot_timer = None
         if self.galvo_controller and self.galvo_controller.connection:
             try:
-                self.galvo_controller.connection.reddot_off()
+                conn = self.galvo_controller.connection
+                has_continuous = hasattr(conn.dll, 'GT_PROSYS_U3_set_continous_mode_off') if hasattr(conn, 'dll') else False
+                if has_continuous:
+                    conn.dll.GT_PROSYS_U3_set_continous_mode_off()
+                conn.reddot_off()
             except:
                 pass
 
@@ -740,7 +751,7 @@ class CalibrationGeneratorDialog(QDialog):
             pwr = float(self.slider_power.value())
             freq = float(self.slider_freq.value())
         except ValueError:
-            w_val, mark_speed, jump_speed, pwr, freq = 50.0, 1000000, 2000000, 100.0, 30.0
+            w_val, mark_speed, jump_speed, pwr, freq = 50.0, 100000, 200000, 100.0, 30.0
 
         scale = 65535.0 / (2.0 * w_val)
         hw = int(w_val * scale)
