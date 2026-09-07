@@ -482,32 +482,22 @@ class CalibrationGeneratorDialog(QDialog):
         min_y = c - hw
         max_y = c + hw
         
+        freq_hz = freq * 1000.0
         crt_val = 100.0 - pwr
         if hasattr(conn, 'set_analog_do_bit'):
             for test_bit in [0, 1, 2]:
-                conn.set_analog_do_bit(100.0, crt_val, freq, test_bit)
+                conn.set_analog_do_bit(100.0, crt_val, freq_hz, test_bit)
 
         # Temporary bypass calibration so RAW lens distortion is burned!
         if hasattr(conn, 'set_calibration_enabled'):
             conn.set_calibration_enabled(False)
             
+        queue = []
         def jump(x, y):
-            QApplication.processEvents()
-            if self.is_stopped:
-                raise InterruptedError("Stopped by user")
-            conn.laser_off()
-            conn.galvo_move_xy(int(x), int(y), jump_speed)
-            if hasattr(conn, 'wait_for_motion'):
-                conn.wait_for_motion()
+            queue.append({'type': 'jump', 'x': int(x), 'y': int(y), 'speed': jump_speed})
             
         def mark(x, y):
-            QApplication.processEvents()
-            if self.is_stopped:
-                raise InterruptedError("Stopped by user")
-            conn.laser_on()
-            conn.galvo_move_xy(int(x), int(y), mark_speed)
-            if hasattr(conn, 'wait_for_motion'):
-                conn.wait_for_motion()
+            queue.append({'type': 'mark', 'x': int(x), 'y': int(y), 'speed': mark_speed})
 
         try:
             self.lbl_status.setText("Status: Marking calibration pattern...")
@@ -552,8 +542,19 @@ class CalibrationGeneratorDialog(QDialog):
             jump(tick_x, tick_y_top)
             mark(tick_x, tick_y_bot)
             
-            conn.laser_off()
-            conn.galvo_move_xy(c, c)
+            # Return to center
+            jump(c, c)
+            
+            # Execute the sequence via controller (identical to normal operation)
+            success = self.galvo_controller.execute_queue(
+                queue,
+                loop_count=1,
+                abort_check=lambda: self.is_stopped,
+                progress_callback=lambda idx, tot, x, y, ctype: QApplication.processEvents()
+            )
+            
+            if self.is_stopped or not success:
+                raise InterruptedError("Stopped by user or failed execution")
             
             self.lbl_status.setText("Status: Pattern marked! Measure the 9 points.")
             self.lbl_status.setStyleSheet("color: #16a34a; font-weight: bold;")
@@ -721,35 +722,41 @@ class CalibrationGeneratorDialog(QDialog):
         if hasattr(conn, 'set_calibration_enabled'):
             conn.set_calibration_enabled(True)
             
+        freq_hz = freq * 1000.0
         crt_val = 100.0 - pwr
         if hasattr(conn, 'set_analog_do_bit'):
             for test_bit in [0, 1, 2]:
-                conn.set_analog_do_bit(100.0, crt_val, freq, test_bit)
+                conn.set_analog_do_bit(100.0, crt_val, freq_hz, test_bit)
 
         try:
-            conn.laser_off()
-            conn.galvo_move_xy(c - hw, c + hw, jump_speed)
-            conn.wait_for_motion()
-            conn.laser_on()
-            conn.galvo_move_xy(c + hw, c + hw, mark_speed)
-            conn.wait_for_motion()
-            conn.galvo_move_xy(c + hw, c - hw, mark_speed)
-            conn.wait_for_motion()
-            conn.galvo_move_xy(c - hw, c - hw, mark_speed)
-            conn.wait_for_motion()
-            conn.galvo_move_xy(c - hw, c + hw, mark_speed)
-            conn.wait_for_motion()
-            conn.laser_off()
-            conn.galvo_move_xy(c, c, jump_speed)
-            conn.wait_for_motion()
+            self.is_stopped = False
+            queue = [
+                {'type': 'jump', 'x': c - hw, 'y': c + hw, 'speed': jump_speed},
+                {'type': 'mark', 'x': c + hw, 'y': c + hw, 'speed': mark_speed},
+                {'type': 'mark', 'x': c + hw, 'y': c - hw, 'speed': mark_speed},
+                {'type': 'mark', 'x': c - hw, 'y': c - hw, 'speed': mark_speed},
+                {'type': 'mark', 'x': c - hw, 'y': c + hw, 'speed': mark_speed},
+                {'type': 'jump', 'x': c,      'y': c,      'speed': jump_speed},
+            ]
             
-            QMessageBox.information(self, "Verification Complete", 
-                f"Calibrated test square ({2*w_val:.1f} × {2*w_val:.1f} mm) marked!\n"
-                "Measure the marked square with calipers to verify zero error.")
+            success = self.galvo_controller.execute_queue(
+                queue,
+                loop_count=1,
+                abort_check=lambda: self.is_stopped,
+                progress_callback=lambda idx, tot, x, y, ctype: QApplication.processEvents()
+            )
+            
+            if not success or self.is_stopped:
+                QMessageBox.warning(self, "Aborted", "Verification shape aborted.")
+            else:
+                QMessageBox.information(self, "Verification Complete", 
+                    f"Calibrated test square ({2*w_val:.1f} × {2*w_val:.1f} mm) marked!\n"
+                    "Measure the marked square with calipers to verify zero error.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to mark verification shape: {e}")
         finally:
-            conn.laser_off()
+            if conn:
+                conn.laser_off()
 
     def update_status_display(self):
         calib = None
