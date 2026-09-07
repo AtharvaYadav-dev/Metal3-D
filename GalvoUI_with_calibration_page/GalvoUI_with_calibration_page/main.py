@@ -1,5 +1,12 @@
 import os
 import sys
+
+# Ensure current working directory and module path match main.py's directory
+project_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(project_dir)
+if project_dir not in sys.path:
+    sys.path.insert(0, project_dir)
+
 import re
 
 
@@ -1021,8 +1028,17 @@ class MainWindow(QMainWindow):
     
     def initSettings(self):
         conf_name = "index"
-        self.xindex = float(self.ch.getValues(conf_name, "xindex"))
-        self.yindex = float(self.ch.getValues(conf_name, "yindex"))
+        try:
+            val_x = self.ch.getValues(conf_name, "xindex")
+            self.xindex = float(val_x) if val_x is not None else 50.0
+        except Exception:
+            self.xindex = 50.0
+
+        try:
+            val_y = self.ch.getValues(conf_name, "yindex")
+            self.yindex = float(val_y) if val_y is not None else 60.0
+        except Exception:
+            self.yindex = 60.0
 
         conf_name = "focus"
         focus_dict = self.ch.getSection(conf_name)

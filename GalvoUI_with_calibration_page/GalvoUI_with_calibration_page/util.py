@@ -33,7 +33,7 @@ class CallbackHandler(object):
 
 class FileHandler():
     def __init__(self):
-        self.cwd = Path.cwd()
+        self.cwd = Path(__file__).resolve().parent
             
     def getCWD(self):
         return self.cwd

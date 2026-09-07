@@ -31,6 +31,8 @@ class HardwareConnection(BaseConnection):
         if self.calibration:
             self.calibration.set_enabled(enabled)
             print(f"HARDWARE: Calibration enabled set to {enabled}")
+
+    def initialize(self):
         try:
             self.dll = ctypes.WinDLL(DLL_PATH)
             self._setup_signatures()

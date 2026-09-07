@@ -4028,3 +4028,76 @@
 2026-09-07 16:04:25,997 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2308cdfc0f0 at 23093450ed0>
 2026-09-07 16:04:26,149 - DEBUG - Calling CoUninitialize()
 2026-09-07 16:04:26,149 - DEBUG - CoUninitialize() done.
+2026-09-07 16:15:23,023 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 16:15:23,206 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 16:15:23,260 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 16:15:23,260 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 16:15:23,273 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 16:15:23,273 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:15:23,299 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2185a98d970 at 2186198a7d0>
+2026-09-07 16:15:23,299 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 16:15:23,301 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:15:23,306 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2185a98d970 at 21861e58650>
+2026-09-07 16:15:23,373 - DEBUG - Calling CoUninitialize()
+2026-09-07 16:15:23,373 - DEBUG - CoUninitialize() done.
+2026-09-07 16:17:59,212 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 16:17:59,412 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 16:17:59,462 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 16:17:59,462 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 16:17:59,462 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 16:17:59,462 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:17:59,479 - DEBUG - Release <POINTER(ITypeLib) ptr=0x205eeb90680 at 205f5f95cd0>
+2026-09-07 16:17:59,479 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 16:17:59,479 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:17:59,496 - DEBUG - Release <POINTER(ITypeLib) ptr=0x205eeb8e000 at 205f606fad0>
+2026-09-07 16:17:59,829 - INFO - UI load successful
+2026-09-07 16:17:59,846 - DEBUG - Calling CoUninitialize()
+2026-09-07 16:17:59,846 - DEBUG - CoUninitialize() done.
+2026-09-07 16:18:14,670 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 16:18:14,861 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 16:18:14,917 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 16:18:14,917 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 16:18:14,917 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 16:18:14,917 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:18:14,944 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2411b28ac00 at 2412203e850>
+2026-09-07 16:18:14,944 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 16:18:14,944 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:18:14,944 - DEBUG - Release <POINTER(ITypeLib) ptr=0x2411b289b80 at 241224f86d0>
+2026-09-07 16:18:15,029 - DEBUG - Calling CoUninitialize()
+2026-09-07 16:18:15,029 - DEBUG - CoUninitialize() done.
+2026-09-07 16:21:00,059 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 16:21:00,260 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 16:21:00,310 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 16:21:00,310 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 16:21:00,316 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 16:21:00,316 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:21:00,339 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1266c2e3f80 at 1260258a850>
+2026-09-07 16:21:00,339 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 16:21:00,339 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:21:00,343 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1266c2e2980 at 126026fc6d0>
+2026-09-07 16:21:00,643 - INFO - UI load successful
+2026-09-07 16:21:00,660 - DEBUG - Calling CoUninitialize()
+2026-09-07 16:21:00,660 - DEBUG - CoUninitialize() done.
+2026-09-07 16:21:25,685 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 16:21:25,892 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 16:21:25,939 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 16:21:25,939 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 16:21:25,955 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 16:21:25,955 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:21:25,971 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1e92920f2b0 at 1e92c3a1cd0>
+2026-09-07 16:21:25,971 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 16:21:25,971 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 16:21:25,986 - DEBUG - Release <POINTER(ITypeLib) ptr=0x1e92920d730 at 1e92c45bad0>
+2026-09-07 16:21:26,286 - INFO - UI load successful
+2026-09-07 16:21:40,499 - INFO - Profile : Supervisor
+2026-09-07 16:22:19,730 - WARNING - Failed login attempt for user: Technician
+2026-09-07 16:23:25,511 - CRITICAL - Laser 1 : OFF
+2026-09-07 16:23:25,511 - CRITICAL - Laser 2 : OFF
+2026-09-07 16:23:25,511 - INFO - Stepper Lasers Shutdown
+2026-09-07 16:23:25,511 - INFO - COM connection close successfully
+2026-09-07 16:23:25,511 - INFO - Main window close successfully
+2026-09-07 16:23:25,511 - INFO - ==================================================
+2026-09-07 16:23:25,511 - INFO - New session close at 2026-09-07 16:23
+2026-09-07 16:23:25,511 - INFO - ==================================================
+2026-09-07 16:23:25,527 - DEBUG - Calling CoUninitialize()
+2026-09-07 16:23:25,527 - DEBUG - CoUninitialize() done.

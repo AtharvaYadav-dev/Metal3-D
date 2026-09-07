@@ -1370,3 +1370,16 @@
 2026-09-05 17:35 - INFO - ==================================================
 2026-09-05 17:35 - INFO - New session close at 2026-09-05 17:35
 2026-09-05 17:35 - INFO - ==================================================
+2026-09-07 16:17 - INFO - UI load successful
+2026-09-07 16:21 - INFO - UI load successful
+2026-09-07 16:21 - INFO - UI load successful
+2026-09-07 16:21 - INFO - Profile : Supervisor
+2026-09-07 16:22 - WARNING - Failed login attempt for user: Technician
+2026-09-07 16:23 - CRITICAL - Laser 1 : OFF
+2026-09-07 16:23 - CRITICAL - Laser 2 : OFF
+2026-09-07 16:23 - INFO - Stepper Lasers Shutdown
+2026-09-07 16:23 - INFO - COM connection close successfully
+2026-09-07 16:23 - INFO - Main window close successfully
+2026-09-07 16:23 - INFO - ==================================================
+2026-09-07 16:23 - INFO - New session close at 2026-09-07 16:23
+2026-09-07 16:23 - INFO - ==================================================
