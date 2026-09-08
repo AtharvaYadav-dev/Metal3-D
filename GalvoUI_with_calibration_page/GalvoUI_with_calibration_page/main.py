@@ -1190,7 +1190,7 @@ class MainWindow(QMainWindow):
                 return default
             
             # Aspect
-            self.wh.invokeMethod(self.configgalvo_widgets.fieldsizeconf, "set", _get("field_size", "70.0"))
+            self.wh.invokeMethod(self.configgalvo_widgets.fieldsizeconf, "set", _get("field_size", "100.0"))
             self.wh.invokeMethod(self.configgalvo_widgets.offxconf, "set", _get("offset_x", "0.0"))
             self.wh.invokeMethod(self.configgalvo_widgets.offyconf, "set", _get("offset_y", "0.0"))
             self.wh.invokeMethod(self.configgalvo_widgets.angleconf, "set", _get("angle", "0"))
@@ -1649,7 +1649,7 @@ class MainWindow(QMainWindow):
             
         import math
         
-        size_mm = min(70.0, self.galvo_config.field_size if self.galvo_config else 70.0)
+        size_mm = min(100.0, self.galvo_config.field_size if self.galvo_config else 100.0)
         half_size = size_mm / 2.0
 
         def _add_jump(x, y):
@@ -1970,7 +1970,7 @@ class MainWindow(QMainWindow):
             if override_field_size:
                 self.galvo_config.field_size = override_field_size
             else:
-                self.galvo_config.field_size = float(_get("field_size", "70.0"))
+                self.galvo_config.field_size = float(_get("field_size", "100.0"))
             self.galvo_config.offset_x = float(_get("offset_x", "0.0"))
             self.galvo_config.offset_y = float(_get("offset_y", "0.0"))
             self.galvo_config.angle = float(_get("angle", "0.0"))

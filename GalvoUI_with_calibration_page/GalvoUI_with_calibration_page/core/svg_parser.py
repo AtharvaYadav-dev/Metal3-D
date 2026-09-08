@@ -3,7 +3,7 @@ from core.coordinate_mapper import mm_to_galvo
 from core.parsers.svgelements import SVG, Path, Shape
 
 class SVGParser:
-    def __init__(self, field_size=70):
+    def __init__(self, field_size=100):
         self.field_size = field_size
 
     def parse_to_points(self, filepath, resolution=0.1):
