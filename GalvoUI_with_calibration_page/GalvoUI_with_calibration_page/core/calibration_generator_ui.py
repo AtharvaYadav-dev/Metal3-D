@@ -106,15 +106,16 @@ class CalibrationGeneratorDialog(QDialog):
         self.main_window = main_window
         
         self.state_idx = 0
-        self.default_w = 50.0
+        self.default_w = 30.0
         self.is_stopped = False
         self.reddot_timer = None
         self.is_reddot_framing = False
         
         # Retrieve field size from main window or config
         if self.main_window and hasattr(self.main_window, 'galvo_config'):
-            field_sz = getattr(self.main_window.galvo_config, 'field_size', 100.0)
-            self.default_w = field_sz / 2.0
+            field_sz = getattr(self.main_window.galvo_config, 'field_size', 70.0)
+            # Use 90% of the field size to leave a safe margin at the edges
+            self.default_w = (field_sz * 0.9) / 2.0
             
         self.setup_ui()
         self.update_status_display()
