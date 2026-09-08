@@ -15,6 +15,8 @@ class HardwareConnection(BaseConnection):
         super().__init__()
         self.is_initialized = False
         self.dll = None
+        self._buffered_moves = 0
+        self._expect_motion = False
         # Load our Python calibration module (to bypass GoogolTech 2D comp limitations)
         base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         cor_path = os.path.join(base_dir, "newest100mm.cor")
@@ -189,6 +191,7 @@ class HardwareConnection(BaseConnection):
         cx, cy = self.calibration.apply(float(x), float(y))
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_galvo_move_XY'):
             self.dll.GT_PROSYS_U3_galvo_move_XY(int(cx), int(cy), speed_val, 0.0, 0.0, 0.0)
+            self._buffered_moves += 1
 
     def is_physically_connected(self):
         if self.dll and hasattr(self.dll, 'IsConnected'):
@@ -198,11 +201,17 @@ class HardwareConnection(BaseConnection):
     def wait_for_motion(self):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_galvo_run_status'):
             import time
-            time.sleep(0.01) # Allow hardware to register the buffer execution
+            if getattr(self, '_expect_motion', False):
+                timeout = time.time() + 0.5
+                while self.dll.GT_PROSYS_U3_galvo_run_status() == 0:
+                    if time.time() > timeout: break
+                    time.sleep(0.001)
+                    
             while self.dll.GT_PROSYS_U3_galvo_run_status() == 1:
                 if hasattr(self.dll, 'IsConnected') and self.dll.IsConnected() == 0:
                     raise ConnectionError("Galvo hardware disconnected during motion")
                 time.sleep(0.001)
+            self._expect_motion = False
 
     def axis_move(self, axis, position, speed, is_relative=False):
         if self.dll and hasattr(self.dll, 'GT_PROSYS_U3_axis_move'):
@@ -272,12 +281,17 @@ class HardwareConnection(BaseConnection):
         self.wait_for_motion()
         print("HARDWARE COMMAND: laser_on() called. Setting DO1 (Pin 0) to HIGH (1) to turn ON the laser/LED.")
         self.set_io(0, 1)
+        import time
+        time.sleep(0.005) # 5ms laser on delay
 
     def laser_off(self):
         self.send_buffer()
         self.wait_for_motion()
+        import time
+        time.sleep(0.002) # 2ms let mirror settle before turning off
         print("HARDWARE COMMAND: laser_off() called. Setting DO1 (Pin 0) to LOW (0) to turn OFF the laser/LED.")
         self.set_io(0, 0)
+        time.sleep(0.005) # 5ms laser off delay
 
     def reddot_on(self):
         self.send_buffer()
@@ -303,6 +317,8 @@ class HardwareConnection(BaseConnection):
                         break
                     time.sleep(0.001)
             self.dll.GT_PROSYS_U3_send_buffer()
+            self._expect_motion = getattr(self, '_buffered_moves', 0) > 0
+            self._buffered_moves = 0
 
     def stop(self):
         pass
