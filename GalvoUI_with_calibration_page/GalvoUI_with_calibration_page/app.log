@@ -1403,3 +1403,13 @@
 2026-09-07 17:32 - INFO - ==================================================
 2026-09-07 17:32 - INFO - New session close at 2026-09-07 17:32
 2026-09-07 17:32 - INFO - ==================================================
+2026-09-07 18:09 - INFO - UI load successful
+2026-09-07 18:09 - INFO - Profile : Supervisor
+2026-09-07 18:10 - CRITICAL - Laser 1 : OFF
+2026-09-07 18:10 - CRITICAL - Laser 2 : OFF
+2026-09-07 18:10 - INFO - Stepper Lasers Shutdown
+2026-09-07 18:10 - INFO - COM connection close successfully
+2026-09-07 18:10 - INFO - Main window close successfully
+2026-09-07 18:10 - INFO - ==================================================
+2026-09-07 18:10 - INFO - New session close at 2026-09-07 18:10
+2026-09-07 18:10 - INFO - ==================================================

@@ -4145,3 +4145,25 @@
 2026-09-07 17:32:20,922 - INFO - ==================================================
 2026-09-07 17:32:20,933 - DEBUG - Calling CoUninitialize()
 2026-09-07 17:32:20,933 - DEBUG - CoUninitialize() done.
+2026-09-07 18:09:21,111 - INFO - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+2026-09-07 18:09:21,314 - DEBUG - CoInitializeEx(None, 2)
+2026-09-07 18:09:21,365 - INFO - Imported existing <module 'comtypes.gen' from 'C:\\Users\\EXPSOL\\AppData\\Roaming\\Python\\Python312\\site-packages\\comtypes\\gen\\__init__.py'>
+2026-09-07 18:09:21,365 - INFO - Using writeable comtypes cache directory: 'C:\Users\EXPSOL\AppData\Roaming\Python\Python312\site-packages\comtypes\gen'
+2026-09-07 18:09:21,370 - DEBUG - GetModule(qedit.dll), resolved: False
+2026-09-07 18:09:21,372 - DEBUG - GetModule(TLIBATTR(GUID={78530B68-61F9-11D2-8CAD-00A024580902}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 18:09:21,395 - DEBUG - Release <POINTER(ITypeLib) ptr=0x25633d027e0 at 25636e81d50>
+2026-09-07 18:09:21,395 - DEBUG - GetModule(quartz.dll), resolved: False
+2026-09-07 18:09:21,396 - DEBUG - GetModule(TLIBATTR(GUID={56A868B0-0AD4-11CE-B03A-0020AF0BA770}, Version=1.0, LCID=0, FLags=0x8))
+2026-09-07 18:09:21,404 - DEBUG - Release <POINTER(ITypeLib) ptr=0x25633d027e0 at 25636f3bb50>
+2026-09-07 18:09:21,741 - INFO - UI load successful
+2026-09-07 18:09:31,333 - INFO - Profile : Supervisor
+2026-09-07 18:10:47,860 - CRITICAL - Laser 1 : OFF
+2026-09-07 18:10:47,860 - CRITICAL - Laser 2 : OFF
+2026-09-07 18:10:47,861 - INFO - Stepper Lasers Shutdown
+2026-09-07 18:10:47,861 - INFO - COM connection close successfully
+2026-09-07 18:10:47,861 - INFO - Main window close successfully
+2026-09-07 18:10:47,861 - INFO - ==================================================
+2026-09-07 18:10:47,861 - INFO - New session close at 2026-09-07 18:10
+2026-09-07 18:10:47,861 - INFO - ==================================================
+2026-09-07 18:10:47,872 - DEBUG - Calling CoUninitialize()
+2026-09-07 18:10:47,872 - DEBUG - CoUninitialize() done.

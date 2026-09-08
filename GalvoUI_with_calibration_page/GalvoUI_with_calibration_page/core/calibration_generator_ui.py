@@ -225,8 +225,8 @@ class CalibrationGeneratorDialog(QDialog):
         
         # Sync with main window if available
         if self.main_window and hasattr(self.main_window, 'ui'):
-            if hasattr(self.main_window.ui, 'galvolaserpowerHorizontalSlider'):
-                main_pwr = self.main_window.ui.galvolaserpowerHorizontalSlider
+            if hasattr(self.main_window.ui, 'galvolaserpowerHorizontalSlider_2'):
+                main_pwr = self.main_window.ui.galvolaserpowerHorizontalSlider_2
                 self.slider_power.setRange(main_pwr.minimum(), main_pwr.maximum())
                 self.slider_power.setValue(main_pwr.value())
                 self.slider_power.valueChanged.connect(main_pwr.setValue)
@@ -493,6 +493,9 @@ class CalibrationGeneratorDialog(QDialog):
                 pass
 
     def draw_pattern(self):
+        if self.is_stopped:
+            return  # Currently executing, ignore extra clicks
+            
         self.stop_reddot()
         self.is_stopped = False
         
@@ -500,6 +503,10 @@ class CalibrationGeneratorDialog(QDialog):
             QMessageBox.warning(self, "Error", "Galvo controller not connected.")
             return
             
+        # Disable buttons to prevent re-entrancy during processEvents()
+        self.btn_draw.setEnabled(False)
+        self.btn_reddot.setEnabled(False)
+        
         conn = self.galvo_controller.connection
         
         try:
@@ -615,6 +622,9 @@ class CalibrationGeneratorDialog(QDialog):
                 conn.set_calibration_enabled(True)
             if conn:
                 conn.laser_off()
+            
+            self.btn_draw.setEnabled(True)
+            self.btn_reddot.setEnabled(True)
 
     def calculate_and_apply(self):
         try:
