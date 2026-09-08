@@ -1413,3 +1413,30 @@
 2026-09-07 18:10 - INFO - ==================================================
 2026-09-07 18:10 - INFO - New session close at 2026-09-07 18:10
 2026-09-07 18:10 - INFO - ==================================================
+2026-09-08 12:15 - INFO - UI load successful
+2026-09-08 12:15 - INFO - Profile : Supervisor
+2026-09-08 12:23 - INFO - File selected : D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/80mm_square.svg
+2026-09-08 12:23 - INFO - Parameters saved for D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/80mm_square.svg
+2026-09-08 12:25 - INFO - Galvo Laser Shutdown
+2026-09-08 12:25 - CRITICAL - Laser 1 : OFF
+2026-09-08 12:25 - CRITICAL - Laser 2 : OFF
+2026-09-08 12:25 - INFO - Stepper Lasers Shutdown
+2026-09-08 12:25 - INFO - COM connection close successfully
+2026-09-08 12:25 - INFO - Main window close successfully
+2026-09-08 12:25 - INFO - ==================================================
+2026-09-08 12:25 - INFO - New session close at 2026-09-08 12:25
+2026-09-08 12:25 - INFO - ==================================================
+2026-09-08 12:26 - INFO - UI load successful
+2026-09-08 12:26 - INFO - File selected : D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/80mm_square.svg
+2026-09-08 12:26 - INFO - Parameters saved for D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/80mm_square.svg
+2026-09-08 12:27 - INFO - File selected : D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/40mm_square.svg
+2026-09-08 12:27 - INFO - Parameters saved for D:/Metal_3D/Metal3-D/GalvoUI_with_calibration_page/GalvoUI_with_calibration_page/40mm_square.svg
+2026-09-08 12:29 - INFO - Galvo Laser Shutdown
+2026-09-08 12:29 - CRITICAL - Laser 1 : OFF
+2026-09-08 12:29 - CRITICAL - Laser 2 : OFF
+2026-09-08 12:29 - INFO - Stepper Lasers Shutdown
+2026-09-08 12:29 - INFO - COM connection close successfully
+2026-09-08 12:29 - INFO - Main window close successfully
+2026-09-08 12:29 - INFO - ==================================================
+2026-09-08 12:29 - INFO - New session close at 2026-09-08 12:29
+2026-09-08 12:29 - INFO - ==================================================
