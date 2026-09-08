@@ -240,12 +240,12 @@ class CalibrationGeneratorDialog(QDialog):
                 main_freq.valueChanged.connect(self.slider_freq.setValue)
         
         laser_layout.addWidget(QLabel("Mark Speed:"), 1, 0)
-        self.input_mark_speed = QLineEdit("100000")
+        self.input_mark_speed = QLineEdit("5000")
         self.input_mark_speed.setMaximumWidth(70)
         laser_layout.addWidget(self.input_mark_speed, 1, 1)
         
         laser_layout.addWidget(QLabel("Jump Speed:"), 1, 2)
-        self.input_jump_speed = QLineEdit("200000")
+        self.input_jump_speed = QLineEdit("15000")
         self.input_jump_speed.setMaximumWidth(70)
         laser_layout.addWidget(self.input_jump_speed, 1, 3)
         
@@ -567,19 +567,24 @@ class CalibrationGeneratorDialog(QDialog):
             # 4. Marker size (2.5mm)
             ms = int(2.5 * scale)
             
-            # 5. Square at Top-Left (-W, +W)
-            jump(min_x - ms, max_y + ms)
-            mark(min_x + ms, max_y + ms)
-            mark(min_x + ms, max_y - ms)
-            mark(min_x - ms, max_y - ms)
-            mark(min_x - ms, max_y + ms)
+            # 5. Square at Top-Left (Inside)
+            offset = int(ms * 2.5)
+            sx = min_x + offset
+            sy = max_y - offset
+            jump(sx - ms, sy + ms)
+            mark(sx + ms, sy + ms)
+            mark(sx + ms, sy - ms)
+            mark(sx - ms, sy - ms)
+            mark(sx - ms, sy + ms)
             
-            # 6. Diamond at Bottom-Right (+W, -W)
-            jump(max_x, min_y + ms)
-            mark(max_x + ms, min_y)
-            mark(max_x, min_y - ms)
-            mark(max_x - ms, min_y)
-            mark(max_x, min_y + ms)
+            # 6. Diamond at Bottom-Right (Inside)
+            dx = max_x - offset
+            dy = min_y + offset
+            jump(dx, dy + ms)
+            mark(dx + ms, dy)
+            mark(dx, dy - ms)
+            mark(dx - ms, dy)
+            mark(dx, dy + ms)
             
             # 7. Tick mark: Vertical line at x = c + hw * 0.15, from y = c - hw * 0.15 to c + hw * 0.15
             tick_x = c + int(hw * 0.15)
