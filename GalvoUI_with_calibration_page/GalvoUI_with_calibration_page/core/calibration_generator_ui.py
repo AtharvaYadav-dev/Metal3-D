@@ -111,11 +111,12 @@ class CalibrationGeneratorDialog(QDialog):
         self.reddot_timer = None
         self.is_reddot_framing = False
         
+        self.field_size = 70.0
         # Retrieve field size from main window or config
         if self.main_window and hasattr(self.main_window, 'galvo_config'):
-            field_sz = getattr(self.main_window.galvo_config, 'field_size', 70.0)
+            self.field_size = getattr(self.main_window.galvo_config, 'field_size', 70.0)
             # Use 90% of the field size to leave a safe margin at the edges
-            self.default_w = (field_sz * 0.9) / 2.0
+            self.default_w = (self.field_size * 0.9) / 2.0
             
         self.setup_ui()
         self.update_status_display()
@@ -520,7 +521,7 @@ class CalibrationGeneratorDialog(QDialog):
             QMessageBox.warning(self, "Error", "Invalid parameters entered. Please check inputs.")
             return
 
-        scale = 65535.0 / (2.0 * w_val) if w_val > 0 else 655.35
+        scale = 65535.0 / self.field_size if self.field_size > 0 else 655.35
         hw = int(w_val * scale)
         c = 32767
         
