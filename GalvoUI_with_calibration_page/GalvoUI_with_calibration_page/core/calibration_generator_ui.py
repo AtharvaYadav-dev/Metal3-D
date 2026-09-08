@@ -552,10 +552,17 @@ class CalibrationGeneratorDialog(QDialog):
             self.lbl_status.setStyleSheet("color: #eab308; font-weight: bold;")
             
             # 1. Outer square
+            # Top edge
             jump(min_x, max_y)
             mark(max_x, max_y)
+            # Right edge
+            jump(max_x, max_y)
             mark(max_x, min_y)
+            # Bottom edge
+            jump(max_x, min_y)
             mark(min_x, min_y)
+            # Left edge
+            jump(min_x, min_y)
             mark(min_x, max_y)
             
             # 2. Vertical center line
@@ -573,19 +580,33 @@ class CalibrationGeneratorDialog(QDialog):
             offset = int(ms * 2.5)
             sx = min_x + offset
             sy = max_y - offset
+            # Top edge
             jump(sx - ms, sy + ms)
             mark(sx + ms, sy + ms)
+            # Right edge
+            jump(sx + ms, sy + ms)
             mark(sx + ms, sy - ms)
+            # Bottom edge
+            jump(sx + ms, sy - ms)
             mark(sx - ms, sy - ms)
+            # Left edge
+            jump(sx - ms, sy - ms)
             mark(sx - ms, sy + ms)
             
             # 6. Diamond at Bottom-Right (Inside)
             dx = max_x - offset
             dy = min_y + offset
+            # Top-Right edge
             jump(dx, dy + ms)
             mark(dx + ms, dy)
+            # Bottom-Right edge
+            jump(dx + ms, dy)
             mark(dx, dy - ms)
+            # Bottom-Left edge
+            jump(dx, dy - ms)
             mark(dx - ms, dy)
+            # Top-Left edge
+            jump(dx - ms, dy)
             mark(dx, dy + ms)
             
             # 7. Tick mark: Vertical line at x = c + hw * 0.15, from y = c - hw * 0.15 to c + hw * 0.15

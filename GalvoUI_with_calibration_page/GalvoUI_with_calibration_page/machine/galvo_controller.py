@@ -86,10 +86,8 @@ class GalvoController:
                             self.connection.laser_off()
                             laser_state = False
                         self.connection.galvo_move_xy(cmd['x'], cmd['y'], cmd.get('speed'))
-                        self.connection.send_buffer()
                         if progress_callback:
                             progress_callback(current_idx, total_cmds, cmd['x'], cmd['y'], ctype)
-                        self.connection.wait_for_motion()
                     
                     elif ctype == 'mark':
                         mark_count += 1
@@ -98,10 +96,8 @@ class GalvoController:
                             self.connection.laser_on()
                             laser_state = True
                         self.connection.galvo_move_xy(cmd['x'], cmd['y'], cmd.get('speed'))
-                        self.connection.send_buffer()
                         if progress_callback:
                             progress_callback(current_idx, total_cmds, cmd['x'], cmd['y'], ctype)
-                        self.connection.wait_for_motion()
                         
                     elif ctype == 'laser_on':
                         if not laser_state:
