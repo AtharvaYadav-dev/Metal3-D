@@ -142,7 +142,7 @@ class DXFParser():
         else:
             return False            
 
-    def parse_to_polygons(self, field_size=100, resolution=0.1):
+    def parse_to_polygons(self, field_size=70, resolution=0.1):
         """
         Parses the DXF and returns a list of polygons (paths).
         Each polygon is a list of (x, y) coordinates in mm, centered at (0,0).

@@ -1051,7 +1051,7 @@ class MainWindow(QMainWindow):
         # Load values from config.ini
         def _get(key, default): return self.ch.getValues("GalvoField", key) or default
         
-        self.wh.invokeMethod(self.configgalvo_widgets.config_field_size, "set", _get("field_size", "100.0"))
+        self.wh.invokeMethod(self.configgalvo_widgets.config_field_size, "set", _get("field_size", "70.0"))
         self.wh.invokeMethod(self.configgalvo_widgets.config_offset_x, "set", _get("offset_x", "0.0"))
         self.wh.invokeMethod(self.configgalvo_widgets.config_offset_y, "set", _get("offset_y", "0.0"))
         self.wh.invokeMethod(self.configgalvo_widgets.config_angle, "set", _get("angle", "0.0"))
@@ -2097,7 +2097,7 @@ class MainWindow(QMainWindow):
 
     def _apply_galvo_config_to_core(self):
         try:
-            self.galvo_config.field_size = float(self.wh.invokeMethod(self.configgalvo_widgets.config_field_size, "get") or 100.0)
+            self.galvo_config.field_size = float(self.wh.invokeMethod(self.configgalvo_widgets.config_field_size, "get") or 70.0)
             self.galvo_config.offset_x = float(self.wh.invokeMethod(self.configgalvo_widgets.config_offset_x, "get") or 0.0)
             self.galvo_config.offset_y = float(self.wh.invokeMethod(self.configgalvo_widgets.config_offset_y, "get") or 0.0)
             self.galvo_config.angle = float(self.wh.invokeMethod(self.configgalvo_widgets.config_angle, "get") or 0.0)
