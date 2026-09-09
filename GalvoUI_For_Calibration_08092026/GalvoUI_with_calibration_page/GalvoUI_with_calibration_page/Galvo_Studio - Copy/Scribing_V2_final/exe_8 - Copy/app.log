@@ -1,0 +1,35 @@
+2026-06-03 11:23 - INFO - UI load successful
+2026-06-03 11:23 - INFO - Com : com, Port : ['COM1', 'COM4', 'COM9', 'COM10'], Baud : ['9600', '57600', '115200', '250000']
+2026-06-03 11:23 - INFO - Do you want to auto connect to COM4 @ 115200
+2026-06-03 11:23 - INFO - Auto Connect dialog button : Ok
+2026-06-03 11:23 - INFO - Serial COM : Auto
+2026-06-03 11:23 - INFO - Profile : Supervisor
+2026-06-03 11:24 - INFO - DXF file selected : D:/EXPRESS/Downloads/2x2.dxf
+2026-06-03 11:24 - INFO - DXF File : D:/EXPRESS/Downloads/2x2.dxf
+2026-06-03 11:24 - INFO - Sample Height : 0.0 mm
+2026-06-03 11:24 - INFO - Laser Focus : 17.3 mm
+2026-06-03 11:24 - INFO - Z Travel : 17.3 mm
+2026-06-03 11:24 - INFO - Selected LASER : Laser 1
+2026-06-03 11:24 - INFO - Laser 1 : is set as reference
+2026-06-03 11:24 - INFO - G-code saved to: D:\GitHub\RuthvijR-ES\WORKS\Scribing_V2\Main\Scribing_V2_final\exe_8\config\final_output.gcode
+2026-06-03 11:24 - INFO - Parameters saved for D:/EXPRESS/Downloads/2x2.dxf
+2026-06-03 11:24 - INFO - Print Status : RUN
+2026-06-03 11:24 - CRITICAL - Laser 1 : OFF
+2026-06-03 11:24 - CRITICAL - Laser 2 : OFF
+2026-06-03 11:24 - INFO - Lasers Shutdown
+2026-06-03 11:24 - INFO - COM connection close successfully
+2026-06-03 11:24 - INFO - Main window close successfully
+2026-06-03 11:24 - INFO - ==================================================
+2026-06-03 11:24 - INFO - New session close at 2026-06-03 11:24
+2026-06-03 11:24 - INFO - ==================================================
+2026-06-03 11:28 - INFO - UI load successful
+2026-06-03 11:28 - INFO - Com : com, Port : ['COM1', 'COM9', 'COM10'], Baud : ['9600', '57600', '115200', '250000']
+2026-06-03 11:28 - ERROR - Error : Invalid Input > Kindly select a COM port.
+2026-06-03 11:28 - CRITICAL - Laser 1 : OFF
+2026-06-03 11:28 - CRITICAL - Laser 2 : OFF
+2026-06-03 11:28 - INFO - Lasers Shutdown
+2026-06-03 11:28 - INFO - COM connection close successfully
+2026-06-03 11:28 - INFO - Main window close successfully
+2026-06-03 11:28 - INFO - ==================================================
+2026-06-03 11:28 - INFO - New session close at 2026-06-03 11:28
+2026-06-03 11:28 - INFO - ==================================================

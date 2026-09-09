@@ -1,0 +1,265 @@
+Microsoft (R) COFF/PE Dumper Version 14.50.35729.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+
+Dump of file gt5motion.dll
+
+File Type: DLL
+
+  Section contains the following exports for gt5motion.dll
+
+    00000000 characteristics
+    64194ACC time date stamp Tue Mar 21 11:42:28 2023
+        0.00 version
+           2 ordinal base
+         237 number of functions
+         237 number of names
+
+    ordinal hint RVA      name
+
+          3    0 000254D0 ??0CGTPROS3@@QAE@XZ
+          6    1 000254D0 ??0Cgt5motion@@QAE@XZ
+          7    2 000227A0 ??4CGTPROS3@@QAEAAV0@ABV0@@Z
+          8    3 000227A0 ??4Cgt5motion@@QAEAAV0@ABV0@@Z
+          9    4 0004A12C ?BufferDIOWord@@3FA
+         10    5 0004A128 ?BufferMode@@3FA
+         11    6 0004A124 ?CardSerialNo@@3KA
+         12    7 0004A130 ?CmdId@@3IA
+         13    8 00022D90 ?GTPROS3ABCD@@YAXXZ
+         14    9 000234D0 ?GTPROS3ReadADC@@YAXPAXKPAH@Z
+         15    A 000485A4 ?GalvoPrecisionFactor@@3FA
+         16    B 000485A0 ?GalvoSmoothFactor@@3FA
+         17    C 0004A134 ?GalvoXYMode@@3FA
+         18    D 0004A104 ?gAxisMode@@3W4GTPRO_MOVE_MODE@@A
+         19    E 0004A110 ?gDefAccTime@@3NA
+         20    F 0004A118 ?gDefDccTime@@3NA
+         21   10 0004A10C ?gDefHighSpeed@@3KA
+         22   11 0004A108 ?gDefLowSpeed@@3KA
+         23   12 0004A120 ?gErrCode@@3FA
+         24   13 000494E8 ?gHandle@@3PAXA
+         25   14 00023240 ?oGTPROS3ConfigureFromFile@@YAXPAXPAD@Z
+         26   15 00022B30 ?oGTPROS3CountCards@@YAXPAK00PAW4GTPROS3_FPGA_TYPE@@@Z
+         27   16 00001070 CalcResult
+         28   17 000249E0 GTPROS3ADCConfigure
+         29   18 00024590 GTPROS3ADCConfigureDegree
+         30   19 00024EA0 GTPROS3CardType
+         31   1A 000227D0 GTPROS3CardsConnected
+         32   1B 00023B30 GTPROS3CloseCard
+         33   1C 00023030 GTPROS3ConfigureFromFile
+         34   1D 00022800 GTPROS3CountCards
+         35   1E 00024330 GTPROS3GetADCData
+         36   1F 000244F0 GTPROS3GetADCOutputStatus
+         37   20 00024410 GTPROS3GetADCThresold
+         38   21 00024720 GTPROS3GetADCthresholdDegree
+         39   22 00024120 GTPROS3GetCardID
+         43   23 00023C00 GTPROS3GetSrNo
+         44   24 00024270 GTPROS3GetUserKey
+         45   25 00025290 GTPROS3GetUserMem
+         46   26 00022D50 GTPROS3OpenCard
+         47   27 00023AA0 GTPROS3PassKey
+         48   28 00023EA0 GTPROS3ReadData
+         49   29 00025060 GTPROS3ReadEPROM
+         50   2A 00023F40 GTPROS3ReadKey
+         51   2B 000234D0 GTPROS3ReadRegister
+         52   2C 00024F40 GTPROS3ReadUIDCID
+         53   2D 000241D0 GTPROS3SetCardID
+         54   2E 00023BF0 GTPROS3SetCardNull
+         55   2F 00024050 GTPROS3SetUserKey
+         56   30 000253D0 GTPROS3SetUserMem
+         57   31 00023C10 GTPROS3WriteData
+         58   32 000251F0 GTPROS3WriteEPROMCnt
+         59   33 00023670 GTPROS3WriteRegister
+         42   34 00001DD0 GT_PROSYS_U3_Close
+        155   35 00008550 GT_PROSYS_U3_Delay_Status
+        189   36 0001CB40 GT_PROSYS_U3_Get_ADC_Thresold
+        194   37 0001CB70 GT_PROSYS_U3_Get_ADC_Thresold_in_DegreeJ
+        196   38 0001CD10 GT_PROSYS_U3_Get_ADC_Thresold_in_DegreeP
+          2   39 00001670 GT_PROSYS_U3_InitCard
+         41   3A 000018A0 GT_PROSYS_U3_Initialize
+        171   3B 0000D450 GT_PROSYS_U3_Oval
+        179   3C 000164B0 GT_PROSYS_U3_Quad_Multiplier
+        178   3D 00016360 GT_PROSYS_U3_Quad_Parameter_Set
+        151   3E 00001D10 GT_PROSYS_U3_ReInitialize
+          4   3F 00001790 GT_PROSYS_U3_Reset
+          5   40 00001680 GT_PROSYS_U3_ResetAxis
+        201   41 000162E0 GT_PROSYS_U3_Run_Galvo
+        150   42 000144D0 GT_PROSYS_U3_SetArcErr
+         40   43 000144B0 GT_PROSYS_U3_SetPass
+        166   44 000158C0 GT_PROSYS_U3_UART_Rx_Buf_Status
+        169   45 00015940 GT_PROSYS_U3_UART_Rx_Byte
+        170   46 00015980 GT_PROSYS_U3_UART_Rx_Byte_Count
+        165   47 00015890 GT_PROSYS_U3_UART_Set_BaudRate
+        168   48 00015920 GT_PROSYS_U3_UART_Tx_Byte
+        167   49 000158F0 GT_PROSYS_U3_UART_Tx_IsBusy
+        200   4A 00015A00 GT_PROSYS_U3_XY_Data
+        114   4B 00008EE0 GT_PROSYS_U3_abort
+        139   4C 00013E70 GT_PROSYS_U3_all_motion_status
+         91   4D 0000BB60 GT_PROSYS_U3_arc_motion_done
+        162   4E 00001F70 GT_PROSYS_U3_axis_move
+        180   4F 00001E80 GT_PROSYS_U3_axis_move_s
+        226   50 00002490 GT_PROSYS_U3_axis_move_threshold
+        174   51 000133D0 GT_PROSYS_U3_bookmark_pause
+        175   52 000133F0 GT_PROSYS_U3_bookmark_resume
+         95   53 0000BD70 GT_PROSYS_U3_buf_a_arc2
+        128   54 00008FF0 GT_PROSYS_U3_buf_abort
+        153   55 00014BB0 GT_PROSYS_U3_buf_delay
+        198   56 0001D2C0 GT_PROSYS_U3_buf_exclude_axis
+        199   57 0001D340 GT_PROSYS_U3_buf_include_axis
+        215   58 00014280 GT_PROSYS_U3_buf_is_axis_cmd_available
+        216   59 00014280 GT_PROSYS_U3_buf_is_galvo_cmd_available
+        109   5A 000118A0 GT_PROSYS_U3_buf_move
+         97   5B 0000F340 GT_PROSYS_U3_buf_move_line2
+        102   5C 00010280 GT_PROSYS_U3_buf_move_line3
+         96   5D 0000BC60 GT_PROSYS_U3_buf_r_arc2
+        113   5E 00012010 GT_PROSYS_U3_buf_sa_move
+        101   5F 00010200 GT_PROSYS_U3_buf_sa_move_line2
+        106   60 00011810 GT_PROSYS_U3_buf_sa_move_line3
+        115   61 00012070 GT_PROSYS_U3_buf_set_do
+        112   62 00011F40 GT_PROSYS_U3_buf_sr_move
+         99   63 00010100 GT_PROSYS_U3_buf_sr_move_line2
+        104   64 000116F0 GT_PROSYS_U3_buf_sr_move_line3
+        111   65 00011FB0 GT_PROSYS_U3_buf_ta_move
+        100   66 00010180 GT_PROSYS_U3_buf_ta_move_line2
+        105   67 00011780 GT_PROSYS_U3_buf_ta_move_line3
+        110   68 00011EE0 GT_PROSYS_U3_buf_tr_move
+         98   69 00010080 GT_PROSYS_U3_buf_tr_move_line2
+        103   6A 00011660 GT_PROSYS_U3_buf_tr_move_line3
+        147   6B 00014280 GT_PROSYS_U3_buffer_maxsize
+        125   6C 00013390 GT_PROSYS_U3_buffer_pause
+        108   6D 00013450 GT_PROSYS_U3_buffer_ready
+        126   6E 000133B0 GT_PROSYS_U3_buffer_resume
+        184   6F 00019610 GT_PROSYS_U3_configure_adc
+        193   70 00019690 GT_PROSYS_U3_configure_adc_in_DegreeJ
+        197   71 0001CF50 GT_PROSYS_U3_configure_adc_in_DegreeP
+        191   72 00001610 GT_PROSYS_U3_debug_mode_off
+        190   73 000015A0 GT_PROSYS_U3_debug_mode_on
+        152   74 000145F0 GT_PROSYS_U3_delay
+        120   75 00012C30 GT_PROSYS_U3_disable_hard_limit
+        133   76 00013990 GT_PROSYS_U3_disable_home_limit
+        118   77 00012B30 GT_PROSYS_U3_disable_soft_limit
+        123   78 00012DD0 GT_PROSYS_U3_disable_speed_limit
+        119   79 00012BB0 GT_PROSYS_U3_enable_hard_limit
+        132   7A 00013910 GT_PROSYS_U3_enable_home_limit
+        117   7B 00012AB0 GT_PROSYS_U3_enable_soft_limit
+        122   7C 00012D50 GT_PROSYS_U3_enable_speed_limit
+        124   7D 00012E50 GT_PROSYS_U3_escape_home
+        121   7E 00012CB0 GT_PROSYS_U3_fix_speed_range
+        203   7F 00015BB0 GT_PROSYS_U3_galvo_move_XY
+        209   80 000162B0 GT_PROSYS_U3_galvo_run_status
+        212   81 00016340 GT_PROSYS_U3_galvo_set_XY_Mode
+        210   82 00016300 GT_PROSYS_U3_galvo_stop
+        149   83 00014570 GT_PROSYS_U3_get_MaxVel
+        148   84 000144F0 GT_PROSYS_U3_get_StrVel
+        202   85 00015A80 GT_PROSYS_U3_get_XY_Data
+        183   86 000165D0 GT_PROSYS_U3_get_adc_data
+        192   87 00016600 GT_PROSYS_U3_get_adc_data_in_degreeJ
+        195   88 0001CEF0 GT_PROSYS_U3_get_adc_data_in_degreeP
+        159   89 000082D0 GT_PROSYS_U3_get_all_command
+        181   8A 000164D0 GT_PROSYS_U3_get_all_command8
+         77   8B 0000A330 GT_PROSYS_U3_get_alm
+         76   8C 0000A780 GT_PROSYS_U3_get_axis_vel
+        127   8D 00013410 GT_PROSYS_U3_get_buf_cur_id
+        146   8E 00014160 GT_PROSYS_U3_get_buffer_size
+        137   8F 00013D40 GT_PROSYS_U3_get_card_srno
+         63   90 000081A0 GT_PROSYS_U3_get_command
+         73   91 00009E50 GT_PROSYS_U3_get_di
+         85   92 00009F20 GT_PROSYS_U3_get_di_bit
+         74   93 0000A0C0 GT_PROSYS_U3_get_do
+         86   94 0000A190 GT_PROSYS_U3_get_do_bit
+        136   95 00013C30 GT_PROSYS_U3_get_eln_status
+        135   96 00013B20 GT_PROSYS_U3_get_elp_status
+        134   97 00013A10 GT_PROSYS_U3_get_home_status
+         65   98 0000A660 GT_PROSYS_U3_get_io_status
+         66   99 0001D240 GT_PROSYS_U3_get_mem
+        163   9A 000157A0 GT_PROSYS_U3_get_user_key
+         69   9B 00008750 GT_PROSYS_U3_home_axis
+         68   9C 00008580 GT_PROSYS_U3_home_move
+         64   9D 00008430 GT_PROSYS_U3_motion_done
+         83   9E 00009170 GT_PROSYS_U3_p_change
+         70   9F 00008C90 GT_PROSYS_U3_sd_stop
+        145   A0 00014290 GT_PROSYS_U3_send_buffer
+        129   A1 00013580 GT_PROSYS_U3_set_alm
+        154   A2 00014E60 GT_PROSYS_U3_set_analog_do_bit
+        157   A3 00015720 GT_PROSYS_U3_set_arc_axis_multi
+         67   A4 0000A670 GT_PROSYS_U3_set_command
+        141   A5 00013FE0 GT_PROSYS_U3_set_continous_mode_off
+        140   A6 00013F70 GT_PROSYS_U3_set_continous_mode_on
+        138   A7 00013D50 GT_PROSYS_U3_set_dir_logic
+         75   A8 0000A450 GT_PROSYS_U3_set_do
+         84   A9 0000A510 GT_PROSYS_U3_set_do_bit
+        156   AA 000156B0 GT_PROSYS_U3_set_do_freq
+        130   AB 000136B0 GT_PROSYS_U3_set_el
+        214   AC 00015B40 GT_PROSYS_U3_set_galvo_Percision
+        211   AD 00016320 GT_PROSYS_U3_set_galvo_delay
+        208   AE 000159B0 GT_PROSYS_U3_set_galvo_mode
+        213   AF 00015B20 GT_PROSYS_U3_set_galvo_smoothfactor
+        131   B0 000137E0 GT_PROSYS_U3_set_home
+        144   B1 0001D280 GT_PROSYS_U3_set_mem
+        142   B2 00014390 GT_PROSYS_U3_set_pulse_out_mode
+        116   B3 00012A20 GT_PROSYS_U3_set_soft_limit
+         72   B4 0000A660 GT_PROSYS_U3_set_trigger_type
+        164   B5 00015850 GT_PROSYS_U3_set_user_key
+         81   B6 0000A8B0 GT_PROSYS_U3_start_a_arc2
+         87   B7 0000B950 GT_PROSYS_U3_start_a_arc_xy
+         89   B8 0000BA40 GT_PROSYS_U3_start_a_arc_zu
+         78   B9 00002DC0 GT_PROSYS_U3_start_move
+         79   BA 00003E10 GT_PROSYS_U3_start_move_line2
+         80   BB 00005FC0 GT_PROSYS_U3_start_move_line3
+        217   BC 0001D3C0 GT_PROSYS_U3_start_move_line5
+         82   BD 0000B170 GT_PROSYS_U3_start_r_arc2
+         88   BE 0000BAA0 GT_PROSYS_U3_start_r_arc_xy
+         90   BF 0000BB00 GT_PROSYS_U3_start_r_arc_zu
+        221   C0 000206D0 GT_PROSYS_U3_start_sa_move_line5
+        220   C1 000205D0 GT_PROSYS_U3_start_sr_move_line5
+        219   C2 00020650 GT_PROSYS_U3_start_ta_move_line5
+        218   C3 00020550 GT_PROSYS_U3_start_tr_move_line5
+         94   C4 00012390 GT_PROSYS_U3_sv_move
+         93   C5 000122B0 GT_PROSYS_U3_tv_move
+         71   C6 00009470 GT_PROSYS_U3_v_change
+         92   C7 00012470 GT_PROSYS_U3_v_move
+        107   C8 000129C0 GT_PROSYS_U3_write_buffer
+        223   C9 00022740 GetFIFOCommands
+        225   CA 00022760 GetFIFOPop
+        224   CB 00022750 GetFIFOPush
+        222   CC 00022770 GetFreeBRAMSpace
+        233   CD 00001030 IsConnected
+        234   CE 00001010 Return_plus_one
+        172   CF 00001090 Set_CallBack_Attach
+        173   D0 000010B0 Set_CallBack_Remove
+         60   D1 0000DC40 _GT_PROSYS_U3_buf_a_oval2@76
+         61   D2 00020750 _GT_PROSYS_U3_buf_move_line5@184
+         62   D3 0001CCF0 _GT_PROSYS_U3_get_ADC_Output@4
+        143   D4 000153A0 _GT_PROSYS_U3_set_buf_analog_do_bit@28
+        158   D5 00003DC0 _GT_PROSYS_U3_start_sa_move@60
+        160   D6 00005A50 _GT_PROSYS_U3_start_sa_move_line2@72
+        161   D7 00008130 _GT_PROSYS_U3_start_sa_move_line3@80
+        176   D8 00005DB0 _GT_PROSYS_U3_start_sa_move_xy@68
+        177   D9 00005F50 _GT_PROSYS_U3_start_sa_move_zu@68
+        182   DA 00003C70 _GT_PROSYS_U3_start_sr_move@60
+        185   DB 00005850 _GT_PROSYS_U3_start_sr_move_line2@72
+        186   DC 00008050 _GT_PROSYS_U3_start_sr_move_line3@80
+        187   DD 00005D40 _GT_PROSYS_U3_start_sr_move_xy@68
+        188   DE 00005EE0 _GT_PROSYS_U3_start_sr_move_zu@68
+        204   DF 00003CD0 _GT_PROSYS_U3_start_ta_move@44
+        205   E0 00005950 _GT_PROSYS_U3_start_ta_move_line2@56
+        206   E1 000080C0 _GT_PROSYS_U3_start_ta_move_line3@64
+        207   E2 00005C50 _GT_PROSYS_U3_start_ta_move_xy@52
+        227   E3 00005E80 _GT_PROSYS_U3_start_ta_move_zu@52
+        228   E4 00003B80 _GT_PROSYS_U3_start_tr_move@44
+        229   E5 00005750 _GT_PROSYS_U3_start_tr_move_line2@56
+        230   E6 00007FE0 _GT_PROSYS_U3_start_tr_move_line3@64
+        231   E7 00005B50 _GT_PROSYS_U3_start_tr_move_xy@52
+        232   E8 00005E20 _GT_PROSYS_U3_start_tr_move_zu@52
+        236   E9 00001430 _fngt5motion@0
+        235   EA 00001430 fnGTPROS3
+        237   EB 0004A154 nGTPROS3
+        238   EC 0004A148 ngt5motion
+
+  Summary
+
+        5000 .data
+        B000 .rdata
+        5000 .reloc
+        1000 .rsrc
+       3B000 .text
+        1000 MyData
